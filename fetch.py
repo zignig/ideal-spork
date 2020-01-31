@@ -31,6 +31,8 @@ def FetchAll():
     local_repos = []
     for i in repos.items():
         local_repos.append(Fetch(i))
+    return local_repos
 
 
-FetchAll()
+r = FetchAll()
+print(r)
