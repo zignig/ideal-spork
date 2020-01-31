@@ -9,10 +9,20 @@ repos = {
 }
 
 def Fetch(item):
+    name = item[0]
+    url = item[1]
+    path = 'lib'+os.sep+name
+    print(name,url,path)
     try:
-        r = Repo('lib'+os.sep+item[0])
+        r = Repo(path)
     except:
-        r = Repo.init('lib'+os.sep+item[0])
+        print(name + " does not exist , creating")
+        r = Repo.init(path)
+        r.create_remote('origin',url)
+        r.remotes.origin.pull('master')
 
+    return r
+
+local_repos = []
 for  i in repos.items():
-    Fetch(i)
+    local_repos.append(Fetch(i))
