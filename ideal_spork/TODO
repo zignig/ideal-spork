@@ -1,0 +1,2 @@
+- map only the active bits so the BUS is smaller
+

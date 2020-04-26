@@ -7,10 +7,11 @@ __all__ = ["InterruptController", "GenericInterruptController"]
 
 class InterruptController(Peripheral):
     """Interrupt controller base class."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.__irq_lines = set()
-        self.__irq_map   = dict()
+        self.__irq_map = dict()
 
     def add_irq(self, line, index):
         """Add an IRQ line.
@@ -27,17 +28,25 @@ class InterruptController(Peripheral):
         Raises :exn:`ValueError` if ``line`` is added twice, or if ``index`` is already used.
         """
         if not isinstance(line, IRQLine):
-            raise TypeError("IRQ line must be an instance of IRQLine, not {!r}"
-                            .format(line))
+            raise TypeError(
+                "IRQ line must be an instance of IRQLine, not {!r}".format(line)
+            )
         if not isinstance(index, int) or index < 0:
-            raise ValueError("IRQ index must be a non-negative integer, not {!r}"
-                             .format(index))
+            raise ValueError(
+                "IRQ index must be a non-negative integer, not {!r}".format(index)
+            )
         if line in self.__irq_lines:
-            raise ValueError("IRQ line {!r} has already been mapped to IRQ index {}"
-                             .format(line, self.find_index(line)))
+            raise ValueError(
+                "IRQ line {!r} has already been mapped to IRQ index {}".format(
+                    line, self.find_index(line)
+                )
+            )
         if index in self.__irq_map:
-            raise ValueError("IRQ index {} has already been mapped to IRQ line {!r}"
-                             .format(index, self.__irq_map[index]))
+            raise ValueError(
+                "IRQ index {} has already been mapped to IRQ line {!r}".format(
+                    index, self.__irq_map[index]
+                )
+            )
         self.__irq_lines.add(line)
         self.__irq_map[index] = line
 
@@ -90,19 +99,24 @@ class GenericInterruptController(InterruptController, Elaboratable):
     ip : Signal, out
         Pending IRQs.
     """
+
     def __init__(self, *, width):
         super().__init__(src_loc_at=2)
         if not isinstance(width, int) or width <= 0:
-            raise ValueError("Width must be a strictly positive integer, not {!r}"
-                             .format(width))
+            raise ValueError(
+                "Width must be a strictly positive integer, not {!r}".format(width)
+            )
         self.width = width
-        self.ip    = Signal(width)
+        self.ip = Signal(width)
 
     def add_irq(self, line, index):
         __doc__ = InterruptController.add_irq.__doc__
         if not isinstance(index, int) or index not in range(0, self.width):
-            raise ValueError("IRQ index must be an integer ranging from 0 to {}, not {!r}"
-                             .format(self.width - 1, index))
+            raise ValueError(
+                "IRQ index must be an integer ranging from 0 to {}, not {!r}".format(
+                    self.width - 1, index
+                )
+            )
         super().add_irq(line, index)
 
     def elaborate(self, platform):

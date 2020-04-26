@@ -29,22 +29,27 @@ class EventSource:
     stb : Signal, in
         Event strobe.
     """
+
     def __init__(self, *, mode="level", name=None, src_loc_at=0):
         if name is not None and not isinstance(name, str):
             raise TypeError("Name must be a string, not {!r}".format(name))
 
         choices = ("level", "rise", "fall")
         if mode not in choices:
-            raise ValueError("Invalid trigger mode {!r}; must be one of {}"
-                             .format(mode, ", ".join(choices)))
+            raise ValueError(
+                "Invalid trigger mode {!r}; must be one of {}".format(
+                    mode, ", ".join(choices)
+                )
+            )
 
         self.name = name or tracer.get_var_name(depth=2 + src_loc_at)
         self.mode = mode
-        self.stb  = Signal(name="{}_stb".format(self.name))
+        self.stb = Signal(name="{}_stb".format(self.name))
 
 
 class IRQLine(Signal):
     """Interrupt request line."""
+
     def __init__(self, *, name=None, src_loc_at=0):
         super().__init__(name=name, src_loc_at=1 + src_loc_at)
 
@@ -83,6 +88,7 @@ class InterruptSource(Elaboratable):
         Interrupt request. It is raised if any event source is enabled and has a pending
         notification.
     """
+
     def __init__(self, events, *, name=None, src_loc_at=0):
         if name is not None and not isinstance(name, str):
             raise TypeError("Name must be a string, not {!r}".format(name))
@@ -90,14 +96,17 @@ class InterruptSource(Elaboratable):
 
         for event in events:
             if not isinstance(event, EventSource):
-                raise TypeError("Event source must be an instance of EventSource, not {!r}"
-                                .format(event))
+                raise TypeError(
+                    "Event source must be an instance of EventSource, not {!r}".format(
+                        event
+                    )
+                )
         self._events = list(events)
 
         width = len(events)
-        self.status  = csr.Element(width, "r",  name="{}_status".format(self.name))
+        self.status = csr.Element(width, "r", name="{}_status".format(self.name))
         self.pending = csr.Element(width, "rw", name="{}_pending".format(self.name))
-        self.enable  = csr.Element(width, "rw", name="{}_enable".format(self.name))
+        self.enable = csr.Element(width, "rw", name="{}_enable".format(self.name))
 
         self.irq = IRQLine(name="{}_irq".format(self.name))
 
@@ -105,7 +114,9 @@ class InterruptSource(Elaboratable):
         m = Module()
 
         with m.If(self.pending.w_stb):
-            m.d.sync += self.pending.r_data.eq(self.pending.r_data & ~self.pending.w_data)
+            m.d.sync += self.pending.r_data.eq(
+                self.pending.r_data & ~self.pending.w_data
+            )
 
         with m.If(self.enable.w_stb):
             m.d.sync += self.enable.r_data.eq(self.enable.w_data)
@@ -125,7 +136,7 @@ class InterruptSource(Elaboratable):
             elif event.mode == "fall":
                 m.d.comb += event_trigger.eq(event_stb_r & ~event.stb)
             else:
-                assert False # :nocov:
+                assert False  # :nocov:
 
             with m.If(event_trigger):
                 m.d.sync += self.pending.r_data[i].eq(1)

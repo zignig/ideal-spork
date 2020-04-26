@@ -3,13 +3,13 @@ from nmigen.lib.fifo import SyncFIFO
 
 from nmigen_stdio.serial import AsyncSerial
 
-from ..cores.periph import Peripheral,Register
+from ..cores.periph import Peripheral, Register
 
 
 __all__ = ["AsyncSerialPeripheral"]
 
-@Register(driver="uart")
 
+@Register(driver="uart")
 class AsyncSerialPeripheral(Peripheral, Elaboratable):
     """Asynchronous serial transceiver peripheral.
 
@@ -63,20 +63,21 @@ class AsyncSerialPeripheral(Peripheral, Elaboratable):
     irq : :class:`IRQLine`
         Interrupt request line.
     """
+
     def __init__(self, *, rx_depth=16, tx_depth=16, **kwargs):
         super().__init__()
 
-        self._phy       = AsyncSerial(**kwargs)
-        self._rx_fifo   = SyncFIFO(width=self._phy.rx.data.width, depth=rx_depth)
-        self._tx_fifo   = SyncFIFO(width=self._phy.tx.data.width, depth=tx_depth)
+        self._phy = AsyncSerial(**kwargs)
+        self._rx_fifo = SyncFIFO(width=self._phy.rx.data.width, depth=rx_depth)
+        self._tx_fifo = SyncFIFO(width=self._phy.tx.data.width, depth=tx_depth)
 
-        bank            = self.csr_bank()
-        self._divisor   = bank.csr(self._phy.divisor.width, "rw")
-        self._rx_data   = bank.csr(self._phy.rx.data.width, "r")
-        self._rx_rdy    = bank.csr(1, "r")
-        self._rx_err    = bank.csr(len(self._phy.rx.err),   "r")
-        self._tx_data   = bank.csr(self._phy.tx.data.width, "w")
-        self._tx_rdy    = bank.csr(1, "r")
+        bank = self.csr_bank()
+        self._divisor = bank.csr(self._phy.divisor.width, "rw")
+        self._rx_data = bank.csr(self._phy.rx.data.width, "r")
+        self._rx_rdy = bank.csr(1, "r")
+        self._rx_err = bank.csr(len(self._phy.rx.err), "r")
+        self._tx_data = bank.csr(self._phy.tx.data.width, "w")
+        self._tx_rdy = bank.csr(1, "r")
 
         self._rx_rdy_ev = self.event(mode="level")
         self._rx_err_ev = self.event(mode="rise")
@@ -84,9 +85,9 @@ class AsyncSerialPeripheral(Peripheral, Elaboratable):
 
     def elaborate(self, platform):
         m = Module()
-        m.submodules.bridge  = self._bridge
+        m.submodules.bridge = self._bridge
 
-        m.submodules.phy     = self._phy
+        m.submodules.phy = self._phy
         m.submodules.rx_fifo = self._rx_fifo
         m.submodules.tx_fifo = self._tx_fifo
 
@@ -98,20 +99,16 @@ class AsyncSerialPeripheral(Peripheral, Elaboratable):
             self._rx_data.r_data.eq(self._rx_fifo.r_data),
             self._rx_fifo.r_en.eq(self._rx_data.r_stb),
             self._rx_rdy.r_data.eq(self._rx_fifo.r_rdy),
-
             self._rx_fifo.w_data.eq(self._phy.rx.data),
             self._rx_fifo.w_en.eq(self._phy.rx.rdy),
             self._phy.rx.ack.eq(self._rx_fifo.w_rdy),
             self._rx_err.r_data.eq(self._phy.rx.err),
-
             self._tx_fifo.w_en.eq(self._tx_data.w_stb),
             self._tx_fifo.w_data.eq(self._tx_data.w_data),
             self._tx_rdy.r_data.eq(self._tx_fifo.w_rdy),
-
             self._phy.tx.data.eq(self._tx_fifo.r_data),
             self._phy.tx.ack.eq(self._tx_fifo.r_rdy),
             self._tx_fifo.r_en.eq(self._phy.tx.rdy),
-
             self._rx_rdy_ev.stb.eq(self._rx_fifo.r_rdy),
             self._rx_err_ev.stb.eq(self._phy.rx.err.any()),
             self._tx_mty_ev.stb.eq(~self._tx_fifo.r_rdy),

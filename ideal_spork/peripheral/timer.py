@@ -37,21 +37,24 @@ class TimerPeripheral(Peripheral, Elaboratable):
     irq : :class:`IRQLine`
         Interrupt request.
     """
-    def __init__(self, width,name=None):
+
+    def __init__(self, width, name=None):
         super().__init__(name=name)
 
         if not isinstance(width, int) or width < 0:
-            raise ValueError("Counter width must be a non-negative integer, not {!r}"
-                             .format(width))
+            raise ValueError(
+                "Counter width must be a non-negative integer, not {!r}".format(width)
+            )
         if width > 32:
-            raise ValueError("Counter width cannot be greater than 32 (was: {})"
-                             .format(width))
-        self.width   = width
+            raise ValueError(
+                "Counter width cannot be greater than 32 (was: {})".format(width)
+            )
+        self.width = width
 
-        bank          = self.csr_bank()
-        self._reload  = bank.csr(width, "rw")
-        self._en      = bank.csr(    1, "rw")
-        self._ctr     = bank.csr(width, "rw")
+        bank = self.csr_bank()
+        self._reload = bank.csr(width, "rw")
+        self._en = bank.csr(1, "rw")
+        self._ctr = bank.csr(width, "rw")
 
         self._zero_ev = self.event(mode="rise")
 

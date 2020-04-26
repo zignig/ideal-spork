@@ -8,8 +8,9 @@ from boneless.gateware.alsru import ALSRU_4LUT
 
 from ..cores.periph.bus import PeripheralCollection
 
+
 class BonelessSpork(Elaboratable):
-    def __init__(self,firmware=None,mem_size=512):
+    def __init__(self, firmware=None, mem_size=512):
         # create the memory
         self.mem_size = mem_size
         self.memory = Memory(width=16, depth=self.mem_size)
@@ -22,16 +23,16 @@ class BonelessSpork(Elaboratable):
         self.pc = PeripheralCollection()
         self.bus = self.pc.bus._bus
 
-    def add_peripheral(self,periph):
+    def add_peripheral(self, periph):
         self.pc.add(periph)
 
-    def elaborate(self,platform):
+    def elaborate(self, platform):
         m = Module()
 
         # attach the cpu and bus
-        m.submodules.cpu = self.cpu        
+        m.submodules.cpu = self.cpu
         m.submodules.pc = self.pc
-        
+
         # connect the bus to the cpu
         m.d.comb += [
             self.bus.addr.eq(self.cpu.o_bus_addr),

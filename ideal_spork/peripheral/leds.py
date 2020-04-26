@@ -1,9 +1,10 @@
 from nmigen import *
 
-from . import Peripheral,Register
+from ..cores.periph import Peripheral, Register
 
 
 __all__ = ["LedPeripheral"]
+
 
 @Register(driver="led")
 class LedPeripheral(Peripheral, Elaboratable):
@@ -16,14 +17,15 @@ class LedPeripheral(Peripheral, Elaboratable):
     en : read/write
         Counter enable.
     """
+
     def __init__(self, leds):
         super().__init__()
 
-        self.leds     = leds
+        self.leds = leds
 
-        bank          = self.csr_bank()
-        self.led      = bank.csr(16, "rw")
-        self._en      = bank.csr(1, "rw")
+        bank = self.csr_bank()
+        self.led = bank.csr(16, "rw")
+        self._en = bank.csr(1, "rw")
 
     def elaborate(self, platform):
         m = Module()

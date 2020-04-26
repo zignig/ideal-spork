@@ -1,1 +1,1 @@
-__all__ = ['tinyfpga_bx']
+__all__ = ["tinyfpga_bx"]
