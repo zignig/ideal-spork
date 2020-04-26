@@ -27,12 +27,17 @@ class BonelessSpork(Elaboratable):
 
     def elaborate(self,platform):
         m = Module()
+
         # attach the cpu and bus
         m.submodules.cpu = self.cpu        
-        m.submodules.bus = self.bus
+        m.submodules.pc = self.pc
         
         # connect the bus to the cpu
         m.d.comb += [
             self.bus.addr.eq(self.cpu.o_bus_addr),
+            self.bus.r_stb.eq(self.cpu.o_ext_re),
+            self.bus.w_stb.eq(self.cpu.o_ext_we),
+            self.bus.w_data.eq(self.cpu.o_ext_data),
+            self.cpu.i_ext_data.eq(self.bus.r_data),
         ]
         return m
