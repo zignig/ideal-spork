@@ -17,7 +17,7 @@ class RegMap:
     def __repr__(self):
         s = ""
         for i, j in self._dict.items():
-            s += str(i)+"-"+str(j)+"\n"
+            s += str(i)+" "+str(j)+"\n"
         return s
 
 

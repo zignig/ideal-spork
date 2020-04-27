@@ -42,12 +42,24 @@ class TestSpork(Elaboratable):
 def Firmware(reg):
     print(reg)
     return [
+        # enable the led
         MOVI(R0,1),
         STXA(R0,reg.status_led_en),
+        # load the timer
+        MOVI(R0,0xFF),
+        STXA(R0,reg.timer_reload),
+        # enable timer and events 
+        MOVI(R0,1),
         STXA(R0,reg.timer_en),
         STXA(R0,reg.timer_ev_enable),
-        MOVI(R0,0xF),
-        STXA(R0,reg.timer_reload),
+        # write a char
+        MOVI(R0,115),
+        STXA(R0,reg.serial_tx_data),
+        MOVI(R0,111),
+        STXA(R0,reg.serial_tx_data),
+        MOVI(R0,115),
+        STXA(R0,reg.serial_tx_data),
+        # blink the led
         L("LOOP"),
         MOVI(R0,0),
         STXA(R0,reg.status_led_led),
@@ -76,5 +88,5 @@ if __name__ == "__main__":
     with pysim.Simulator(spork, vcd_file=open("view_spork.vcd", "w")) as sim:
         sim.add_clock(10)
         #sim.add_sync_process(sim_data(test_string, mo.sink, mo.source))
-        sim.run_until(5000, run_passive=True)
+        sim.run_until(50000, run_passive=True)
     #platform.build(spork)
