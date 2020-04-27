@@ -14,9 +14,11 @@ class RegMap:
             setattr(self, name, value)
             self._dict[name] = value
 
-    def _show(self):
+    def __repr__(self):
+        s = ""
         for i, j in self._dict.items():
-            print(i, j)
+            s += str(i)+"-"+str(j)+"\n"
+        return s
 
 
 class PeripheralCollection(Elaboratable):

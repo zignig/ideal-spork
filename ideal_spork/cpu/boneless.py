@@ -8,25 +8,39 @@ from boneless.gateware.alsru import ALSRU_4LUT
 
 from ..cores.periph.bus import PeripheralCollection
 
+class BuildException(Exception): pass
 
 class BonelessSpork(Elaboratable):
     def __init__(self, firmware=None, mem_size=512):
         # create the memory
         self.mem_size = mem_size
         self.memory = Memory(width=16, depth=self.mem_size)
+        # create the CPU core
         self.cpu = CoreFSM(
             alsru_cls=ALSRU_4LUT,
             memory=self.memory,
             reset_pc=0,
             reset_w=self.mem_size - 8,
         )
+        # Create the peripheral bus
         self.pc = PeripheralCollection()
         self.bus = self.pc.bus._bus
+        self.map = self.pc.map
+
+        self._built = False
 
     def add_peripheral(self, periph):
         self.pc.add(periph)
 
+    def build(self):
+        if not self._built:
+            # build the register map 
+            self.pc.build()
+            self._build = True
+            
     def elaborate(self, platform):
+
+        self.build()
         m = Module()
 
         # attach the cpu and bus

@@ -29,6 +29,9 @@ class TestSpork(Elaboratable):
         status_led = LedPeripheral(led)
         cpu.add_peripheral(status_led)
 
+        # build the register map        
+        cpu.build()
+
     def elaborate(self, platform):
         m = Module()
         m.submodules.cpu = self.cpu
@@ -47,4 +50,12 @@ if __name__ == "__main__":
         ]
     )
     spork = TestSpork(platform)
-    platform.build(spork)
+
+    print(spork.cpu.map)
+
+    from nmigen.cli import pysim
+    with pysim.Simulator(spork, vcd_file=open("view_spork.vcd", "w")) as sim:
+        sim.add_clock(10)
+        #sim.add_sync_process(sim_data(test_string, mo.sink, mo.source))
+        sim.run_until(5000, run_passive=True)
+    #platform.build(spork)
