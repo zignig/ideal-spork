@@ -11,10 +11,12 @@ from nmigen_boards.tinyfpga_bx import TinyFPGABXPlatform
 from nmigen_boards.resources.interface import UARTResource
 from nmigen.build import Resource, Subsignal, Pins, Attrs
 
+from boneless.arch.opcode import Instr
+from boneless.arch.opcode import *
 
 class TestSpork(Elaboratable):
-    def __init__(self, platform, mem_size=512):
-        self.cpu = cpu = BonelessSpork()
+    def __init__(self, platform, mem_size=32,firmware=None):
+        self.cpu = cpu = BonelessSpork(firmware=firmware,mem_size=mem_size)
 
         uart = platform.request("uart")
         uart_divisor = int(platform.default_clk_frequency // 115200)
@@ -37,7 +39,23 @@ class TestSpork(Elaboratable):
         m.submodules.cpu = self.cpu
         return m
 
-
+def Firmware(reg):
+    print(reg)
+    return [
+        MOVI(R0,1),
+        STXA(R0,reg.status_led_en),
+        STXA(R0,reg.timer_en),
+        STXA(R0,reg.timer_ev_enable),
+        MOVI(R0,0xF),
+        STXA(R0,reg.timer_reload),
+        L("LOOP"),
+        MOVI(R0,0),
+        STXA(R0,reg.status_led_led),
+        MOVI(R0,1),
+        STXA(R0,reg.status_led_led),
+        J("LOOP")
+    ]
+    
 if __name__ == "__main__":
     print("Testing Spork")
     platform = TinyFPGABXPlatform()
@@ -51,7 +69,8 @@ if __name__ == "__main__":
     )
     spork = TestSpork(platform)
 
-    print(spork.cpu.map)
+    f = Firmware(spork.cpu.map)
+    spork.cpu.firmware(f)
 
     from nmigen.cli import pysim
     with pysim.Simulator(spork, vcd_file=open("view_spork.vcd", "w")) as sim:

@@ -5,6 +5,8 @@ from nmigen import *
 
 from boneless.gateware.core import CoreFSM
 from boneless.gateware.alsru import ALSRU_4LUT
+from boneless.arch.opcode import Instr
+from boneless.arch.opcode import *
 
 from ..cores.periph.bus import PeripheralCollection
 
@@ -37,7 +39,15 @@ class BonelessSpork(Elaboratable):
             # build the register map 
             self.pc.build()
             self._build = True
-            
+    def firmware(self,fw=None):
+        # compile and attach the firmware
+        if fw is None:
+            raise BuildException("No firmware")
+        fw = Instr.assemble(fw)
+        if len(fw) > self.mem_size:
+            raise BuildException("Firmware too long")
+        self.memory.init = fw
+                
     def elaborate(self, platform):
 
         self.build()

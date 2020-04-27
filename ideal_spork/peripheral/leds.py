@@ -31,8 +31,8 @@ class LedPeripheral(Peripheral, Elaboratable):
         m = Module()
         m.submodules.bridge = self._bridge
 
-        with m.If(self._en.r_data):
-            m.d.comb += self.leds.eq(self.led.r_data)
+        with m.If(self._en.w_data):
+            m.d.comb += self.leds.eq(self.led.w_data)
         with m.Else():
             m.d.comb += self.leds.eq(0)
         return m
