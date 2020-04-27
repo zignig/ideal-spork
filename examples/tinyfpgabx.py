@@ -15,7 +15,7 @@ from boneless.arch.opcode import Instr
 from boneless.arch.opcode import *
 
 class TestSpork(Elaboratable):
-    def __init__(self, platform, mem_size=32,firmware=None):
+    def __init__(self, platform, mem_size=64,firmware=None):
         self.cpu = cpu = BonelessSpork(firmware=firmware,mem_size=mem_size)
 
         uart = platform.request("uart")
@@ -46,7 +46,7 @@ def Firmware(reg):
         MOVI(R0,1),
         STXA(R0,reg.status_led_en),
         # load the timer
-        MOVI(R0,0xFF),
+        MOVI(R0,0x2FF),
         STXA(R0,reg.timer_reload),
         # enable timer and events 
         MOVI(R0,1),
@@ -59,12 +59,19 @@ def Firmware(reg):
         STXA(R0,reg.serial_tx_data),
         MOVI(R0,115),
         STXA(R0,reg.serial_tx_data),
-        # blink the led
+        # wait for the timer 
         L("LOOP"),
-        MOVI(R0,0),
-        STXA(R0,reg.status_led_led),
-        MOVI(R0,1),
-        STXA(R0,reg.status_led_led),
+        LDXA(R1,reg.timer_ev_pending),
+        CMPI(R1,1),
+        BZ1("continue"),
+        J("LOOP"),
+        L("continue"),
+        MOVI(R2,1),
+        STXA(R2,reg.timer_ev_pending),
+        XORI(R4,R4,0xFFFF), # NOT
+        STXA(R4,reg.status_led_led),
+        MOVI(R3,115),
+        STXA(R3,reg.serial_tx_data),
         J("LOOP")
     ]
     
@@ -89,4 +96,5 @@ if __name__ == "__main__":
         sim.add_clock(10)
         #sim.add_sync_process(sim_data(test_string, mo.sink, mo.source))
         sim.run_until(50000, run_passive=True)
-    #platform.build(spork)
+    #platform.build(spork,do_program=True)
+
