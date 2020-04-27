@@ -1,0 +1,115 @@
+[*]
+[*] GTKWave Analyzer v3.3.86 (w)1999-2017 BSI
+[*] Mon Apr 27 07:59:33 2020
+[*]
+[dumpfile] "/opt/FPGA/ideal-spork/examples/view_spork.vcd"
+[dumpfile_mtime] "Mon Apr 27 07:55:51 2020"
+[dumpfile_size] 15988474
+[savefile] "/opt/FPGA/ideal-spork/examples/spork.gtkw"
+[timestart] 0
+[size] 1920 1035
+[pos] -1 -1
+*-54.458359 17140000000000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.cpu.
+[treeopen] top.cpu.cpu.dec.
+[treeopen] top.cpu.pc.
+[treeopen] top.cpu.pc.serial.
+[treeopen] top.cpu.pc.serial.bridge.
+[treeopen] top.cpu.pc.serial.phy.
+[treeopen] top.cpu.pc.serial.phy.rx.
+[treeopen] top.cpu.pc.serial.rx_fifo.
+[treeopen] top.cpu.pc.serial.tx_fifo.
+[treeopen] top.cpu.pc.status_led.
+[treeopen] top.cpu.pc.status_led.bridge.
+[treeopen] top.cpu.pc.timer.
+[treeopen] top.cpu.pc.timer.bridge.
+[sst_width] 355
+[signals_width] 270
+[sst_expanded] 1
+[sst_vpaned_height] 568
+@28
+top.cpu.cpu.fsm_state
+top.cpu.cpu.i_insn
+@22
+top.cpu.cpu.pc.i_addr[15:0]
+@c00200
+-memory
+@22
+top.cpu.cpu.memwr.memory(0)[15:0]
+top.cpu.cpu.memwr.memory(1)[15:0]
+top.cpu.cpu.memwr.memory(2)[15:0]
+top.cpu.cpu.memwr.memory(3)[15:0]
+top.cpu.cpu.memwr.memory(4)[15:0]
+top.cpu.cpu.memwr.memory(5)[15:0]
+top.cpu.cpu.memwr.memory(6)[15:0]
+top.cpu.cpu.memwr.memory(7)[15:0]
+top.cpu.cpu.memwr.memory(8)[15:0]
+top.cpu.cpu.memwr.memory(9)[15:0]
+top.cpu.cpu.memwr.memory(10)[15:0]
+top.cpu.cpu.memwr.memory(11)[15:0]
+top.cpu.cpu.memwr.memory(12)[15:0]
+top.cpu.cpu.memwr.memory(13)[15:0]
+top.cpu.cpu.memwr.memory(14)[15:0]
+top.cpu.cpu.memwr.memory(15)[15:0]
+top.cpu.cpu.memwr.memory(16)[15:0]
+top.cpu.cpu.memwr.memory(17)[15:0]
+top.cpu.cpu.memwr.memory(18)[15:0]
+top.cpu.cpu.memwr.memory(19)[15:0]
+top.cpu.cpu.memwr.memory(20)[15:0]
+top.cpu.cpu.memwr.memory(21)[15:0]
+top.cpu.cpu.memwr.memory(22)[15:0]
+top.cpu.cpu.memwr.memory(23)[15:0]
+top.cpu.cpu.memwr.memory(24)[15:0]
+top.cpu.cpu.memwr.memory(25)[15:0]
+top.cpu.cpu.memwr.memory(26)[15:0]
+top.cpu.cpu.memwr.memory(27)[15:0]
+top.cpu.cpu.memwr.memory(28)[15:0]
+top.cpu.cpu.memwr.memory(29)[15:0]
+top.cpu.cpu.memwr.memory(30)[15:0]
+top.cpu.cpu.memwr.memory(31)[15:0]
+@1401200
+-memory
+@800200
+-led
+@28
+top.cpu.pc.status_led.led_0__o
+top.cpu.pc.status_led.status_led_en__w_data
+@1000200
+-led
+@800200
+-timer
+@28
+top.cpu.pc.timer.timer_en__w_data
+@22
+top.cpu.pc.timer.timer_reload__w_data[15:0]
+@24
+top.cpu.pc.timer.timer_ctr__r_data[15:0]
+@28
+top.cpu.pc.timer.bridge._int_src.timer_ev_pending__r_data
+top.cpu.pc.timer.bridge._int_src.timer_ev_status__r_data
+@1000200
+-timer
+@800200
+-serial
+@24
+top.cpu.pc.serial.tx_fifo.level[4:0]
+@28
+top.cpu.pc.serial.serial_tx_data__w_stb
+@820
+top.cpu.pc.serial.serial_tx_data__w_data[7:0]
+@22
+top.cpu.pc.serial.w_data[7:0]
+@28
+top.cpu.pc.serial.phy.tx.o
+top.cpu.pc.serial.phy.tx.rdy
+@820
+top.cpu.pc.serial.phy.tx.data[7:0]
+@28
+top.cpu.pc.serial.serial_tx_rdy__r_data
+@29
+top.cpu.pc.serial.serial_rx_rdy__r_data
+@1000200
+-serial
+[pattern_trace] 1
+[pattern_trace] 0
