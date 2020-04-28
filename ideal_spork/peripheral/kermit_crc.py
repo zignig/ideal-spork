@@ -1,6 +1,5 @@
 # Lifted from
 # https://github.com/tpwrules/tasha_and_friends/blob/master/tastaf/gateware/uart.py#L246
-# TODO  , covert to a Peripheral
 
 from nmigen import *
 from ..cores.periph import Peripheral, Register
@@ -11,9 +10,11 @@ class KermitCRC(Peripheral, Elaboratable):
         super().__init__()
         bank = self.csr_bank()
         # reset engine and set CRC to 0
+        # the value does not matter only the write
         self.reset = bank.csr(1, "w")
-        # start CRC of the given byte. will give the wrong value if engine isn't
-        # done yet!
+        # start CRC of the given byte. will give the wrong value if engine isn't done yet!
+        # this peripheral takes 8 clock cycles ( two instructions to update )
+
         # the given byte
         self.byte = bank.csr(8, "w")
         # the crc value
