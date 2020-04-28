@@ -28,12 +28,12 @@ class KermitCRC(Peripheral,Elaboratable):
         with m.If(self.reset.w_stb):
             m.d.sync += [
                 bit_counter.eq(0),
-                self.crc.eq(0),
+                crc.eq(0),
             ]
         with m.Elif(self.byte.w_stb):
             m.d.sync += [
                 bit_counter.eq(8),
-                crc.eq(self.crc ^ self.byte.w_data)
+                crc.eq(crc ^ self.byte.w_data)
             ]
         with m.Elif(bit_counter > 0):
             m.d.sync += [
@@ -41,5 +41,5 @@ class KermitCRC(Peripheral,Elaboratable):
                 crc.eq((crc >> 1) ^ Mux(crc[0], 0x8408, 0)),
             ]
         with m.Elif(bit_counter==0):
-            m.d.sync += self.crc.r_data.eq(crc)
+           m.d.sync += self.crc.r_data.eq(crc)
         return m
