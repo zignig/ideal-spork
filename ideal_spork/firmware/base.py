@@ -3,6 +3,8 @@ from collections import OrderedDict
 import random
 import pprint
 
+from ..cores.periph.bus import RegMap
+
 from boneless.arch.asm import Assembler
 
 __all__ = ["LocalLabels", "SubR", "Window", "MetaSub", "Firmware", "Rem", "Block"]
@@ -97,6 +99,7 @@ class WindowFull(RegError):
 class BadParamCount(RegError):
     pass
 
+class FWError(Exception): pass
 
 class Rem:
     " for adding remarks in code "
@@ -281,7 +284,7 @@ class SubR(metaclass=MetaSub):
 
     _called = False
 
-    def __init__(self, **kwargs):
+    def __init__(self,**kwargs):
         self.w = Window()
         # return registers to upper window
         self._ret = False
@@ -341,13 +344,12 @@ class SubR(metaclass=MetaSub):
                         raise ValueError("To many returns")
                     for i, j in enumerate(vals):
                         source = self.w[self.ret[i]]
-                        # instr += [Rem(self.ret[i]),Rem(self.ret[i])]
+                        instr += [Rem(self.ret[i]),Rem(self.ret[i])]
                         instr += [LD(j, self.w.fp, -8 + source.value)]
                 else:
                     source = vals
                     target = self.w[self.ret[0]].value
-                    if self.debug:
-                        instr += [Rem("Return " + self.ret[0])]
+                    instr += [Rem("Return " + self.ret[0])]
                     instr += [LD(source, self.w.fp, -8 + target)]
 
             else:
@@ -384,12 +386,12 @@ class Firmware:
     does initialization , main loop and library code
     """
 
-    def __init__(self, io_map=None, start_window=512):
+    def __init__(self, reg=None, start_window=512):
         self.w = Window()
         self.sw = start_window
-        self.io_map = io_map
+        self.reg = reg 
         # attach the io_map to all the subroutines
-        SubR.io_map = self.io_map
+        SubR.reg = self.reg
 
     def instr(self):
         return []
@@ -397,6 +399,7 @@ class Firmware:
     def code(self):
         w = self.w = Window()
         fw = [
+            Rem("Firmware Object"),
             Rem(self.w._name),
             L("init"),
             MOVI(w.fp, self.sw),

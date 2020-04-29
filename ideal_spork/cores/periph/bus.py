@@ -6,7 +6,8 @@ from .base import Peripheral, PeripheralBridge
 
 class RegMap:
     """ mapping of the registers """
-    # TODO export in various formats 
+
+    # TODO export in various formats
 
     def __init__(self):
         self._dict = {}
@@ -26,6 +27,7 @@ class RegMap:
 
 class PeripheralCollection(Elaboratable):
     """ Collection of peripherals to attach to a BonelessCPU """
+
     def __init__(self, addr_width=16, data_width=16):
         self._decoder = Decoder(addr_width=addr_width, data_width=data_width)
 
