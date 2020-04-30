@@ -1,8 +1,19 @@
 # Spork templated file
+# Created on {{creation_time}}
 
+from nmigen import *
 from {{module}} import {{name}}
 
-class mySpork({{name}}):
+class {{item_name}}(Elaboratable):
     def __init__(self):
         pass
 
+    def elaborate(self,platform):
+        m = Module()
+        # Code here
+        return m
+
+if __name__ == "__main__":
+    platform = {{name}}()
+    dut = {{item_name}}()
+    plaform.build(dut,do_program=True)

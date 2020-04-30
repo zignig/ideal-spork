@@ -9,14 +9,26 @@ epilog = """
     spork init will create all the files for a platform build
 
     """
+class SporkError(Exception): pass
 
 def as_options(parser):
     action = parser.add_subparsers(dest="action")
-    action.add_parser("init",help="Create files for a  new board")
+
+    # Create a new SPORK
+    init_action  = action.add_parser("init",help="Create files for a  new board")
+    init_action.add_argument("-b","--board",help="Specify the board to generate")
+    init_action.add_argument("-f","--force",help="Force board creation")
+
+    # Unbound
     action.add_parser("console",help="Attach to a new console")
-    action.add_parser("list",help="List available firmware")
+    action.add_parser("list",help="List available boards")
     action.add_parser("build",help="Build gateware and program onto the board")
-    action.add_parser("program",help="Upload the give firmware onto the board")
+
+    # Push a firmware
+    init_program = action.add_parser("program",help="Upload the given firmware onto the board")
+    init_program.add_argument("program",help="Specify the firmware to upload")
+    
+    # Simulate TODO convert to compiled sim
     action.add_parser("gatesim",help="Run a gate simulation of the board")
     return parser
 
@@ -34,6 +46,14 @@ def as_main(args=None):
             sys.exit(1)
 
     if args.action == "init":
-        from .boards import _select_board as b
-        print(b.short_list())
+        from .boards._select_board import interactive,check_board
+        if args.board:
+            check_board(args.board) 
+        else:
+            interactive()
         
+    if args.action == "console": raise SporkError()
+    if args.action == "list": raise SporkError()
+    if args.action == "build": raise SporkError()
+    if args.action == "program": raise SporkError()
+    if args.action == "gatesim": raise SporkError()

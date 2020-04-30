@@ -4,6 +4,7 @@
 import os, importlib
 
 from jinja2 import Environment, FileSystemLoader
+import time,pathlib
 
 # Board listings
 def extract_boards():
@@ -29,6 +30,11 @@ def extract_boards():
             name_dict[j] = b
     return name_dict
 
+def get_board(name):
+    " get board by name"
+    boards = extract_boards()
+    if name in boards:
+        return (name,boards[name])
 
 def board_info(board):
     "get board information for templating"
@@ -42,26 +48,86 @@ def board_info(board):
 def short_list():
     " return a list of the board names"
     boards = extract_boards()
-    return boards.keys()
+    return list(boards.keys())
+
+# Interactive 
+prolog = """
+----------------------------------------------------------------------------------
+                                       SPORK!
+
+By Answering the following questions ideal_spork will generate files to for nmigen
+
+----------------------------------------------------------------------------------
+"""
+
+def select_board():
+    boards = short_list()
+    count = len(boards)
+    val = 0
+    while True:
+        print("Please select a board")
+        print()
+        for i, j in enumerate(boards):
+            print(i,":",j)
+        print()
+        val = input('Select from '+str(count)+' boards >')
+        try:
+            val = int(val)
+        except:
+            print('Not a number')
+            continue
+        if val > count:
+            print("Selection out of range")
+            continue
+        break
+    return boards[val]
+        
+def interactive():
+    print(prolog)
+    print()
+    board = select_board()
+    board_list = extract_boards()
+    if board in board_list:
+        current_board = (board,board_list[board])
+        current_board_info = board_info(current_board) 
+    else:
+        print("Board does not exist")
+        return
+    print(board," selected, generating")
+    gen_templates(current_board_info) 
+    
+def check_board(name):
+    boards = extract_boards()
+    if name in boards:
+        info = board_info(get_board(name))
+        gen_templates(info)
+    else:
+        print("Board does not exist, Select from:")
+        boards = short_list()
+        for board in boards:
+            print(board)
 
 #Templating
 
 def gen_templates(board_list):
     " with a list of boards generate templates"
+    print('generating templates')
+    path = pathlib.Path(__file__).parent.absolute()
     env = Environment(
-        loader=FileSystemLoader('templates')
+        loader=FileSystemLoader(str(path)+os.sep+'templates')
     )
-    print(env.loader.list_templates())
     templates = env.loader.list_templates()
-    for i in templates:
-        print(i)
-        tmpl =  env.get_template(i)
-        print(board_list)
-        render = tmpl.render(board_list)
-        print(render)
+    for t in templates:
+        print('processing ',t) 
+        if t.endswith('tmpl'):
+            tmpl =  env.get_template(t)
+            render = tmpl.render(board_list,creation_time=time.ctime())
+            print(render)
+        print()
 
 if __name__ == "__main__":
     boards = extract_boards()
     for board in boards.items():
         info = board_info(board)
-    gen_templates(info)
+    #gen_templates(info)
+    interactive()
