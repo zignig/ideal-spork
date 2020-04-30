@@ -4,6 +4,7 @@ from ..cores.periph import Peripheral, Register
 
 __all__ = ["LedPeripheral"]
 
+
 @Register(driver="led")
 class LedPeripheral(Peripheral, Elaboratable):
     """Led peripheral.

@@ -28,7 +28,6 @@ class ExternalReset(Elaboratable):
         with m.If(enable == 1):
             m.d.sync += counter.eq(counter + 1)
 
-
         with m.FSM() as fsm:
             with m.State("INIT"):
                 # get the current pin state

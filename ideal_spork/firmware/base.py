@@ -99,7 +99,10 @@ class WindowFull(RegError):
 class BadParamCount(RegError):
     pass
 
-class FWError(Exception): pass
+
+class FWError(Exception):
+    pass
+
 
 class Rem:
     " for adding remarks in code "
@@ -284,7 +287,7 @@ class SubR(metaclass=MetaSub):
 
     _called = False
 
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
         self.w = Window()
         # return registers to upper window
         self._ret = False
@@ -344,7 +347,7 @@ class SubR(metaclass=MetaSub):
                         raise ValueError("To many returns")
                     for i, j in enumerate(vals):
                         source = self.w[self.ret[i]]
-                        instr += [Rem(self.ret[i]),Rem(self.ret[i])]
+                        instr += [Rem(self.ret[i]), Rem(self.ret[i])]
                         instr += [LD(j, self.w.fp, -8 + source.value)]
                 else:
                     source = vals
@@ -389,7 +392,7 @@ class Firmware:
     def __init__(self, reg=None, start_window=512):
         self.w = Window()
         self.sw = start_window
-        self.reg = reg 
+        self.reg = reg
         # attach the io_map to all the subroutines
         SubR.reg = self.reg
 

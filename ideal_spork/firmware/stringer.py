@@ -1,3 +1,3 @@
 # define a stringer build
 
-# 
+#

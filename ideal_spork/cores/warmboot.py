@@ -1,5 +1,6 @@
 from nmigen import *
 
+
 class warmboot(Elaboratable):
     def __init__(self):
         self.image = Signal(2, reset=1)
@@ -23,4 +24,3 @@ class warmboot(Elaboratable):
             boot_internal.eq(Mux(self.select, self.ext_boot, self.boot)),
         ]
         return m
-
