@@ -8,7 +8,7 @@ from ideal_spork.peripheral.serial import AsyncSerialPeripheral
 from ideal_spork.peripheral.timer import TimerPeripheral
 from ideal_spork.peripheral.leds import LedPeripheral
 from ideal_spork.peripheral.kermit_crc import KermitCRC
-from ideal_spork.peripheral.warmboot import WarmBoot
+from ideal_spork.peripheral.warmboot import WarmBoot 
 
 from ideal_spork.cores.ext_reset import ExternalReset
 
@@ -24,13 +24,12 @@ import crcmod.predefined
 
 crc_16_kermit = crcmod.predefined.mkPredefinedCrcFun("kermit")
 
-
 class TestSpork(Elaboratable):
     def __init__(self, platform, uart_speed=9600, mem_size=512, firmware=None):
         self.cpu = cpu = BonelessSpork(firmware=firmware, mem_size=mem_size)
 
         uart = platform.request("uart")
-        uart_divisor = int(platform.default_clk_frequency // uart_speed)
+        uart_divisor = int(platform.default_clk_frequency // uart_speed )
         self.divisor = uart_divisor
 
         serial = AsyncSerialPeripheral(pins=uart, divisor=uart_divisor)
@@ -51,13 +50,13 @@ class TestSpork(Elaboratable):
 
         # build the register map
         cpu.build()
-
+        
         # add the external interface for the warmboot
         # runs off the DTR pin of the FTDI
-        dtr = platform.request("reset_pin")
+        dtr = platform.request('reset_pin')
         # the warmboot instance
         wb = warm.warm
-        self.er = ExternalReset(wb.select, wb.ext_image, wb.ext_boot, dtr)
+        self.er = ExternalReset(wb.select,wb.ext_image,wb.ext_boot,dtr)
 
     def elaborate(self, platform):
         m = Module()
@@ -82,7 +81,7 @@ if __name__ == "__main__":
         ]
     )
     # Spork it up
-    spork = TestSpork(platform, uart_speed=115200)
+    spork = TestSpork(platform,uart_speed=115200)
     # Build the firmware
     print(spork.cpu.map)
     f = Echo(spork.cpu.map)
@@ -98,8 +97,8 @@ if __name__ == "__main__":
     data = str_data(st)
     dut = spork.cpu.pc.devices[0]._phy
     dut.divisor_val = spork.divisor
-    # with pysim.Simulator(spork, vcd_file=open("view_spork.vcd", "w")) as sim:
+    #with pysim.Simulator(spork, vcd_file=open("view_spork.vcd", "w")) as sim:
     #    sim.add_clock(16e-6)
     #    sim.add_sync_process(test_rx(data, dut))
     #    sim.run_until(10000, run_passive=True)
-    platform.build(spork, do_program=True)
+    platform.build(spork,do_program=True)

@@ -2,6 +2,10 @@
 import sys, os
 import argparse
 
+import logging
+from .logger import logger
+log = logger(__name__)
+
 description = "spork is a nmigen board build helper"
 epilog = """
     ideal_spork is a nmigen_board builder\n
@@ -20,13 +24,16 @@ def as_options(parser):
 
     # Create a new SPORK
     init_action = action.add_parser("init", help="Create files for a  new board")
+    init_action = action.add_parser("init", help="Create files for a  new board")
     init_action.add_argument("-b", "--board", help="Specify the board to generate")
     init_action.add_argument("-f", "--force", help="Force board creation")
 
     # Unbound
     action.add_parser("console", help="Attach to a new console")
-    action.add_parser("list", help="List available boards")
     action.add_parser("build", help="Build gateware and program onto the board")
+
+    # List boards and active peripherals
+    action.add_parser("list", help="List available boards")
 
     # Push a firmware
     init_program = action.add_parser(
@@ -42,7 +49,9 @@ def as_options(parser):
 def as_main(args=None):
     if args is None:
         parser = argparse.ArgumentParser(description=description, epilog=epilog)
+        parser.add_argument("-v", "--verbose", help="Logging Level",action="store_true")
         args = as_options(parser).parse_args()
+
     if len(sys.argv) == 1:
         # Check for the .spork file
         try:
@@ -51,6 +60,9 @@ def as_main(args=None):
         except FileNotFoundError:
             parser.print_help(sys.stderr)
             sys.exit(1)
+
+    if args.verbose:
+        log.setLevel(logging.DEBUG) 
 
     if args.action == "init":
         from .boards._select_board import interactive, check_board
@@ -62,11 +74,16 @@ def as_main(args=None):
 
     if args.action == "console":
         raise SporkError()
+
     if args.action == "list":
         raise SporkError()
+        
     if args.action == "build":
         raise SporkError()
+
     if args.action == "program":
         raise SporkError()
+
     if args.action == "gatesim":
         raise SporkError()
+

@@ -4,9 +4,9 @@
 from nmigen import *
 from {{module}} import {{name}}
 
-class {{item_name}}(Elaboratable):
-    def __init__(self):
-        pass
+class {{class_name}}(Elaboratable):
+    def __init__(self,platform):
+        pass 
 
     def elaborate(self,platform):
         m = Module()
@@ -15,5 +15,5 @@ class {{item_name}}(Elaboratable):
 
 if __name__ == "__main__":
     platform = {{name}}()
-    dut = {{item_name}}()
+    dut = {{class_name}}(platform)
     plaform.build(dut,do_program=True)
