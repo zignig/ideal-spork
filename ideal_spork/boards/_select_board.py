@@ -7,6 +7,7 @@ from jinja2 import Environment, FileSystemLoader
 import time, pathlib
 
 from ..logger import logger
+
 log = logger(__name__)
 
 # Board listings
@@ -22,7 +23,7 @@ def extract_boards():
         if name.endswith(".py"):
             short_name = name.split(".")[0]
             if short_name != "__init__":
-                log.debug("Found board %s",name)
+                log.debug("Found board %s", name)
                 board_files.append(short_name)
     name_dict = {}
     # get the platform names
@@ -92,9 +93,11 @@ def select_board():
         break
     return boards[val]
 
+
 def get_name(prompt):
     val = input(prompt)
-    return val 
+    return val
+
 
 def interactive():
     print(prolog)
@@ -107,8 +110,8 @@ def interactive():
     else:
         print("Board does not exist")
         return
-    name = get_name('Class Name >')
-    gen_templates(current_board_info,name)
+    name = get_name("Class Name >")
+    gen_templates(current_board_info, name)
 
 
 def check_board(name):
@@ -126,17 +129,19 @@ def check_board(name):
 # Templating
 
 
-def gen_templates(board_list,class_name="MySpork"):
+def gen_templates(board_list, class_name="MySpork"):
     " with a list of boards generate templates"
     log.info("Generating templated files")
     path = pathlib.Path(__file__).parent.absolute()
     env = Environment(loader=FileSystemLoader(str(path) + os.sep + "templates"))
     templates = env.loader.list_templates()
     for t in templates:
-        log.debug("rendering template %s",t)
+        log.debug("rendering template %s", t)
         if t.endswith("tmpl"):
             tmpl = env.get_template(t)
-            render = tmpl.render(board_list, creation_time=time.ctime(),class_name=class_name)
+            render = tmpl.render(
+                board_list, creation_time=time.ctime(), class_name=class_name
+            )
             print(render)
         print()
 
