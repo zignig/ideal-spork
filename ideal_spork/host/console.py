@@ -5,12 +5,13 @@ from ..logger import logger
 log = logger(__name__)
 
 import serial
+import time
 
 # refer to https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
 
 
 class Console:
-    def __init__(self, spork, timeout=0.5):
+    def __init__(self, spork, timeout=0.02):
         log.debug("Create console")
         self.spork = spork
         self.serial_port = spork.serial_port
@@ -30,10 +31,12 @@ class Console:
         log.critical("Unfinished")
         with port as p:
             while True:
-                p.write("testing".encode("utf-8"))
-                v = p.read(20)
-                print(v)
-                if v != b"testing":
+                time_string = time.ctime()
+                print('out->'+time_string+'<-')
+                p.write(time_string.encode('utf-8'))
+                v = p.read(1000)
+                print('in ->'+v.decode('utf-8')+'<-')
+                if v.decode('utf-8') != time_string:
                     log.critical("No response")
                     return
         # console loop
