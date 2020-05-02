@@ -46,7 +46,9 @@ def as_options(parser):
 
     # add firmware to build image
     init_burn = action.add_parser("burn", help="Add the given firmware to boot image")
-    init_burn.add_argument("program", help="Specify the firmware to upload")
+    init_burn.add_argument(
+        "program", default=None, help="Specify the firmware to upload"
+    )
     init_burn.add_argument(
         "--no-bootloader", help="Do not include the bootloadeor in the image"
     )
@@ -55,9 +57,7 @@ def as_options(parser):
     init_program = action.add_parser(
         "program", help="Upload the given firmware onto the board"
     )
-    init_program.add_argument(
-        "-p", "--program", default=None, help="Specify the firmware to upload"
-    )
+    init_program.add_argument("program", help="Specify the firmware to upload")
 
     # Simulate TODO convert to compiled sim
     action.add_parser("gatesim", help="Run a gate simulation of the board")
@@ -132,6 +132,9 @@ def as_main(args=None):
                 raise SporkError(
                     "No default firmware use -p to specify or add 'firmware: <name>' to the .spork file"
                 )
+        else:
+            log.critical("Run this program, unfinished")
+
         raise SporkError("Program Unfinished")
 
     if args.action == "gatesim":
