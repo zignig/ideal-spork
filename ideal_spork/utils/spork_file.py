@@ -9,7 +9,6 @@ log = logger(__name__)
 
 def load_spork(file_name):
     data = yaml.load(open(file_name).read())
-    log.critical(data)
     the_spork = ASpork(data)
     return the_spork
 

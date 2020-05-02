@@ -94,8 +94,10 @@ def select_board():
     return boards[val]
 
 
-def get_name(prompt):
-    val = input(prompt)
+def get_name(prompt, default):
+    val = input(prompt + " (" + default + ") >")
+    if val == "":
+        val = default
     return val
 
 
@@ -110,7 +112,7 @@ def interactive():
     else:
         print("Board does not exist")
         return
-    name = get_name("Class Name >")
+    name = get_name("Class Name", "MySpork")
     gen_templates(current_board_info, name)
 
 

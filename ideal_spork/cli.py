@@ -27,6 +27,12 @@ def as_options(parser):
     # Create a new SPORK
     init_action = action.add_parser("init", help="Create files for a  new board")
     init_action.add_argument("-b", "--board", help="Specify the board to generate")
+    init_action.add_argument(
+        "-n",
+        "--name",
+        default="MySpork",
+        help="Specify the name of the class to generate",
+    )
     init_action.add_argument("-f", "--force", help="Force board creation")
 
     # Unbound
@@ -58,6 +64,9 @@ def as_main(args=None):
         parser.add_argument(
             "-v", "--verbose", help="Logging Level", action="store_true"
         )
+        parser.add_argument(
+            "-d", "--directory", help="Directory for spork file", default="."
+        )
         args = as_options(parser).parse_args()
 
     # Turn on verbosity
@@ -86,8 +95,13 @@ def as_main(args=None):
         raise SporkError()
 
     if args.action == "console":
-        print(the_spork)
-        raise SporkError()
+        from .host.console import Console
+
+        console = Console(the_spork)
+        console.attach()
+
+    if args.action == "burn":
+        raise SporkError("Burn not working yet")
 
     if args.action == "list":
         raise SporkError()
