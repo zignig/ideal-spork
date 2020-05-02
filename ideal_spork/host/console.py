@@ -11,16 +11,15 @@ import serial
 
 class Console:
     def __init__(self, spork, timeout=0.5):
-        log.info("Create console")
-        log.critical("Unfinished")
+        log.debug("Create console")
         self.spork = spork
         self.serial_port = spork.serial_port
         self.serial_speed = spork.serial_speed
         self.timeout = timeout
 
     def attach(self):
-        log.info("Serial port: %s", self.serial_port)
-        log.info("Serial speed: %s", self.serial_speed)
+        log.debug("Serial port: %s", self.serial_port)
+        log.debug("Serial speed: %s", self.serial_speed)
         try:
             port = serial.Serial(
                 self.serial_port, self.serial_speed, timeout=self.timeout
@@ -28,9 +27,13 @@ class Console:
         except:
             log.critical("Serial port %s does not exist", self.serial_port)
             return
+        log.critical("Unfinished")
         with port as p:
             while True:
                 p.write("testing".encode("utf-8"))
                 v = p.read(20)
                 print(v)
+                if v != b"testing":
+                    log.critical("No response")
+                    return
         # console loop

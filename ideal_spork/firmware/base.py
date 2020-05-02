@@ -7,7 +7,20 @@ from ..cores.periph.bus import RegMap
 
 from boneless.arch.asm import Assembler
 
-__all__ = ["LocalLabels", "SubR", "Window", "MetaSub", "Firmware", "Rem", "Block"]
+from ..logger import logger
+
+log = logger(__name__)
+
+__all__ = [
+    "LocalLabels",
+    "SubR",
+    "Window",
+    "MetaSub",
+    "Firmware",
+    "Rem",
+    "Block",
+    "CodeObject",
+]
 
 """
 ideas
@@ -101,6 +114,10 @@ class BadParamCount(RegError):
 
 
 class FWError(Exception):
+    pass
+
+
+class CodeObject:
     pass
 
 
@@ -395,22 +412,50 @@ class Firmware:
         self.reg = reg
         # attach the io_map to all the subroutines
         SubR.reg = self.reg
+        # code objects
+        self.obj = []
+
+    def attach(self, obj):
+        " attach acode object"
+        if not isinstance(obj, CodeObject):
+            log.critical("%s is not a code object", obj)
+            raise FWError("Bad object")
+        self.obj.append(obj)
+
+    def add_objects(self):
+        if len(self.obj) > 0:
+            code = [Rem("Code Objects")]
+            for obj in self.obj:
+                code.append(obj.code())
+            print(code)
+            return code
+        return []
+
+    def setup(self):
+        raise FWError("No setup function")
+
+    def prelude(self):
+        log.warning("No prelude(), use to setup code")
+        return []
 
     def instr(self):
         return []
 
     def code(self):
         w = self.w = Window()
+        self.setup()
         fw = [
             Rem("Firmware Object"),
             Rem(self.w._name),
             L("init"),
             MOVI(w.fp, self.sw),
             LDW(w.fp, 0),
+            self.prelude(),
             # SUBI(w.fp,w.fp,8),
             L("main"),
             self.instr(),
             J("main"),
+            self.add_objects(),
             L("lib_code"),
             MetaSub.code(),
             L("program_start"),
@@ -425,6 +470,14 @@ class Firmware:
         a.parse(self.code())
         code = a.assemble()
         return code
+
+    def hex(self):
+        asm = self.assemble()
+        full_hex = ""
+        for i in asm:
+            hex_string = "{:04X}".format(i)
+            full_hex += hex_string
+        return full_hex
 
     def disassemble(self):
         c = self.assemble()

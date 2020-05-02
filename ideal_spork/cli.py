@@ -39,6 +39,7 @@ def as_options(parser):
     action.add_parser("info", help="Get information from the base board")
     action.add_parser("console", help="Attach to a new console")
     action.add_parser("build", help="Build gateware and program onto the board")
+    action.add_parser("status", help="Get the status of the current spork")
 
     # List boards and active peripherals
     action.add_parser("list", help="List available boards")
@@ -46,12 +47,17 @@ def as_options(parser):
     # add firmware to build image
     init_burn = action.add_parser("burn", help="Add the given firmware to boot image")
     init_burn.add_argument("program", help="Specify the firmware to upload")
+    init_burn.add_argument(
+        "--no-bootloader", help="Do not include the bootloadeor in the image"
+    )
 
     # Push a firmware
     init_program = action.add_parser(
         "program", help="Upload the given firmware onto the board"
     )
-    init_program.add_argument("program", help="Specify the firmware to upload")
+    init_program.add_argument(
+        "-p", "--program", default=None, help="Specify the firmware to upload"
+    )
 
     # Simulate TODO convert to compiled sim
     action.add_parser("gatesim", help="Run a gate simulation of the board")
@@ -79,9 +85,11 @@ def as_main(args=None):
         log.debug("spork file exists")
         the_spork = load_spork(".spork")
     except FileNotFoundError:
-        if len(sys.argv) == 1:
-            parser.print_help(sys.stderr)
-            sys.exit(1)
+        print("No spork file")
+
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
 
     if args.action == "init":
         from .boards._select_board import interactive, check_board
@@ -92,25 +100,39 @@ def as_main(args=None):
             interactive()
 
     if args.action == "info":
-        raise SporkError()
+        raise SporkError(
+            "SHOULD build and show info and get construnct info and issues"
+        )
 
     if args.action == "console":
         from .host.console import Console
 
         console = Console(the_spork)
+        # Currently does echo test
         console.attach()
 
     if args.action == "burn":
+        # Add the firmware onto the boot system
         raise SporkError("Burn not working yet")
 
+    if args.action == "status":
+        raise SporkError("Status not working yet, get board status")
+
     if args.action == "list":
-        raise SporkError()
+        raise SporkError("List the working boards")
 
     if args.action == "build":
-        raise SporkError()
+        raise SporkError("Build unfinished: make gateware and upload")
 
     if args.action == "program":
-        raise SporkError()
+        if args.program == None:
+            if hasattr(the_spork, "firmware"):
+                print(the_spork.firmware)
+            else:
+                raise SporkError(
+                    "No default firmware use -p to specify or add 'firmware: <name>' to the .spork file"
+                )
+        raise SporkError("Program Unfinished")
 
     if args.action == "gatesim":
-        raise SporkError()
+        raise SporkError("BORK! : gatesim in pysim or ctxxx")

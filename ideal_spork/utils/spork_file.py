@@ -15,6 +15,8 @@ def load_spork(file_name):
 
 class ASpork:
     def __init__(self, attr):
+        self._base = {}
+
         self.data = attr.keys()
         log.info("Spork file entries %s", attr)
         for i in attr:
