@@ -32,11 +32,11 @@ class Console:
         with port as p:
             while True:
                 time_string = time.ctime()
-                print('out->'+time_string+'<-')
-                p.write(time_string.encode('utf-8'))
+                print("out->" + time_string + "<-")
+                p.write(time_string.encode("utf-8"))
                 v = p.read(1000)
-                print('in ->'+v.decode('utf-8')+'<-')
-                if v.decode('utf-8') != time_string:
+                print("in ->" + v.decode("utf-8") + "<-")
+                if v.decode("utf-8") != time_string:
                     log.critical("No response")
                     return
         # console loop
