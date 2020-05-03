@@ -20,6 +20,7 @@ __all__ = [
     "Rem",
     "Block",
     "CodeObject",
+    "MetaObj",
 ]
 
 """
@@ -117,8 +118,43 @@ class FWError(Exception):
     pass
 
 
-class CodeObject:
-    pass
+class MetaObj(type):
+    code_object = []
+    """
+    Meta Obj is a dclass for collecting all the code objects together
+    program
+    """
+
+    #    def __new__(cls, clsname, bases, attrs):
+    #        newclass = super(MetaObj, cls).__new__(cls, clsname, bases, attrs)
+    #        cls.register(newclass)  # here is your register function
+    #        return newclass
+
+    def __call__(self, *args, **kw):
+        obj = super(MetaObj, self).__call__(*args, *kw)
+        self.register(obj)
+        return obj
+
+    def register(self, cls):
+        d = MetaObj.code_object
+        if cls not in d:
+            d.append(cls)
+
+    @classmethod
+    def code(cls):
+        li = MetaObj.code_object
+        # loop through and add code objs to the list
+        c = []
+        for i in li:
+            if i._used:
+                c.append(i.code())
+        return c
+
+
+class CodeObject(metaclass=MetaObj):
+    def __init__(self):
+        self._prefix = "{}_".format(random.randrange(2 ** 16))
+        self._used = False
 
 
 class Rem:
@@ -364,7 +400,7 @@ class SubR(metaclass=MetaSub):
                         raise ValueError("To many returns")
                     for i, j in enumerate(vals):
                         source = self.w[self.ret[i]]
-                        instr += [Rem(self.ret[i]), Rem(self.ret[i])]
+                        instr += [Rem("Return " + self.ret[i])]
                         instr += [LD(j, self.w.fp, -8 + source.value)]
                 else:
                     source = vals
@@ -417,22 +453,6 @@ class Firmware:
         # code objects
         self.obj = []
 
-    def attach(self, obj):
-        " attach acode object"
-        if not isinstance(obj, CodeObject):
-            log.critical("%s is not a code object", obj)
-            raise FWError("Bad object")
-        self.obj.append(obj)
-
-    def add_objects(self):
-        if len(self.obj) > 0:
-            code = [Rem("--- Code Objects ---")]
-            for obj in self.obj:
-                code.append(obj.code())
-            print(code)
-            return code
-        return []
-
     def setup(self):
         raise FWError("No setup function")
 
@@ -457,7 +477,7 @@ class Firmware:
             L("main"),
             self.instr(),
             J("main"),
-            self.add_objects(),
+            MetaObj.code(),
             L("lib_code"),
             MetaSub.code(),
             L("program_start"),
