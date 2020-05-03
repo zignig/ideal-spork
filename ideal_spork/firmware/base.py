@@ -447,17 +447,18 @@ class Firmware:
     def code(self):
         if not self._built:
             w = self.w = Window()
+            ll = LocalLabels()
             self.setup()
             fw = [
                 Rem("--- Firmware Object ---"),
                 Rem(self.w._name),
-                L("init"),
+                ll("init"),
                 MOVI(w.fp, self.sw),
                 LDW(w.fp, 0),
                 self.prelude(),
-                L("main"),
+                ll("main"),
                 self.instr(),
-                J("main"),
+                J(ll.main),
                 Rem("--- Library Code ---"),
                 MetaSub.code(),
                 Rem("--- Data Objects ---"),
