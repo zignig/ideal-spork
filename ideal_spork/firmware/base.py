@@ -2,6 +2,7 @@
 from collections import OrderedDict
 import random
 import pprint
+import weakref
 
 from ..cores.periph.bus import RegMap
 
@@ -20,7 +21,6 @@ __all__ = [
     "Rem",
     "Block",
     "CodeObject",
-    "MetaObj",
 ]
 
 """
@@ -118,43 +118,24 @@ class FWError(Exception):
     pass
 
 
-class MetaObj(type):
-    code_object = []
-    """
-    Meta Obj is a dclass for collecting all the code objects together
-    program
-    """
+import traceback
 
-    #    def __new__(cls, clsname, bases, attrs):
-    #        newclass = super(MetaObj, cls).__new__(cls, clsname, bases, attrs)
-    #        cls.register(newclass)  # here is your register function
-    #        return newclass
 
-    def __call__(self, *args, **kw):
-        obj = super(MetaObj, self).__call__(*args, *kw)
-        self.register(obj)
-        return obj
+class CodeObject:
+    _objects = []
 
-    def register(self, cls):
-        d = MetaObj.code_object
-        if cls not in d:
-            d.append(cls)
+    def __init__(self):
+        CodeObject._objects.append(self)
+        object.__setattr__(self, "_prefix", "{}_".format(random.randrange(2 ** 16)))
 
     @classmethod
-    def code(cls):
-        li = MetaObj.code_object
-        # loop through and add code objs to the list
-        c = []
-        for i in li:
-            if i._used:
-                c.append(i.code())
-        return c
-
-
-class CodeObject(metaclass=MetaObj):
-    def __init__(self):
-        self._prefix = "{}_".format(random.randrange(2 ** 16))
-        self._used = False
+    def get_code(cls):
+        l = []
+        for i in cls._objects:
+            log.critical(i)
+            if i._used == True:
+                l.append(i.code())
+        return l
 
 
 class Rem:
@@ -430,10 +411,9 @@ class SubR(metaclass=MetaSub):
         if self.debug:
             data += [Rem(self.w._name)]
         data += [ADJW(-8)]  # window shift up
-        data += [LDW(self.w.fp, 0)]  # window shift up
-        # data += [LDW(self.w.fp,-8)]  # window shift up
+        data += [LDW(self.w.fp, 0)]  # save window
         data += self.instr()
-        data += [ADJW(8), JR(R7, 0)]
+        data += [ADJW(8), JR(R7, 0)]  # shift window down
         return [data]
 
 
@@ -452,6 +432,8 @@ class Firmware:
         SubR.reg = self.reg
         # code objects
         self.obj = []
+        self._built = False
+        self.fw = None
 
     def setup(self):
         raise FWError("No setup function")
@@ -464,24 +446,29 @@ class Firmware:
         return []
 
     def code(self):
-        w = self.w = Window()
-        self.setup()
-        fw = [
-            Rem("--- Firmware Object ---"),
-            Rem(self.w._name),
-            L("init"),
-            MOVI(w.fp, self.sw),
-            LDW(w.fp, 0),
-            self.prelude(),
-            # SUBI(w.fp,w.fp,8),
-            L("main"),
-            self.instr(),
-            J("main"),
-            MetaObj.code(),
-            L("lib_code"),
-            MetaSub.code(),
-            L("program_start"),
-        ]
+        if not self._built:
+            w = self.w = Window()
+            self.setup()
+            fw = [
+                Rem("--- Firmware Object ---"),
+                Rem(self.w._name),
+                L("init"),
+                MOVI(w.fp, self.sw),
+                LDW(w.fp, 0),
+                self.prelude(),
+                L("main"),
+                self.instr(),
+                J("main"),
+                Rem("--- Library Code ---"),
+                MetaSub.code(),
+                Rem("--- Data Objects ---"),
+                CodeObject.get_code(),
+                L("program_start"),
+            ]
+            self._built = True
+            self.fw = fw
+        else:
+            fw = self.fw
         return fw
 
     def show(self):

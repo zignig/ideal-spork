@@ -31,7 +31,6 @@ class BonelessSpork(Elaboratable):
         self.pc = PeripheralCollection()
         self.bus = self.pc.bus._bus
         self.map = self.pc.map
-
         self._built = False
 
     def add_peripheral(self, periph):
@@ -48,6 +47,7 @@ class BonelessSpork(Elaboratable):
         if fw is None:
             raise BuildException("No firmware")
         fw = Instr.assemble(fw)
+        self.fw = fw
         if len(fw) > self.mem_size - 8:
             raise BuildException("Firmware too long")
         self.memory.init = fw
