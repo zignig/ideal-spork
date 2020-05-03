@@ -18,10 +18,10 @@ class RegMap:
 
     def _add_sub(self, name_list, value):
         front = name_list.pop(0)
-        log.critical(name_list)
+        log.debug(name_list)
         if len(name_list) == 0:
-            log.critical("last")
             setattr(self, front, value)
+            self._children[front] = value
         else:
             if front not in self._children:
                 sub_reg = RegMap()
@@ -31,6 +31,16 @@ class RegMap:
             else:
                 sub_reg = self._children[front]
                 sub_reg._add_sub(name_list, value)
+
+    def show(self, leader=[]):
+        for i in self._children:
+            leader.append(i)
+            lower = self._children[i]
+            if isinstance(lower, RegMap):
+                lower.show(leader)
+            elif isinstance(lower, int):
+                print(".".join(leader), lower)
+            leader.pop()
 
 
 class PeripheralCollection(Elaboratable):
@@ -64,14 +74,12 @@ class PeripheralCollection(Elaboratable):
             # map all the CSR devices
             for i, (start, end, width) in self.mem.all_resources():
                 length = end - start
-                log.critical(i.name.split("_"))
                 if length > 1:
                     for j in range(length):
                         split_name = i.name.split("_")
                         last = split_name.pop()
                         last += "_" + str(j)
                         split_name.append(last)
-                        log.critical("split name %s", split_name)
                         self.map._add_sub(split_name, start + j)
                 else:
                     self.map._add_sub(i.name.split("_"), start)
