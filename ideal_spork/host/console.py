@@ -11,7 +11,7 @@ import time
 
 
 class Console:
-    def __init__(self, spork, timeout=0.02):
+    def __init__(self, spork, timeout=0.5):  # timeout=0.02):
         log.debug("Create console")
         self.spork = spork
         self.serial_port = spork.serial_port

@@ -389,6 +389,8 @@ class SubR(metaclass=MetaSub):
 
     def code(self):
         data = [L(self.name)]
+        if self.__doc__ is not None:
+            data.append(Rem(self.__doc__))
         if self.debug:
             data += [Rem(self.w._name)]
         data += [ADJW(-8)]  # window shift up
@@ -424,7 +426,7 @@ class Firmware:
 
     def add_objects(self):
         if len(self.obj) > 0:
-            code = [Rem("Code Objects")]
+            code = [Rem("--- Code Objects ---")]
             for obj in self.obj:
                 code.append(obj.code())
             print(code)
@@ -445,7 +447,7 @@ class Firmware:
         w = self.w = Window()
         self.setup()
         fw = [
-            Rem("Firmware Object"),
+            Rem("--- Firmware Object ---"),
             Rem(self.w._name),
             L("init"),
             MOVI(w.fp, self.sw),

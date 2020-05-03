@@ -6,7 +6,8 @@ log = logger(__name__)
 
 
 class Uploader:
-    def __init__(self, firmware):
+    def __init__(self, construct, firmware):
+        self.construct = construct
         self.firmware = firmware
         log.critical("Unfinished")
 
