@@ -56,7 +56,7 @@ class TimerPeripheral(Peripheral, Elaboratable):
         self._en = bank.csr(1, "rw")
         self._ctr = bank.csr(width, "rw")
 
-        self._zero_ev = self.event(mode="rise")
+        self.zero_ev = self.event(mode="rise")
 
     def elaborate(self, platform):
         m = Module()

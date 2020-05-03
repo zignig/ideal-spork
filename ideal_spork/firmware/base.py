@@ -132,7 +132,6 @@ class CodeObject:
     def get_code(cls):
         l = []
         for i in cls._objects:
-            log.critical(i)
             if i._used == True:
                 l.append(i.code())
         return l
