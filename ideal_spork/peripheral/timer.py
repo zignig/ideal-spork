@@ -2,6 +2,9 @@ from nmigen import *
 
 from ..cores.periph.base import Peripheral
 
+from ..logger import logger
+
+log = logger(__name__)
 
 __all__ = ["TimerPeripheral"]
 
@@ -39,6 +42,7 @@ class TimerPeripheral(Peripheral, Elaboratable):
     """
 
     def __init__(self, width, name=None):
+        log.info("Create Timer Peripheral")
         super().__init__(name=name)
 
         if not isinstance(width, int) or width < 0:

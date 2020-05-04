@@ -5,7 +5,7 @@ log_level = logging.INFO
 
 def logger(name):
     fomattingter = logging.Formatter(
-        fmt="%(asctime)s - %(name)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s"
+        fmt="%(asctime)s - %(levelname)s - %(name)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s"
     )
     # fomattingter = logging.Formatter( fmt="%(asctime)s - %(levelname)s %(name)s.%(funcName)s - %(message)s")
 

@@ -5,6 +5,9 @@ from nmigen_stdio.serial import AsyncSerial
 
 from ..cores.periph import Peripheral, Register
 
+from ..logger import logger
+
+log = logger(__name__)
 
 __all__ = ["AsyncSerialPeripheral"]
 
@@ -65,6 +68,7 @@ class AsyncSerialPeripheral(Peripheral, Elaboratable):
     """
 
     def __init__(self, *, rx_depth=16, tx_depth=16, **kwargs):
+        log.info("Create Async UART with %d/%d FIFO", rx_depth, tx_depth)
         super().__init__()
 
         self._phy = AsyncSerial(**kwargs)

@@ -1,6 +1,10 @@
 from nmigen import *
 from . import Peripheral, IRQLine
 
+from ...logger import logger
+
+log = logger(__name__)
+
 
 __all__ = ["InterruptController", "GenericInterruptController"]
 
@@ -9,6 +13,7 @@ class InterruptController(Peripheral):
     """Interrupt controller base class."""
 
     def __init__(self, *args, **kwargs):
+        log.debug("Create Interrupt Controller")
         super().__init__(*args, **kwargs)
         self.__irq_lines = set()
         self.__irq_map = dict()
@@ -101,6 +106,7 @@ class GenericInterruptController(InterruptController, Elaboratable):
     """
 
     def __init__(self, *, width):
+        log.debug("Create Generic Interrupt Controller")
         super().__init__(src_loc_at=2)
         if not isinstance(width, int) or width <= 0:
             raise ValueError(

@@ -10,6 +10,10 @@ from boneless.arch.opcode import *
 
 from ..cores.periph.bus import PeripheralCollection
 
+from ..logger import logger
+
+log = logger(__name__)
+
 
 class BuildException(Exception):
     pass
@@ -17,6 +21,7 @@ class BuildException(Exception):
 
 class BonelessSpork(Elaboratable):
     def __init__(self, firmware=None, mem_size=512):
+        log.info("Create BonelessSpork")
         # create the memory
         self.mem_size = mem_size
         self.memory = Memory(width=16, depth=self.mem_size)
@@ -43,6 +48,7 @@ class BonelessSpork(Elaboratable):
             self._build = True
 
     def firmware(self, fw=None):
+        log.info("Attach firmware")
         # compile and attach the firmware
         if fw is None:
             raise BuildException("No firmware")
@@ -50,6 +56,7 @@ class BonelessSpork(Elaboratable):
         self.fw = fw
         if len(fw) > self.mem_size - 8:
             raise BuildException("Firmware too long")
+        log.info("Firmware is %d words long", len(fw))
         self.memory.init = fw
 
     def elaborate(self, platform):

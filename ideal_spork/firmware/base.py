@@ -424,6 +424,7 @@ class Firmware:
     """
 
     def __init__(self, reg=None, start_window=512):
+        log.info("Create Firmware Object")
         self.w = Window()
         self.sw = start_window
         self.reg = reg

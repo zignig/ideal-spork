@@ -4,6 +4,10 @@ import itertools
 from nmigen.build import Resource, Subsignal, Pins
 from nmigen.build import ResourceError
 
+from ..logger import logger
+
+log = logger(__name__)
+
 # external reset ( used on DTR pin )
 # count the pin toggles within the timeout
 # warm boot based on count
@@ -11,6 +15,7 @@ from nmigen.build import ResourceError
 
 class ExternalReset(Elaboratable):
     def __init__(self, select, image, boot, pin):
+        log.debug("Create External Reset")
         self.select = select
         self.image = image
         self.boot = boot

@@ -1,8 +1,13 @@
 from nmigen import *
 
+from ..logger import logger
+
+log = logger(__name__)
+
 
 class warmboot(Elaboratable):
     def __init__(self):
+        log.debug("Create Warmboot")
         self.image = Signal(2, reset=1)
         self.boot = Signal()
         self.ext_boot = Signal()

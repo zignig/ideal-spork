@@ -3,6 +3,9 @@ from nmigen import tracer
 
 from nmigen_soc import csr
 
+from ...logger import logger
+
+log = logger(__name__)
 
 __all__ = ["EventSource", "IRQLine", "InterruptSource"]
 
@@ -31,6 +34,7 @@ class EventSource:
     """
 
     def __init__(self, *, mode="level", name=None, src_loc_at=0):
+        log.debug("Create Event Source")
         if name is not None and not isinstance(name, str):
             raise TypeError("Name must be a string, not {!r}".format(name))
 
@@ -51,6 +55,7 @@ class IRQLine(Signal):
     """Interrupt request line."""
 
     def __init__(self, *, name=None, src_loc_at=0):
+        log.debug("Create IRQLine")
         super().__init__(name=name, src_loc_at=1 + src_loc_at)
 
     __hash__ = object.__hash__
@@ -90,6 +95,7 @@ class InterruptSource(Elaboratable):
     """
 
     def __init__(self, events, *, name=None, src_loc_at=0):
+        log.debug("Create Interrupt Source")
         if name is not None and not isinstance(name, str):
             raise TypeError("Name must be a string, not {!r}".format(name))
         self.name = name or tracer.get_var_name(depth=2 + src_loc_at)

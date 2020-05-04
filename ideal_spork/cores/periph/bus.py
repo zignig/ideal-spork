@@ -14,6 +14,7 @@ class RegMap:
     # TODO export in various formats
 
     def __init__(self):
+        log.debug("Create Register Map")
         self._children = {}
 
     def _add_sub(self, name_list, value):
@@ -47,6 +48,7 @@ class PeripheralCollection(Elaboratable):
     """ Collection of peripherals to attach to a BonelessCPU """
 
     def __init__(self, addr_width=16, data_width=16):
+        log.debug("Create Peripheral Collection")
         self._decoder = Decoder(addr_width=addr_width, data_width=data_width)
 
         self.data_width = data_width
@@ -63,6 +65,7 @@ class PeripheralCollection(Elaboratable):
 
     def build(self):
         if not self._built:
+            log.debug("Building Peripheral Collection")
             # bind and add the bus if the device does not have one
             for i in self.devices:
                 try:

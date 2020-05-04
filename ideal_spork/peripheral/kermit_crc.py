@@ -4,9 +4,15 @@
 from nmigen import *
 from ..cores.periph import Peripheral, Register
 
+from ..logger import logger
 
+log = logger(__name__)
+
+
+@Register(provides="crc16")
 class KermitCRC(Peripheral, Elaboratable):
     def __init__(self):
+        log.info("Create Kermit CRC device")
         super().__init__()
         bank = self.csr_bank()
         # reset engine and set CRC to 0

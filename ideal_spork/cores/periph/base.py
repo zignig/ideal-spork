@@ -77,6 +77,7 @@ class Peripheral:
     """
 
     def __init__(self, name=None, src_loc_at=1):
+        log.debug("Create Peripheral")
         if name is not None and not isinstance(name, str):
             raise TypeError("Name must be a string, not {!r}".format(name))
         self.name = name or tracer.get_var_name(depth=2 + src_loc_at).lstrip("_")
@@ -269,6 +270,7 @@ class CSRBank:
     """
 
     def __init__(self, *, name_prefix=""):
+        log.debug("Create CSRBank")
         self._name_prefix = name_prefix
         self._csr_regs = []
 
@@ -345,6 +347,7 @@ class PeripheralBridge(Elaboratable):
     """
 
     def __init__(self, periph, *, data_width, granularity, features, alignment):
+        log.debug("Create PeripheralBrige")
         if not isinstance(periph, Peripheral):
             raise TypeError(
                 "Peripheral must be an instance of Peripheral, not {!r}".format(periph)

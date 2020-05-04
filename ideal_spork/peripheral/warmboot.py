@@ -4,10 +4,15 @@ from ..cores.periph import Peripheral, Register
 
 from ..cores.warmboot import warmboot
 
+from ..logger import logger
+
+log = logger(__name__)
+
 
 @Register(platform="ice40")
 class WarmBoot(Peripheral, Elaboratable):
     def __init__(self):
+        log.info("Create Warmboot Peripheral")
         super().__init__()
         bank = self.csr_bank()
         self._image = bank.csr(2, "w")

@@ -11,14 +11,17 @@ from ..logger import logger
 log = logger(__name__)
 
 _boards_built = False
-
+_boards = None
 # Board listings
 
 
 def extract_boards():
     "get a list of all the nmigen_boards"
 
-    global _boards_built
+    global _boards_built, _boards
+
+    if _boards_built:
+        return _boards
 
     import nmigen_boards
 
@@ -33,9 +36,9 @@ def extract_boards():
             if short_name != "__init__":
                 if not _boards_built:
                     log.debug("Found board %s", name)
-                    _boards_built = True
                 board_files.append(short_name)
 
+    _boards_built = True
     name_dict = {}
     # get the platform names
     for i in board_files:
@@ -44,6 +47,7 @@ def extract_boards():
         for j in platforms:
             b = board.__dict__[j]
             name_dict[j] = b
+    _boards = name_dict
     return name_dict
 
 
