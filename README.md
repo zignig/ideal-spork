@@ -99,3 +99,13 @@ This is generated from [nmigen_boards](https://github.com/nmigen/nmigen-boards)
 ```
 
 All comments and patches welcome.
+
+# TODO
+
+- [ ] Galactic Domination
+- [ ] Working bootloader
+- [ ] Device drivers
+- [ ] Auto board build
+- [ ] All spork tools
+
+
