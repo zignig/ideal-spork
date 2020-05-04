@@ -119,7 +119,13 @@ def as_main(args=None):
         raise SporkError("Status not working yet, get board status")
 
     if args.action == "list":
-        raise SporkError("List the working boards")
+        from .boards._select_board import short_list
+
+        print(" Available Boards ")
+        print()
+        for num, board in enumerate(short_list()):
+            print("{:>4}  {}".format(num, board))
+        print()
 
     if args.action == "build":
         raise SporkError("Build unfinished: make gateware and upload")

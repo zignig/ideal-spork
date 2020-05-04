@@ -8,7 +8,7 @@ Ideal spork is a [nmigen](https://github.com/nmigen/) nmigen board builder and [
 
 Clone this repository
 ```
-> git clone (https://github.com/zignig/ideal-spork.git)
+> git clone https://github.com/zignig/ideal-spork.git
 > cd ideal-spork
 > python setup.py develop --user
 ```
