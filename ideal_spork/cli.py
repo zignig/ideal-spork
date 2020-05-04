@@ -92,7 +92,7 @@ def as_main(args=None):
         sys.exit(1)
 
     if args.action == "init":
-        from .boards._select_board import interactive, check_board
+        from .builder.select_board import interactive, check_board
 
         if args.board:
             check_board(args.board)
@@ -117,7 +117,7 @@ def as_main(args=None):
         raise SporkError("Status not working yet, get board status")
 
     if args.action == "list":
-        from .boards._select_board import short_list
+        from .builder.select_board import short_list
 
         print(" Available Boards ")
         print()

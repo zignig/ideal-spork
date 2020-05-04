@@ -1,4 +1,5 @@
-from .boards import *
+" Module level main"
+from .boards._select_board import interactive
 
 print("Ideal Spork")
-print("check for .spork file and offer to build a board")
+interactive()

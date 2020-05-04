@@ -144,8 +144,8 @@ def check_board(name):
     else:
         print("Board does not exist, Select from:")
         boards = short_list()
-        for board in boards:
-            print(board)
+        for num, board in enumerate(boards):
+            print("{:>4}  {}".format(num, board))
 
 
 # Templating
@@ -159,7 +159,7 @@ def gen_templates(board_list, class_name="MySpork"):
     templates = env.loader.list_templates()
     cpu = ""
     for t in templates:
-        log.debug("rendering template %s", t)
+        log.critical("rendering template %s", t)
         if t.endswith("tmpl"):
             tmpl = env.get_template(t)
             render = tmpl.render(
@@ -167,6 +167,7 @@ def gen_templates(board_list, class_name="MySpork"):
             )
             print(render)
         print()
+
     # TODO create files, check for existance and fail on has
 
 

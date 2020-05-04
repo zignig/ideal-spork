@@ -45,7 +45,7 @@ pointer deferencing ?
 
 from conversations with tpwrules and looking at his programming style.
 The use of a frame stack where each subroutine call moves the register window 
-up 8 register.
+up 8 registers.
 
 - Loads the needed registers from the preceeding frame
 - Allocates local variables 
@@ -59,7 +59,7 @@ assuming R6 is the Frame pointer (fp)
 
 If you need to pass variables up and down
 
-    LD(var1,fp,1) # load the first register of the prevuis frame into var1 
+    LD(var1,fp,1) # load the first register of the previous frame into var1 
     LD(var2,fp,2) # second register
     ADJW(-8) # move the window up 
     LDW(fp,-8) # put the previous window address into R6
@@ -118,15 +118,36 @@ class FWError(Exception):
     pass
 
 
-import traceback
+class PostFix:
+    _postfixes = []
+
+    def __init__(self):
+        self.postfix = None
+
+    def __call__(self, postfix=None, bits=16):
+        counter = 0
+        while True:
+            if not postfix:
+                postfix = "_{:04X}".format(random.randrange(2 ** bits))
+            if postfix not in PostFix._postfixes:
+                PostFix._postfixes += postfix
+                return postfix
+            counter += 1
+            if counter > 100:
+                raise FWError("Too many prefixes %s", postfix)
+
+
+# a postfix generator
+Postfix = PostFix()
 
 
 class CodeObject:
+    " For adding data objects to the firmware "
     _objects = []
 
     def __init__(self):
         CodeObject._objects.append(self)
-        object.__setattr__(self, "_prefix", "{}_".format(random.randrange(2 ** 16)))
+        object.__setattr__(self, "_postfix", Postfix())
 
     @classmethod
     def get_code(cls):
@@ -164,7 +185,7 @@ class LocalLabels:
     """
 
     def __init__(self):
-        self._postfix = "_{}".format(random.randrange(2 ** 16))
+        self._postfix = Postfix()
         self._names = {}
 
     def __call__(self, name):
