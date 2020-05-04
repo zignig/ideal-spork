@@ -29,8 +29,8 @@ class TestSpork(Elaboratable):
         cpu.add_peripheral(timer)
 
         led = platform.request("led")
-        status_led = LedPeripheral(led)
-        cpu.add_peripheral(status_led)
+        status = LedPeripheral(led)
+        cpu.add_peripheral(status)
 
         # build the register map
         cpu.build()
@@ -46,38 +46,38 @@ def Firmware(reg):
     return [
         # enable the led
         MOVI(R0, 1),
-        STXA(R0, reg.status_led_en),
+        STXA(R0, reg.status.en),
         # load the timer
         MOVI(R0, 0x5FF),
-        STXA(R0, reg.timer_reload),
+        STXA(R0, reg.timer.reload),
         # enable timer and events
         MOVI(R0, 1),
-        STXA(R0, reg.timer_en),
-        STXA(R0, reg.timer_ev_enable),
+        STXA(R0, reg.timer.en),
+        STXA(R0, reg.timer.ev.enable),
         # write a char
         MOVI(R0, 115),
-        STXA(R0, reg.serial_tx_data),
+        STXA(R0, reg.serial.tx.data),
         MOVI(R0, 111),
-        STXA(R0, reg.serial_tx_data),
+        STXA(R0, reg.serial.tx.data),
         MOVI(R0, 115),
-        STXA(R0, reg.serial_tx_data),
+        STXA(R0, reg.serial.tx.data),
         # wait for the timer
         L("LOOP"),
-        LDXA(R1, reg.timer_ev_pending),
+        LDXA(R1, reg.timer.ev.pending),
         CMPI(R1, 1),
         BZ1("continue"),
         J("LOOP"),
         L("continue"),
         MOVI(R2, 1),
-        STXA(R2, reg.timer_ev_pending),
+        STXA(R2, reg.timer.ev.pending),
         XORI(R4, R4, 0xFFFF),  # NOT
-        STXA(R4, reg.status_led_led),
+        STXA(R4, reg.status.led),
         MOVI(R3, 115),
-        STXA(R3, reg.serial_tx_data),
+        STXA(R3, reg.serial.tx.data),
         MOVI(R3, 117),
-        STXA(R3, reg.serial_tx_data),
+        STXA(R3, reg.serial.tx.data),
         MOVI(R3, 119),
-        STXA(R3, reg.serial_tx_data),
+        STXA(R3, reg.serial.tx.data),
         J("LOOP"),
     ]
 

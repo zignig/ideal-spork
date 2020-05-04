@@ -153,12 +153,13 @@ def gen_templates(board_list, class_name="MySpork"):
     path = pathlib.Path(__file__).parent.absolute()
     env = Environment(loader=FileSystemLoader(str(path) + os.sep + "templates"))
     templates = env.loader.list_templates()
+    cpu = ""
     for t in templates:
         log.debug("rendering template %s", t)
         if t.endswith("tmpl"):
             tmpl = env.get_template(t)
             render = tmpl.render(
-                board_list, creation_time=time.ctime(), class_name=class_name
+                board_list, creation_time=time.ctime(), class_name=class_name, cpu=cpu
             )
             print(render)
         print()

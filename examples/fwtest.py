@@ -40,8 +40,8 @@ class TestSpork(Elaboratable):
         cpu.add_peripheral(timer)
 
         led = platform.request("led")
-        status_led = LedPeripheral(led)
-        cpu.add_peripheral(status_led)
+        status = LedPeripheral(led)
+        cpu.add_peripheral(status)
 
         crc = KermitCRC()
         cpu.add_peripheral(crc)

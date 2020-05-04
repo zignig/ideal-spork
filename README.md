@@ -2,7 +2,7 @@
 
 This is WIP
 
-Ideal spork is a [nmigen](https://github.com/nmigen/) nmigen board builder and [Boneless](https://github.com/whitequark/Boneless-CPU/) SOC builder.
+Ideal spork is a [nmigen](https://github.com/nmigen/) board builder and [Boneless](https://github.com/whitequark/Boneless-CPU/) SOC builder.
 
 ## Requirements
 
