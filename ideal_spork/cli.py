@@ -100,15 +100,13 @@ def as_main(args=None):
             interactive()
 
     if args.action == "info":
-        raise SporkError(
-            "SHOULD build and show info and get construnct info and issues"
-        )
+        raise SporkError("SHOULD build and show info and get construct info and issues")
 
     if args.action == "console":
         from .host.console import Console
 
         console = Console(the_spork)
-        # Currently does echo test
+        log.critical("Only does echo test of datetime, for now")
         console.attach()
 
     if args.action == "burn":

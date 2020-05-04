@@ -91,8 +91,8 @@ def select_board():
     while True:
         print("Please select a board")
         print()
-        for i, j in enumerate(boards):
-            print(i, ":", j)
+        for num, board in enumerate(boards):
+            print("{:>4}  {}".format(num, board))
         print()
         val = input("Select from " + str(count) + " boards >")
         try:
@@ -109,7 +109,7 @@ def select_board():
 
 def get_name(prompt, default):
     " ask for a name with defaults"
-    val = input(prompt + default + " (" + default + ") >")
+    val = input(prompt + " (default=" + default + ") >")
     if val == "":
         val = default
     return val
@@ -128,7 +128,7 @@ def interactive():
         print("Board does not exist")
         log.critical("Board not found %s", board)
         return
-    name = get_name("Class Name", "MySpork")
+    name = get_name("Construct class name", "MySpork")
     gen_templates(current_board_info, name)
 
 
