@@ -4,6 +4,26 @@ This is WIP
 
 Ideal spork is a [nmigen](https://github.com/nmigen/) nmigen board builder and [Boneless](https://github.com/whitequark/Boneless-CPU/) SOC builder.
 
+## Requirements
+
+The nmigen suite and the Boneless-CPU
+
+* nmigen        : (https://github.com/m-labs/nmigen)
+* nmigen-soc    : (https://github.com/m-labs/nmigen-soc)
+* nmigen-boards : (https://github.com/m-labs/nmigen-boards)
+* nmigen-stdio  : (https://github.com/m-labs/nmigen-stdio)
+* Boneless-CPU  : (https://github.com/whitequark/Boneless-CPU)
+
+FPGA development programs
+
+Current development is on a [TinyFPGABx](https://tinyfpga.com/) this uses the following software
+
+* yoysys   : (https://github.com/YosysHQ/yosys)
+* nextpnr  : (https://github.com/YosysHQ/nextpnr)
+* icestorm : (https://github.com/cliffordwolf/icestorm) 
+
+With this software installed ideal_spork provides some board tooling
+
 ## Installation 
 
 Clone this repository
@@ -14,6 +34,8 @@ Clone this repository
 ```
 
 This will install the library and create a program called spork.
+
+bash> spork
 
 ```
 No spork file
