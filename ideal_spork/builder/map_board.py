@@ -7,7 +7,12 @@ from ..peripheral import *
 from ..utils import search
 
 
+def _res_for_board(board_instance):
+    return
+
+
 def get_resources(board_instance):
+    " Cross check drivers on the given board"
     res = list(board_instance.resources.keys())
     res_names = set()
     for i in res:
@@ -22,6 +27,8 @@ def get_resources(board_instance):
 
 
 def check_clock(board_instance):
+    " Check if the default clock is < 22Mhz, if not divide"
+    log.critical(board_instance)
     log.critical("Clock check Unfinshed")
     clock = None
     res = list(board_instance.resources.keys())
@@ -32,6 +39,7 @@ def check_clock(board_instance):
 
 
 def map_devices(board):
+    " Convert a board type into drivers and clocks"
     log.info("MAP board devices")
     board_instance = board["cls"]()
     devices, residual = get_resources(board_instance)
