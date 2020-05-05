@@ -7,7 +7,7 @@ log = logger(__name__)
 drivers = {}
 
 
-class Catalogue:
+class Catalog:
     " A catalogue of registered things"
 
     def __init__(self):
@@ -24,7 +24,7 @@ class Catalogue:
                 current_section[name] = [cls]
 
 
-catalog = Catalogue()
+catalog = Catalog()
 
 
 def Enroll(**info):

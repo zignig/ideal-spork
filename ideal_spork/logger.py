@@ -1,6 +1,6 @@
 import logging, sys
 
-log_level = logging.CRITICAL
+log_level = logging.ERROR
 
 fomattingter = logging.Formatter(
     fmt="%(asctime)s - %(levelname)s - %(name)s -  %(funcName)s - %(lineno)s - %(message)s"

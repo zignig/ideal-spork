@@ -62,7 +62,7 @@ def board_info(board):
     name = board[0]
     # Create an instance
     module = board[1].__module__
-    return {"name": name, "module": module}
+    return {"name": name, "module": module, "cls": board[1]}
 
 
 def short_list():
@@ -154,10 +154,7 @@ def check_board(name):
         print("\nBoard does not exist\n")
         name = None
 
-    return name
-
-
-# Templating
+    return info
 
 
 # if main
