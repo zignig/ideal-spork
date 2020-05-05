@@ -18,8 +18,6 @@ def interactive_construct(available, constr):
 
 
 def choose_construct(available, constr, board):
-    log.critical(constr)
-    log.critical(board)
     constructs = {}
     for c in available:
         constructs[c.__name__] = c

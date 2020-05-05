@@ -31,9 +31,13 @@ def Enroll(**info):
     " Wrapper for registering meta data of constructs "
 
     def inner(cls):
-        for i, j in info.items():
-            log.info("Peripheral registration %s %s %s", i, j, cls)
-            catalog.insert(i, j, cls)
+        for section, name in info.items():
+            log.info("Peripheral registration %s %s %s", section, name, cls)
+            if isinstance(name, str):
+                catalog.insert(section, name, cls)
+            elif isinstance(name, list):
+                for item in name:
+                    catalog.insert(section, item, cls)
         return cls
 
     return inner

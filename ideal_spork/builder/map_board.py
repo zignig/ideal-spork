@@ -12,7 +12,7 @@ def get_resources(board_instance):
     res_names = set()
     for i in res:
         res_names.add(i[0])
-    log.critical(search.catalog.sections)
+    log.debug(search.catalog.sections)
     for r in res_names:
         if r in search.catalog.sections["driver"]:
             log.critical("Have driver for %s", r)
@@ -20,7 +20,6 @@ def get_resources(board_instance):
 
 
 def map_devices(board):
-    log.critical("MAP board devices")
-    log.critical(board)
+    log.info("MAP board devices")
     board_instance = board["cls"]()
     print(get_resources(board_instance))

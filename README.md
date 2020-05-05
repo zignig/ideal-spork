@@ -68,34 +68,41 @@ a platform build
 ## Available boards
 This is generated from [nmigen_boards](https://github.com/nmigen/nmigen-boards)
 ```
- Available Boards 
-
    0  ECP55GEVNPlatform
    1  DE0CVPlatform
    2  ICE40HX8KBEVNPlatform
-   3  MercuryPlatform
-   4  TinyFPGAAX1Platform
-   5  ICE40HX1KBlinkEVNPlatform
-   6  VersaECP5Platform
-   7  DE0Platform
-   8  BlackIcePlatform
-   9  VersaECP55GPlatform
-  10  AtlysPlatform
-  11  BlackIceIIPlatform
-  12  FomuHackerPlatform
-  13  TinyFPGAAX2Platform
-  14  ZTurnLiteZ010Platform
-  15  NumatoMimasPlatform
-  16  SK_XC6SLX9Platform
-  17  KCU105Platform
-  18  ArtyA7Platform
-  19  KC705Platform
-  20  TinyFPGABXPlatform
-  21  MisterPlatform
-  22  ICEStickPlatform
-  23  DE10NanoPlatform
-  24  ZTurnLiteZ007SPlatform
-  25  ICEBreakerPlatform
+   3  UpduinoV2Platform
+   4  MercuryPlatform
+   5  DE10LitePlatform
+   6  TinyFPGAAX1Platform
+   7  ICE40HX1KBlinkEVNPlatform
+   8  AlchitryAuPlatform
+   9  VersaECP5Platform
+  10  DE0Platform
+  11  BlackIcePlatform
+  12  VersaECP55GPlatform
+  13  ICE40UP5KBEVNPlatform
+  14  AtlysPlatform
+  15  BlackIceIIPlatform
+  16  FomuHackerPlatform
+  17  TinyFPGAAX2Platform
+  18  FomuPVTPlatform
+  19  ArtyZ720Platform
+  20  ZTurnLiteZ010Platform
+  21  NumatoMimasPlatform
+  22  UpduinoV1Platform
+  23  Nexys4DDRPlatform
+  24  SK_XC6SLX9Platform
+  25  KCU105Platform
+  26  ArtyA7Platform
+  27  KC705Platform
+  28  TinyFPGABXPlatform
+  29  MisterPlatform
+  30  ICEStickPlatform
+  31  DE10NanoPlatform
+  32  ZTurnLiteZ007SPlatform
+  33  ICEBreakerPlatform
+
 ```
 
 All comments and patches welcome.

@@ -63,7 +63,7 @@ class BoardBuilder:
             self.construct = interactive_construct(available, self.construct)
         self.construct = choose_construct(available, self.construct, self.board)
 
-        log.critical("Selected Board %s", self.board)
-        log.critical("Selected Construct %s", self.construct)
+        log.info("Selected Board %s", self.board)
+        log.info("Selected Construct %s", self.construct)
         # At this point we have checked boards and constructs
         devices = map_devices(self.board)
