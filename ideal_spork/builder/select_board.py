@@ -3,8 +3,6 @@
 # extracted from https://github.com/nmigen/nmigen-boards
 import os, importlib
 
-from jinja2 import Environment, FileSystemLoader
-import time, pathlib
 
 from ..logger import logger
 
@@ -73,6 +71,14 @@ def short_list():
     return list(boards.keys())
 
 
+def show_list():
+    print("Available Boards")
+    print()
+    for num, board in enumerate(short_list()):
+        print("{:>4}  {}".format(num, board))
+    print()
+
+
 # Interactive
 
 prolog = """
@@ -119,11 +125,14 @@ def get_name(prompt, default):
     return val
 
 
-def interactive():
+def interactive(board=None):
     " interactive board builder"
     print(prolog)
     print()
-    board = select_board()
+    if board is None:
+        board = select_board()
+    else:
+        print("Using board", board)
     board_list = extract_boards()
     if board in board_list:
         current_board = (board, board_list[board])
@@ -132,43 +141,23 @@ def interactive():
         print("Board does not exist")
         log.critical("Board not found %s", board)
         return
-    name = get_name("Construct class name", "MySpork")
-    gen_templates(current_board_info, name)
 
 
 def check_board(name):
     boards = extract_boards()
     if name in boards:
         info = board_info(get_board(name))
-        gen_templates(info)
     else:
-        print("Board does not exist, Select from:")
         boards = short_list()
         for num, board in enumerate(boards):
             print("{:>4}  {}".format(num, board))
+        print("\nBoard does not exist\n")
+        name = None
+
+    return name
 
 
 # Templating
-
-
-def gen_templates(board_list, class_name="MySpork"):
-    " with a list of boards generate templates"
-    log.info("Generating templated files")
-    path = pathlib.Path(__file__).parent.absolute()
-    env = Environment(loader=FileSystemLoader(str(path) + os.sep + "templates"))
-    templates = env.loader.list_templates()
-    cpu = ""
-    for t in templates:
-        log.critical("rendering template %s", t)
-        if t.endswith("tmpl"):
-            tmpl = env.get_template(t)
-            render = tmpl.render(
-                board_list, creation_time=time.ctime(), class_name=class_name, cpu=cpu
-            )
-            print(render)
-        print()
-
-    # TODO create files, check for existance and fail on has
 
 
 # if main

@@ -25,8 +25,8 @@ class Console:
             port = serial.Serial(
                 self.serial_port, self.serial_speed, timeout=self.timeout
             )
-        except:
-            log.critical("Serial port %s does not exist", self.serial_port)
+        except serial.serialutil.SerialException as e:
+            log.error(e)
             return
         log.critical("Unfinished")
         with port as p:

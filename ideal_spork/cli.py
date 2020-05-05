@@ -85,6 +85,7 @@ def as_main(args=None):
         log.setLevel(logging.DEBUG)
 
     # Check for the .spork file
+    the_spork = None
     try:
         s = os.stat(".spork")
         log.debug("spork file exists")
@@ -97,13 +98,6 @@ def as_main(args=None):
         sys.exit(1)
 
     if args.action == "init":
-        # from .builder.select_board import interactive, check_board
-
-        # if args.board:
-        #    check_board(args.board)
-        # else:
-        #    interactive()
-
         from .builder.create import BoardBuilder
 
         bb = BoardBuilder(
@@ -112,7 +106,11 @@ def as_main(args=None):
         bb.build()
 
     if args.action == "info":
-        raise SporkError("SHOULD build and show info and get construct info and issues")
+        if the_spork is not None:
+            the_spork.show()
+        else:
+            log.Critical(".spork file does not exist")
+        # raise SporkError("SHOULD build and show info and get construct info and issues")
 
     if args.action == "console":
         from .host.console import Console

@@ -1,1 +1,2 @@
-__all__ = ["TinyFPGABXPlatform"]
+# __all__ = ["TinyFPGABXPlatform"]
+available = ["TinyFPGABXPlatform"]

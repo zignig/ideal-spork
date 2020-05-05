@@ -15,10 +15,13 @@ def load_spork(file_name):
 
 class ASpork:
     def __init__(self, attr):
-        self._base = {}
 
-        self.data = attr.keys()
+        self.data = attr
         log.info("Spork file entries %s", attr)
         for i in attr:
             log.debug(i)
             setattr(self, i, attr[i])
+
+    def show(self):
+        for i in self.data:
+            print("{:15} : {:s}".format(i, str(self.data[i])))
