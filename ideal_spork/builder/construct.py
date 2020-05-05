@@ -1,6 +1,7 @@
 # Choose a construct for the board
 
 from ..logger import logger
+from .interactive import select_from_list
 
 log = logger(__name__)
 
@@ -13,8 +14,9 @@ def show_available(constructs):
 
 
 def interactive_construct(available, constr):
-    log.critical("List choose %s", str(available))
-    return constr
+    log.error("List choose %s", str(available))
+    val = select_from_list(available, name="Construct")
+    return val
 
 
 def choose_construct(available, constr, board):

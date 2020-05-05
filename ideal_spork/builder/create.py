@@ -4,6 +4,7 @@ from .select_board import interactive, show_list, check_board
 from .construct import choose_construct, interactive_construct
 from ..logger import logger
 from .map_board import map_devices
+from .interactive import select_from_list
 
 log = logger(__name__)
 
@@ -15,6 +16,10 @@ log = logger(__name__)
 
 
 class Construct:
+    pass
+
+
+class Empty(Construct):
     pass
 
 
@@ -31,13 +36,13 @@ class Sequencer(Construct):
     pass
 
 
-available = [Blinky, Boneless, Sequencer]
+available = [Empty, Blinky, Boneless, Sequencer]
 
 
 class BoardBuilder:
-    " Builds boards based on answers"
+    " Builds boards based on answers and questions "
 
-    def __init__(self, board=None, force=False, interactive=False, construct="Blinky"):
+    def __init__(self, board=None, force=False, interactive=False, construct=None):
         log.debug("Activate the board builder")
         self._built = False
         self.board = board
@@ -53,17 +58,22 @@ class BoardBuilder:
         else:
             if self.board is None:
                 show_list()
-                print('Use "spork init -b <board name>" to select a board\n')
+                print('Use "spork init -b <board name>" to select a board')
+                print("or... spork init -i for console questions\n")
             else:
                 self.board = check_board(self.board)
                 if self.board == None:
                     return
+
         log.info("Select a construct")
         if self.interactive:
             self.construct = interactive_construct(available, self.construct)
-        self.construct = choose_construct(available, self.construct, self.board)
+        else:
+            self.construct = choose_construct(available, self.construct, self.board)
 
-        log.info("Selected Board %s", self.board)
-        log.info("Selected Construct %s", self.construct)
+        log.critical("Selected Board %s", self.board)
+        log.critical("Selected Construct %s", self.construct)
+
         # At this point we have checked boards and constructs
+
         devices = map_devices(self.board)

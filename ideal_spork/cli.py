@@ -4,17 +4,14 @@ import argparse
 
 import logging
 from .logger import logger, set_logging_level
-from .utils.spork_file import load_spork
 
 log = logger(__name__)
 
+from .utils.spork_file import load_spork
+
 description = "spork is a nmigen board build helper"
 epilog = """\
-    ideal_spork is a nmigen_board builder\n
-
-    \n
-    spork init will create all the files for a platform build
-
+    You probably want "spork init -i" 
     """
 
 
