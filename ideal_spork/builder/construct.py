@@ -14,7 +14,7 @@ def show_available(constructs):
 
 
 def interactive_construct(available, constr):
-    log.error("List choose %s", str(available))
+    log.info("List choose %s", str(available))
     val = select_from_list(available, name="Construct")
     return val
 

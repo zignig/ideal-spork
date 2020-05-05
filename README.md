@@ -8,10 +8,10 @@ Ideal spork is a [nmigen](https://github.com/nmigen/) board builder and [Boneles
 
 The nmigen suite and the Boneless-CPU
 
-* nmigen        : (https://github.com/m-labs/nmigen)
-* nmigen-soc    : (https://github.com/m-labs/nmigen-soc)
-* nmigen-boards : (https://github.com/m-labs/nmigen-boards)
-* nmigen-stdio  : (https://github.com/m-labs/nmigen-stdio)
+* nmigen        : (https://github.com/nmigen/nmigen)
+* nmigen-soc    : (https://github.com/nmigen/nmigen-soc)
+* nmigen-boards : (https://github.com/nmigen/nmigen-boards)
+* nmigen-stdio  : (https://github.com/nmigen/nmigen-stdio)
 * Boneless-CPU  : (https://github.com/whitequark/Boneless-CPU)
 
 FPGA development programs

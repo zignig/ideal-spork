@@ -11,7 +11,7 @@ def select_from_list(items, name="Thing"):
         for num, item in enumerate(items):
             print("{:>4}  {}".format(num, item))
         print()
-        val = input("Select from " + str(count) + " boards >")
+        val = input("Select from " + str(count) + " " + name + ">")
         try:
             val = int(val)
         except:

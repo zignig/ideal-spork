@@ -20,15 +20,24 @@ class Construct:
 
 
 class Empty(Construct):
+    " Empty board with nothing "
     pass
 
 
 class Blinky(Construct):
+    " Blink with switch and button invert "
+
     def __init__(self):
         files = ["/blinky/base.py.tmpl", "base"]
 
 
+class CSR(Construct):
+    " Just a CSR interface for all available drivers"
+    pass
+
+
 class Boneless(Construct):
+
     pass
 
 
@@ -36,7 +45,7 @@ class Sequencer(Construct):
     pass
 
 
-available = [Empty, Blinky, Boneless, Sequencer]
+available = [Empty, Blinky, Boneless, Sequencer, CSR]
 
 
 class BoardBuilder:
@@ -71,8 +80,8 @@ class BoardBuilder:
         else:
             self.construct = choose_construct(available, self.construct, self.board)
 
-        log.critical("Selected Board %s", self.board)
-        log.critical("Selected Construct %s", self.construct)
+        log.warning("Selected Board %s", self.board)
+        log.warning("Selected Construct %s", self.construct)
 
         # At this point we have checked boards and constructs
 

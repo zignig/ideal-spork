@@ -15,11 +15,25 @@ def get_resources(board_instance):
     log.debug(search.catalog.sections)
     for r in res_names:
         if r in search.catalog.sections["driver"]:
-            log.critical("Have driver for %s", r)
-    return res_names
+            log.warning("Have driver for %s", r)
+    log.warning(res_names)
+    residual = None
+    return res_names, residual
+
+
+def check_clock(board_instance):
+    log.critical("Clock check Unfinshed")
+    clock = None
+    res = list(board_instance.resources.keys())
+    for resource in res:
+        if resource.startswith("clk"):
+            log.critical("Clock %s", str(esource))
+    return clock
 
 
 def map_devices(board):
     log.info("MAP board devices")
     board_instance = board["cls"]()
-    print(get_resources(board_instance))
+    devices, residual = get_resources(board_instance)
+    clock = check_clock(board_instance)
+    return clock, devices, residual
