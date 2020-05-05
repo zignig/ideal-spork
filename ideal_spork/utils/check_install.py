@@ -1,6 +1,9 @@
 # nmigen fetcher
-from git import Repo
-import os
+import os, importlib
+
+from ..logger import logger
+
+log = logger(__name__)
 
 repos = {
     "nmigen": "https://github.com/nmigen/nmigen",
@@ -12,9 +15,17 @@ repos = {
 }
 
 
-# Transplant
+def check_install(directory):
+    log.critical("Check directory Unfinished")
+    pass
 
 
+def update_install(directory):
+    log.critical("Update directory Unfinished")
+    pass
+
+
+# Transplant for elsewhere pls ignore
 def Fetch(item):
     name = item[0]
     url = item[1]
