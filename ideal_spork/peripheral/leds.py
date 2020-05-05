@@ -1,12 +1,12 @@
 from nmigen import *
 
 from ..cores.periph import Peripheral
-from ..utils.search import Register
+from ..utils.search import Enroll
 
 __all__ = ["LedPeripheral"]
 
 
-@Register(driver="led")
+@Enroll(driver="led")
 class LedPeripheral(Peripheral, Elaboratable):
     """Led peripheral.
 

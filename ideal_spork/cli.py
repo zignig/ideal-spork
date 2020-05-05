@@ -3,15 +3,16 @@ import sys, os
 import argparse
 
 import logging
-from .logger import logger
+from .logger import logger, set_logging_level
 from .utils.spork_file import load_spork
 
 log = logger(__name__)
 
 description = "spork is a nmigen board build helper"
-epilog = """
+epilog = """\
     ideal_spork is a nmigen_board builder\n
 
+    \n
     spork init will create all the files for a platform build
 
     """
@@ -32,6 +33,9 @@ def as_options(parser):
         "--name",
         default="MySpork",
         help="Specify the name of the class to generate",
+    )
+    init_action.add_argument(
+        "-c", "--construct", help="Select a construct", default="Blinky"
     )
     init_action.add_argument(
         "-f", "--force", help="Force board creation", action="store_true"
@@ -72,17 +76,21 @@ def as_options(parser):
 def as_main(args=None):
     if args is None:
         parser = argparse.ArgumentParser(description=description, epilog=epilog)
-        parser.add_argument(
-            "-v", "--verbose", help="Logging Level", action="store_true"
-        )
+        parser.add_argument("-v", help="Warn Logging Level", action="store_true")
+        parser.add_argument("-vv", help="Info Logging Level", action="store_true")
+        parser.add_argument("-vvv", help="Debug Logging Level", action="store_true")
         parser.add_argument(
             "-d", "--directory", help="Directory for spork file", default="."
         )
         args = as_options(parser).parse_args()
 
     # Turn on verbosity
-    if args.verbose:
-        log.setLevel(logging.DEBUG)
+    if args.v:
+        set_logging_level(logging.WARNING)
+    if args.vv:
+        set_logging_level(logging.INFO)
+    if args.vvv:
+        set_logging_level(logging.DEBUG)
 
     # Check for the .spork file
     the_spork = None
@@ -101,7 +109,10 @@ def as_main(args=None):
         from .builder.create import BoardBuilder
 
         bb = BoardBuilder(
-            board=args.board, force=args.force, interactive=args.interactive
+            board=args.board,
+            force=args.force,
+            interactive=args.interactive,
+            construct=args.construct,
         )
         bb.build()
 

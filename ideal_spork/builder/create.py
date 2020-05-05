@@ -1,7 +1,7 @@
 # Board builder
 
 from .select_board import interactive, show_list, check_board
-
+from .construct import choose_construct, interactive_construct
 from ..logger import logger
 
 log = logger(__name__)
@@ -26,6 +26,13 @@ class Boneless(Construct):
     pass
 
 
+class Sequencer(Construct):
+    pass
+
+
+available = [Blinky, Boneless, Sequencer]
+
+
 class BoardBuilder:
     " Builds boards based on answers"
 
@@ -40,6 +47,7 @@ class BoardBuilder:
     def build(self):
         log.critical("Build a board")
         selected_board = None
+        log.info("Select a board")
         if self.interactive:
             interactive(self.board)
         else:
@@ -50,4 +58,9 @@ class BoardBuilder:
                 selected_board = check_board(self.board)
                 if selected_board == None:
                     return
+        log.info("Select a construct")
+        if self.interactive:
+            self.construct = interactive_construct(available)
+        choose_construct(available, self.construct, selected_board)
+
         log.critical(selected_board)

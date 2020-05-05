@@ -1,17 +1,14 @@
 from nmigen import *
 
 from ..cores.periph import Peripheral
-
 from ..cores.warmboot import warmboot
-
-from ..utils.search import Register
-
+from ..utils.search import Enroll
 from ..logger import logger
 
 log = logger(__name__)
 
 
-@Register(platform="ice40")
+@Enroll(platform="ice40")
 class WarmBoot(Peripheral, Elaboratable):
     def __init__(self):
         log.info("Create Warmboot Peripheral")

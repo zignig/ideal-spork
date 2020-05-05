@@ -1,24 +1,22 @@
 import logging, sys
 
-log_level = logging.INFO
+log_level = logging.CRITICAL
+
+fomattingter = logging.Formatter(
+    fmt="%(asctime)s - %(levelname)s - %(name)s -  %(funcName)s - %(lineno)s - %(message)s"
+)
+# fomattingter = logging.Formatter( fmt="%(asctime)s - %(levelname)s %(name)s.%(funcName)s - %(message)s")
+
+handler = logging.StreamHandler(sys.stdout)
+handler.setFormatter(fomattingter)
+root_logger = logging.getLogger()
+root_logger.addHandler(handler)
+root_logger.setLevel(log_level)
 
 
 def logger(name):
-    fomattingter = logging.Formatter(
-        fmt="%(asctime)s - %(levelname)s - %(name)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s"
-    )
-    # fomattingter = logging.Formatter( fmt="%(asctime)s - %(levelname)s %(name)s.%(funcName)s - %(message)s")
-
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setFormatter(fomattingter)
-
-    logger = logging.getLogger(name)
-
-    logger.addHandler(handler)
-    logger.setLevel(log_level)
-
-    return logger
+    return root_logger.getChild(name)
 
 
-def level(set_level):
-    log_level = set_level
+def set_logging_level(set_level):
+    root_logger.setLevel(set_level)

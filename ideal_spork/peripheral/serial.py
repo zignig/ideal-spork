@@ -4,7 +4,7 @@ from nmigen.lib.fifo import SyncFIFO
 from nmigen_stdio.serial import AsyncSerial
 
 from ..cores.periph import Peripheral
-from ..utils.search import Register
+from ..utils.search import Enroll
 from ..logger import logger
 
 log = logger(__name__)
@@ -12,7 +12,7 @@ log = logger(__name__)
 __all__ = ["AsyncSerialPeripheral"]
 
 
-@Register(driver="uart")
+@Enroll(driver="uart")
 class AsyncSerialPeripheral(Peripheral, Elaboratable):
     """Asynchronous serial transceiver peripheral.
 
