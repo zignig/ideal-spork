@@ -1,6 +1,7 @@
 from nmigen import *
 
-from ..cores.periph import Peripheral, Register
+from ..cores.periph import Peripheral
+from ..utils.search import Register
 
 __all__ = ["LedPeripheral"]
 

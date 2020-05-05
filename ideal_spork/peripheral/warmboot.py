@@ -1,8 +1,10 @@
 from nmigen import *
 
-from ..cores.periph import Peripheral, Register
+from ..cores.periph import Peripheral
 
 from ..cores.warmboot import warmboot
+
+from ..utils.search import Register
 
 from ..logger import logger
 

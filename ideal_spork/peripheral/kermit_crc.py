@@ -2,7 +2,8 @@
 # https://github.com/tpwrules/tasha_and_friends/blob/master/tastaf/gateware/uart.py#L246
 
 from nmigen import *
-from ..cores.periph import Peripheral, Register
+from ..cores.periph import Peripheral
+from ..utils.search import Register
 
 from ..logger import logger
 

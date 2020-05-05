@@ -11,10 +11,23 @@ log = logger(__name__)
 # 5. build and deploy
 
 
+class Construct:
+    pass
+
+
+class Blinky(Construct):
+    pass
+
+
+class Boneless(Construct):
+    pass
+
+
 class BoardBuilder:
     " Builds boards based on answers"
 
-    def __init__(self, board=None, construct=Blinky):
+    def __init__(self, board=None, force=False, interactive=False, construct=Blinky):
+        log.critical("Activate the board builder")
         self._built = False
 
     def build(self):

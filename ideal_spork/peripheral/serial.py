@@ -3,8 +3,8 @@ from nmigen.lib.fifo import SyncFIFO
 
 from nmigen_stdio.serial import AsyncSerial
 
-from ..cores.periph import Peripheral, Register
-
+from ..cores.periph import Peripheral
+from ..utils.search import Register
 from ..logger import logger
 
 log = logger(__name__)

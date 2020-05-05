@@ -33,7 +33,12 @@ def as_options(parser):
         default="MySpork",
         help="Specify the name of the class to generate",
     )
-    init_action.add_argument("-f", "--force", help="Force board creation")
+    init_action.add_argument(
+        "-f", "--force", help="Force board creation", action="store_true"
+    )
+    init_action.add_argument(
+        "-i", "--interactive", help="Interactive board creation", action="store_true"
+    )
 
     # Unbound
     action.add_parser("info", help="Get information from the base board")
@@ -92,12 +97,19 @@ def as_main(args=None):
         sys.exit(1)
 
     if args.action == "init":
-        from .builder.select_board import interactive, check_board
+        # from .builder.select_board import interactive, check_board
 
-        if args.board:
-            check_board(args.board)
-        else:
-            interactive()
+        # if args.board:
+        #    check_board(args.board)
+        # else:
+        #    interactive()
+
+        from .builder.create import BoardBuilder
+
+        bb = BoardBuilder(
+            board=args.board, force=args.force, interactive=args.interactive
+        )
+        bb.build()
 
     if args.action == "info":
         raise SporkError("SHOULD build and show info and get construct info and issues")

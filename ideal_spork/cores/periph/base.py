@@ -15,19 +15,7 @@ from ...logger import logger
 
 log = logger(__name__)
 
-__all__ = ["Peripheral", "CSRBank", "PeripheralBridge", "Register"]
-
-drivers = {}
-
-
-def Register(**info):
-    def inner(cls):
-        for i, j in info.items():
-            log.debug("Peripheral registration %s %s", i, j)
-
-        return cls
-
-    return inner
+__all__ = ["Peripheral", "CSRBank", "PeripheralBridge"]
 
 
 class Peripheral:
