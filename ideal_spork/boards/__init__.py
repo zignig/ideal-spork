@@ -1,2 +1,1 @@
-# __all__ = ["TinyFPGABXPlatform"]
-available = ["TinyFPGABXPlatform"]
+__all__ = ["tinyfpga_bx", "icebreaker"]
