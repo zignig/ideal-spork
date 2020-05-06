@@ -66,6 +66,7 @@ def map_devices(board):
     clock = check_clock(board_instance)
     log.debug("Map connectors and IO")
     io = map_connectors(board_instance)
+    # TODO , this is a bit janky
     o = type(
         "device",
         (object,),
@@ -73,6 +74,3 @@ def map_devices(board):
     )
     log.critical(o.devices)
     return o
-
-
-#    return (clock, devices, residual, io)

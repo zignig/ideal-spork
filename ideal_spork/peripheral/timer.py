@@ -1,6 +1,7 @@
 from nmigen import *
 
 from ..cores.periph.base import Peripheral
+from ..utils.search import Enroll
 
 from ..logger import logger
 
@@ -9,6 +10,7 @@ log = logger(__name__)
 __all__ = ["TimerPeripheral"]
 
 
+@Enroll(provides="timer")
 class TimerPeripheral(Peripheral, Elaboratable):
     """Timer peripheral.
 

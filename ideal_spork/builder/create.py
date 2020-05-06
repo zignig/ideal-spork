@@ -56,6 +56,7 @@ class Boneless(Construct):
             "boneless/firmware.py.tmpl": "firmware.py",
             "boneless/board.py.tmpl": None,
         }
+        self.peripheral = ["TimerPeripheral"]
 
 
 class Sequencer(Construct):
