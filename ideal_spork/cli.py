@@ -110,6 +110,7 @@ def as_main(args=None):
             force=args.force,
             interactive=args.interactive,
             construct=args.construct,
+            name=args.name,
         )
         bb.build()
 

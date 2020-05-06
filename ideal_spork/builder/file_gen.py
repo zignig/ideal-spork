@@ -13,11 +13,14 @@ class TemplateError(Exception):
 
 
 class FileBuilder:
-    def __init__(self, board=None, construct=None, devices=None, force=False):
+    def __init__(
+        self, name=None, board=None, construct=None, devices=None, force=False
+    ):
         self.board = board
         self.construct = construct
         self.devices = devices
         self.force = force
+        self.name = name
 
         log.info("Loading template files")
 
@@ -36,8 +39,13 @@ class FileBuilder:
         log.critical("No files generated YET")
         constr = self.construct()
         log.info("Prepare the board info")
-        log.critical(self.templates)
-        info = {"creation_time": time.ctime()}
+        log.critical(self.board)
+        info = {
+            "creation_time": time.ctime(),
+            "module": self.board["module"],
+            "board_name": self.board["class_name"],
+            "class_name": self.name,
+        }
         if hasattr(constr, "files"):
             log.critical(constr.files)
             for file_name in constr.files:
@@ -46,9 +54,12 @@ class FileBuilder:
                         "Template {:s} does not exist".format(file_name)
                     )
                 templ = self.env.get_template(file_name)
-                log.debug("Render the file")
+                log.debug("Render the file %s", file_name)
                 render = templ.render(info)
                 target_file = constr.files[file_name]
+                # empty file name is changed to the name target
+                if target_file == None:
+                    target_file = self.name.lower() + ".py"
                 log.critical(target_file)
                 try:
                     log.debug("Check if the files already exists")

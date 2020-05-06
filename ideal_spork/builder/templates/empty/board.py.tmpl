@@ -1,0 +1,38 @@
+# Spork templated file
+# Created on {{creation_time}}
+# Empty Board file
+
+from nmigen import *
+from {{module}} import {{board_name}}
+
+class {{class_name}}(Elaboratable):
+    def __init__(self,platform):
+        # Add some resources
+        platform.add_resources([
+        ]) 
+
+    def elaborate(self,platform):
+        m = Module()
+        # Code here
+        return m
+
+if __name__ == "__main__":
+    platform = {{board_name}}()
+    dut = {{class_name}}(platform)
+
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--program", action="store_true")
+    parser.add_argument("-s", "--simulate", action="store_true")
+    args = parser.parse_args()
+
+    if args.simulate:
+        from nmigen.cli import pysim
+        with pysim.Simulator(dut, vcd_file=open("view_{{class_name}}.vcd", "w")) as sim:
+            sim.add_clock(1e-3)
+            sim.run_until(1000, run_passive=True)
+
+    if args.program:
+        platform.build(dut,do_program=True)
+

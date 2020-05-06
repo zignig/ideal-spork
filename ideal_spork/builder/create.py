@@ -10,6 +10,8 @@ from ..logger import logger
 
 log = logger(__name__)
 
+__all__ = ["Empty", "Blinky", "CSR", "Boneless", "Sequencer"]
+
 # 1. Select Board
 # 2. Select Construct
 # 3. Based on construct build peripherals
@@ -25,14 +27,17 @@ class Empty(Construct):
     " Empty board with nothing "
 
     def __init__(self):
-        self.files = {}
+        self.files = {"empty/board.py.tmpl": None}
 
 
 class Blinky(Construct):
     " Blink with switch and button invert "
 
     def __init__(self):
-        self.files = {"blinky/blinky.py.tmpl": "blinky.py"}
+        self.files = {
+            "blinky/blinky.py.tmpl": "blinky.py",
+            "blinky/board.py.tmpl": None,
+        }
 
 
 class CSR(Construct):
@@ -66,13 +71,21 @@ class BoardBuilder:
     " Builds boards based on answers and questions "
     prolog = "Spork V0.1a"
 
-    def __init__(self, board=None, force=False, interactive=False, construct=None):
+    def __init__(
+        self,
+        board=None,
+        force=False,
+        interactive=False,
+        construct=None,
+        name="TheSPORK",
+    ):
         log.debug("Activate the board builder")
         self._built = False
         self.board = board
         self.force = force
         self.interactive = interactive
         self.construct = construct
+        self.name = name
 
     def build(self):
         log.info("Select a board")
@@ -110,6 +123,7 @@ class BoardBuilder:
 
         log.critical("Template the files")
         builder = FileBuilder(
+            name=self.name,
             board=self.board,
             construct=self.construct,
             devices=devices,
