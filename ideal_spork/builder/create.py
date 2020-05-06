@@ -53,7 +53,10 @@ class Boneless(Construct):
 
     def __init__(self):
         log.critical("No Boneless construct yet")
-        self.files = {}
+        self.files = {
+            "boneless/firmware.py.tmpl": "firmware.py",
+            "boneless/board.py.tmpl": None,
+        }
 
 
 class Sequencer(Construct):
