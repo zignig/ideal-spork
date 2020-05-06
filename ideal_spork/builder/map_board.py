@@ -18,31 +18,49 @@ def _res_for_board(board_instance):
 def get_resources(board_instance):
     " Cross check drivers on the given board"
     res_names = _res_for_board(board_instance)
+    residual = _res_for_board(board_instance)
     log.debug(search.catalog.sections)
+    drivers = []
+    driver_list = search.catalog.sections["driver"]
     for res in res_names:
-        if res in search.catalog.sections["driver"]:
+        if res in driver_list:
             log.warning("Have driver for %s", res)
-    log.warning(res_names)
-    residual = None
-    return res_names, residual
+            drivers.append((res, driver_list[res]))
+            residual.remove(res)
+    return (drivers, residual)
 
 
 def check_clock(board_instance):
     " Check if the default clock is < 22Mhz, if not divide"
-    log.critical(board_instance)
+    default_freq = board_instance.default_clk_frequency
+    if default_freq > 22e6:
+        log.critical("Clock at %s is to fast need to divide", default_freq)
     log.critical("Clock check Unfinshed")
     clock = None
     res_names = _res_for_board(board_instance)
     for res in res_names:
         if res.startswith("clk"):
-            log.critical("Clock %s", str(res))
+            log.debug("Clock %s", str(res))
+            clock = res
     return clock
+
+
+def map_connectors(board_instance):
+    log.debug("Find the connectors and IO")
+    conn = board_instance.connectors
+    for c in conn:
+        log.info("{:s} - {:s}".format(str(c), str(conn[c])))
+    return conn
 
 
 def map_devices(board):
     " Convert a board type into drivers and clocks"
     log.info("Map board devices for %s", board)
     board_instance = board["cls"]()
+    log.debug("Find drivers for the given board")
     devices, residual = get_resources(board_instance)
+    log.debug("Check the clock settings")
     clock = check_clock(board_instance)
-    return clock, devices, residual
+    log.debug("Map connectors and IO")
+    io = map_connectors(board_instance)
+    return (clock, devices, residual, io)

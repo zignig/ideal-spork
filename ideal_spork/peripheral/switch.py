@@ -1,4 +1,6 @@
-" A button builder "
+" A switch builder "
+
+# TODO , bind multiple switches
 
 __working__ = False
 
@@ -12,13 +14,14 @@ from ..logger import logger
 
 log = logger(__name__)
 
-__all__ = ["ButtonPeripheral"]
+__all__ = ["SwitchPeripheral"]
 
 
-@Enroll(driver="button")
-class ButtonPeripheral(Peripheral, Elaboratable):
+@Enroll(driver="switch")
+class SwitchPeripheral(Peripheral, Elaboratable):
     def __init__(self):
-        log.info("Create Button Peripheral")
+        log.critical("Switch Unfinished")
+        log.info("Create Switch Peripheral")
         super().__init__()
         bank = self.csr_bank()
         self._en = bank.csr(1, "w")

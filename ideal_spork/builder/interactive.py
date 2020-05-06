@@ -5,7 +5,7 @@ __all__ = ["select_from_list", "get_name"]
 # select an item from a list
 def select_from_list(items, name="Thing", as_num=False):
     " select by number "
-    count = len(items) - 1
+    count = len(items)
     val = 0
     while True:
         print("\nPlease select a", name)
@@ -19,7 +19,7 @@ def select_from_list(items, name="Thing", as_num=False):
         except:
             print("Not a number")
             continue
-        if val > count:
+        if val > (count - 1):
             print("Selection out of range")
             continue
         break

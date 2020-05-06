@@ -37,12 +37,12 @@ def extract_boards():
 
     name_dict = {}
     # get the platform names
-    for i in board_files:
-        board = importlib.import_module(nmigen_boards.__package__ + "." + i)
-        platforms = board.__all__
-        for j in platforms:
-            b = board.__dict__[j]
-            name_dict[j] = b
+    for f in board_files:
+        board = importlib.import_module(nmigen_boards.__package__ + "." + f)
+        platform = board.__all__[0]
+        class_name = board.__dict__[platform]
+        name_dict[f] = (class_name, platform)
+    # print(name_dict)
     _boards = name_dict
     _boards_built = True
     return name_dict
@@ -60,8 +60,13 @@ def board_info(board):
     # Board name
     name = board[0]
     # Create an instance
-    module = board[1].__module__
-    return {"name": name, "module": module, "cls": board[1]}
+    module = board[1][0].__module__
+    return {
+        "name": name,
+        "module": module,
+        "class_name": board[1][1],
+        "cls": board[1][0],
+    }
 
 
 def short_list():

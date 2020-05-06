@@ -4,6 +4,7 @@ from .select_board import select_board, show_list, check_board
 from .construct import check_construct, interactive_construct
 from .map_board import map_devices
 from .interactive import select_from_list
+from .file_gen import FileBuilder
 
 from ..logger import logger
 
@@ -22,29 +23,40 @@ class Construct:
 
 class Empty(Construct):
     " Empty board with nothing "
-    pass
+
+    def __init__(self):
+        self.files = {}
 
 
 class Blinky(Construct):
     " Blink with switch and button invert "
 
     def __init__(self):
-        files = ["/blinky/base.py.tmpl", "base"]
+        self.files = {"blinky/blinky.py.tmpl": "blinky.py"}
 
 
 class CSR(Construct):
     " Just a CSR interface for all available drivers"
-    pass
+
+    def __init__(self):
+        log.critical("No CSR construct yet")
+        self.files = {}
 
 
 class Boneless(Construct):
     " Boneless processor with peripherals"
-    pass
+
+    def __init__(self):
+        log.critical("No Boneless construct yet")
+        self.files = {}
 
 
 class Sequencer(Construct):
     " Base command sequencer (UNFINISHED)"
-    pass
+
+    def __init__(self):
+        log.critical("No Sequencer construct yet")
+        self.files = []
 
 
 available = [Empty, Blinky, Boneless, Sequencer, CSR]
@@ -52,6 +64,7 @@ available = [Empty, Blinky, Boneless, Sequencer, CSR]
 
 class BoardBuilder:
     " Builds boards based on answers and questions "
+    prolog = "Spork V0.1a"
 
     def __init__(self, board=None, force=False, interactive=False, construct=None):
         log.debug("Activate the board builder")
@@ -63,6 +76,7 @@ class BoardBuilder:
 
     def build(self):
         log.info("Select a board")
+        print(self.prolog)
         if self.interactive and (self.board is None):
             self.board = select_board()
             log.info("Interactive answer %s", self.board)
@@ -83,9 +97,24 @@ class BoardBuilder:
                 print("or... spork init -i for console questions\n")
                 return
 
-        log.critical("Selected Board %s", self.board)
-        log.critical("Selected Construct %s", self.construct)
+        log.info("Selected Board %s", self.board)
+        log.info("Selected Construct %s", self.construct)
 
         # At this point we have checked boards and constructs
 
+        log.info("Map all the IO")
         devices = map_devices(self.board)
+
+        log.critical("Check registered boards")
+        # TODO
+
+        log.critical("Template the files")
+        builder = FileBuilder(
+            board=self.board,
+            construct=self.construct,
+            devices=devices,
+            force=self.force,
+        )
+        builder.generate()  # TODO add directory target
+
+        log.warning(devices)
