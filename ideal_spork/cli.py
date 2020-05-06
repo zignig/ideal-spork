@@ -26,10 +26,7 @@ def as_options(parser):
     init_action = action.add_parser("init", help="Create files for a  new board")
     init_action.add_argument("-b", "--board", help="Specify the board to generate")
     init_action.add_argument(
-        "-n",
-        "--name",
-        default="MySpork",
-        help="Specify the name of the class to generate",
+        "name", default="MySpork", help="Specify the name of the class to generate"
     )
     init_action.add_argument(
         "-c", "--construct", help="Select a construct", default=None

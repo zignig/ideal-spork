@@ -35,6 +35,16 @@ class FileBuilder:
         f.write(render)
         f.close()
 
+    def build(self):
+        self.collate()
+        self.generate()
+
+    def collate(self):
+        log.critical("Collate information for templating")
+        import yaml
+
+        print(self.devices.devices)
+
     def generate(self):
         constr = self.construct()
         log.info("Prepare the board info")
@@ -65,7 +75,7 @@ class FileBuilder:
                     stat = os.stat(target_file)
                     log.debug(stat)
                     if self.force:
-                        log.critical("over writing file {:s}".format(target_file))
+                        log.critical("Over writing file {:s}".format(target_file))
                         self.write_file(target_file, render)
                     else:
                         log.critical(
@@ -76,24 +86,3 @@ class FileBuilder:
                         raise TemplateError("File {:s} exists".format(file_name))
                 except:
                     self.write_file(target_file, render)
-
-
-# TODO old, pls remove
-def gen_templates(board_list, class_name="MySpork"):
-    " with a list of boards generate templates"
-    log.info("Generating templated files")
-    path = pathlib.Path(__file__).parent.absolute()
-    env = Environment(loader=FileSystemLoader(str(path) + os.sep + "templates"))
-    templates = env.loader.list_templates()
-    cpu = ""
-    for t in templates:
-        log.critical("rendering template %s", t)
-        if t.endswith("tmpl"):
-            tmpl = env.get_template(t)
-            render = tmpl.render(
-                board_list, creation_time=time.ctime(), class_name=class_name, cpu=cpu
-            )
-            # print(render)
-        # print()
-
-    # TODO create files, check for existance and fail on has

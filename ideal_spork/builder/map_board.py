@@ -6,6 +6,8 @@ log = logger(__name__)
 from ..peripheral import *
 from ..utils import search
 
+# TODO the return data is not well formed
+
 
 def _res_for_board(board_instance):
     res = list(board_instance.resources.keys())
@@ -23,8 +25,9 @@ def get_resources(board_instance):
     drivers = []
     driver_list = search.catalog.sections["driver"]
     for res in res_names:
+        log.debug("Resource {:s}".format(res))
         if res in driver_list:
-            log.warning("Have driver for %s", res)
+            log.info("Have driver for %s", res)
             drivers.append((res, driver_list[res]))
             residual.remove(res)
     return (drivers, residual)
@@ -34,7 +37,7 @@ def check_clock(board_instance):
     " Check if the default clock is < 22Mhz, if not divide"
     default_freq = board_instance.default_clk_frequency
     if default_freq > 22e6:
-        log.critical("Clock at %s is to fast need to divide", default_freq)
+        log.critical("Clock at %s is to fast need too divide", default_freq)
     log.critical("Clock check Unfinshed")
     clock = None
     res_names = _res_for_board(board_instance)
@@ -54,7 +57,7 @@ def map_connectors(board_instance):
 
 
 def map_devices(board):
-    " Convert a board type into drivers and clocks"
+    " Convert a board type into drivers, io  and clocks"
     log.info("Map board devices for %s", board)
     board_instance = board["cls"]()
     log.debug("Find drivers for the given board")
@@ -63,4 +66,13 @@ def map_devices(board):
     clock = check_clock(board_instance)
     log.debug("Map connectors and IO")
     io = map_connectors(board_instance)
-    return (clock, devices, residual, io)
+    o = type(
+        "device",
+        (object,),
+        dict(clock=clock, devices=devices, residual=residual, io=io),
+    )
+    log.critical(o.devices)
+    return o
+
+
+#    return (clock, devices, residual, io)

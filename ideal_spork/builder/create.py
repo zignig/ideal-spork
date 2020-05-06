@@ -131,6 +131,6 @@ class BoardBuilder:
             devices=devices,
             force=self.force,
         )
-        builder.generate()  # TODO add directory target
+        builder.build()  # TODO add directory target
 
         log.warning(devices)
