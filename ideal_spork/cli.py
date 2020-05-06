@@ -32,7 +32,7 @@ def as_options(parser):
         help="Specify the name of the class to generate",
     )
     init_action.add_argument(
-        "-c", "--construct", help="Select a construct", default="Blinky"
+        "-c", "--construct", help="Select a construct", default=None
     )
     init_action.add_argument(
         "-f", "--force", help="Force board creation", action="store_true"

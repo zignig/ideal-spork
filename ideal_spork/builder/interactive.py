@@ -3,7 +3,7 @@
 __all__ = ["select_from_list", "get_name"]
 
 # select an item from a list
-def select_from_list(items, name="Thing"):
+def select_from_list(items, name="Thing", as_num=False):
     " select by number "
     count = len(items) - 1
     val = 0
@@ -23,7 +23,10 @@ def select_from_list(items, name="Thing"):
             print("Selection out of range")
             continue
         break
-    return items[val]
+    if as_num:
+        return val
+    else:
+        return items[val]
 
 
 def get_name(prompt, default):

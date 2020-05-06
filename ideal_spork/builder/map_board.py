@@ -41,7 +41,7 @@ def check_clock(board_instance):
 
 def map_devices(board):
     " Convert a board type into drivers and clocks"
-    log.info("MAP board devices for %s", board)
+    log.info("Map board devices for %s", board)
     board_instance = board["cls"]()
     devices, residual = get_resources(board_instance)
     clock = check_clock(board_instance)

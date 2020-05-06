@@ -62,9 +62,7 @@ class BoardBuilder:
         self.construct = construct
 
     def build(self):
-        log.debug("Build a board")
         log.info("Select a board")
-        log.critical(self.board)
         if self.interactive and (self.board is None):
             self.board = select_board()
             log.info("Interactive answer %s", self.board)
@@ -76,13 +74,17 @@ class BoardBuilder:
                 return
 
         log.info("Select a construct")
-        if self.interactive:
+        if self.interactive and (self.construct is None):
             self.construct = interactive_construct(available, self.construct)
         else:
-            self.construct = check_construct(available, self.construct, self.board)
+            self.construct = check_construct(available, self.construct)
+            if self.construct is None:
+                print('Use "spork init -c <construct>" to select a construct')
+                print("or... spork init -i for console questions\n")
+                return
 
-        log.warning("Selected Board %s", self.board)
-        log.warning("Selected Construct %s", self.construct)
+        log.critical("Selected Board %s", self.board)
+        log.critical("Selected Construct %s", self.construct)
 
         # At this point we have checked boards and constructs
 
