@@ -1,10 +1,11 @@
 # Board builder
 
-from .select_board import interactive, show_list, check_board
-from .construct import choose_construct, interactive_construct
-from ..logger import logger
+from .select_board import select_board, show_list, check_board
+from .construct import check_construct, interactive_construct
 from .map_board import map_devices
 from .interactive import select_from_list
+
+from ..logger import logger
 
 log = logger(__name__)
 
@@ -37,11 +38,12 @@ class CSR(Construct):
 
 
 class Boneless(Construct):
-
+    " Boneless processor with peripherals"
     pass
 
 
 class Sequencer(Construct):
+    " Base command sequencer (UNFINISHED)"
     pass
 
 
@@ -62,23 +64,22 @@ class BoardBuilder:
     def build(self):
         log.debug("Build a board")
         log.info("Select a board")
-        if self.interactive:
-            interactive(self.board)
+        log.critical(self.board)
+        if self.interactive and (self.board is None):
+            self.board = select_board()
+            log.info("Interactive answer %s", self.board)
         else:
+            self.board = check_board(self.board)
             if self.board is None:
-                show_list()
                 print('Use "spork init -b <board name>" to select a board')
                 print("or... spork init -i for console questions\n")
-            else:
-                self.board = check_board(self.board)
-                if self.board == None:
-                    return
+                return
 
         log.info("Select a construct")
         if self.interactive:
             self.construct = interactive_construct(available, self.construct)
         else:
-            self.construct = choose_construct(available, self.construct, self.board)
+            self.construct = check_construct(available, self.construct, self.board)
 
         log.warning("Selected Board %s", self.board)
         log.warning("Selected Construct %s", self.construct)

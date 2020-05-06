@@ -4,15 +4,16 @@
 import os, importlib
 
 
+from .interactive import select_from_list
+
 from ..logger import logger
 
 log = logger(__name__)
 
 _boards_built = False
 _boards = None
+
 # Board listings
-
-
 def extract_boards():
     "get a list of all the nmigen_boards"
 
@@ -27,16 +28,13 @@ def extract_boards():
     file_list = os.listdir(path)
     board_files = []
     # get a list of the the board files
-    # display debug once
     for name in file_list:
         if name.endswith(".py"):
             short_name = name.split(".")[0]
             if short_name != "__init__":
-                if not _boards_built:
-                    log.debug("Found board %s", name)
+                log.debug("Found board %s", name)
                 board_files.append(short_name)
 
-    _boards_built = True
     name_dict = {}
     # get the platform names
     for i in board_files:
@@ -46,6 +44,7 @@ def extract_boards():
             b = board.__dict__[j]
             name_dict[j] = b
     _boards = name_dict
+    _boards_built = True
     return name_dict
 
 
@@ -81,70 +80,18 @@ def show_list():
 
 # Interactive
 
-prolog = """
-----------------------------------------------------------------------------------
-                                       SPORK!
-
-By Answering the following questions...
-
- ideal_spork will generate files to make files for nmigen_* 
-
-----------------------------------------------------------------------------------
-"""
-
 
 def select_board():
     " select one board from all available boards"
     boards = short_list()
-    count = len(boards)
-    val = 0
-    while True:
-        print("Please select a board")
-        print()
-        for num, board in enumerate(boards):
-            print("{:>4}  {}".format(num, board))
-        print()
-        val = input("Select from " + str(count) + " boards >")
-        try:
-            val = int(val)
-        except:
-            print("Not a number")
-            continue
-        if val > count:
-            print("Selection out of range")
-            continue
-        break
-    return boards[val]
-
-
-def get_name(prompt, default):
-    " ask for a name with defaults"
-    val = input(prompt + " (default=" + default + ") >")
-    if val == "":
-        val = default
-    return val
-
-
-def interactive(board=None):
-    " interactive board builder"
-    print(prolog)
-    print()
-    if board is None:
-        board = select_board()
-    else:
-        print("Using board", board)
-    board_list = extract_boards()
-    if board in board_list:
-        current_board = (board, board_list[board])
-        current_board_info = board_info(current_board)
-    else:
-        print("Board does not exist")
-        log.critical("Board not found %s", board)
-        return
+    val = select_from_list(boards, name="Boards")
+    board = check_board(val)
+    return board
 
 
 def check_board(name):
     boards = extract_boards()
+    info = None
     if name in boards:
         info = board_info(get_board(name))
     else:
@@ -152,14 +99,5 @@ def check_board(name):
         for num, board in enumerate(boards):
             print("{:>4}  {}".format(num, board))
         print("\nBoard does not exist\n")
-        name = None
 
     return info
-
-
-# if main
-if __name__ == "__main__":
-    boards = extract_boards()
-    for board in boards.items():
-        info = board_info(board)
-    interactive()

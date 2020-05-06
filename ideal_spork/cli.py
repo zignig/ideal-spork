@@ -117,7 +117,7 @@ def as_main(args=None):
         if the_spork is not None:
             the_spork.show()
         else:
-            log.Critical(".spork file does not exist")
+            log.critical(".spork file does not exist")
         # raise SporkError("SHOULD build and show info and get construct info and issues")
 
     if args.action == "console":

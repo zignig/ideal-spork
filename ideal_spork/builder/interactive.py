@@ -1,9 +1,11 @@
 # interactive helpers
 
+__all__ = ["select_from_list", "get_name"]
+
 # select an item from a list
 def select_from_list(items, name="Thing"):
     " select by number "
-    count = len(items)
+    count = len(items) - 1
     val = 0
     while True:
         print("\nPlease select a", name)
@@ -22,3 +24,11 @@ def select_from_list(items, name="Thing"):
             continue
         break
     return items[val]
+
+
+def get_name(prompt, default):
+    " ask for a name with defaults"
+    val = input(prompt + " (default=" + default + ") >")
+    if val == "":
+        val = default
+    return val

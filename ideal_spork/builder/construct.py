@@ -19,7 +19,7 @@ def interactive_construct(available, constr):
     return val
 
 
-def choose_construct(available, constr, board):
+def check_construct(available, constr, board):
     constructs = {}
     for c in available:
         constructs[c.__name__] = c
