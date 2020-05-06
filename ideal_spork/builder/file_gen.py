@@ -36,10 +36,9 @@ class FileBuilder:
         f.close()
 
     def generate(self):
-        log.critical("No files generated YET")
         constr = self.construct()
         log.info("Prepare the board info")
-        log.critical(self.board)
+        log.info(self.board)
         info = {
             "creation_time": time.ctime(),
             "module": self.board["module"],
@@ -47,7 +46,7 @@ class FileBuilder:
             "class_name": self.name,
         }
         if hasattr(constr, "files"):
-            log.critical(constr.files)
+            log.debug(constr.files)
             for file_name in constr.files:
                 if file_name not in self.templates:
                     raise TemplateError(
@@ -60,13 +59,13 @@ class FileBuilder:
                 # empty file name is changed to the name target
                 if target_file == None:
                     target_file = self.name.lower() + ".py"
-                log.critical(target_file)
+                log.info(target_file)
                 try:
                     log.debug("Check if the files already exists")
                     stat = os.stat(target_file)
-                    log.critical(stat)
+                    log.debug(stat)
                     if self.force:
-                        log.critical("OVERWRITE ARRRRGHS")
+                        log.critical("over writing file {:s}".format(target_file))
                         self.write_file(target_file, render)
                     else:
                         log.critical(

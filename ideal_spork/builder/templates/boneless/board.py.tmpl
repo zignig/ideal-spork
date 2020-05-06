@@ -2,7 +2,7 @@
 # Created on {{creation_time}}
 
 from nmigen import *
-from {{module}} import {{name}}
+from {{module}} import {{board_name}}
 
 class {{class_name}}(Elaboratable):
     def __init__(self,platform):
@@ -18,7 +18,7 @@ class {{class_name}}(Elaboratable):
         return m
 
 if __name__ == "__main__":
-    platform = {{name}}()
+    platform = {{board_name}}()
     dut = {{class_name}}(platform)
 
     import argparse

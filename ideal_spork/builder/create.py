@@ -52,7 +52,6 @@ class Boneless(Construct):
     " Boneless processor with peripherals"
 
     def __init__(self):
-        log.critical("No Boneless construct yet")
         self.files = {
             "boneless/firmware.py.tmpl": "firmware.py",
             "boneless/board.py.tmpl": None,
@@ -124,7 +123,7 @@ class BoardBuilder:
         log.critical("Check registered boards")
         # TODO
 
-        log.critical("Template the files")
+        log.info("Template the files")
         builder = FileBuilder(
             name=self.name,
             board=self.board,
