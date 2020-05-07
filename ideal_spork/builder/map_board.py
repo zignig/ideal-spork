@@ -38,7 +38,7 @@ def check_clock(board_instance):
     default_freq = board_instance.default_clk_frequency
     if default_freq > 22e6:
         log.critical("Clock at %s is to fast need too divide", default_freq)
-    log.critical("Clock check Unfinshed")
+    log.warning("Clock check Unfinshed")
     clock = None
     res_names = _res_for_board(board_instance)
     for res in res_names:
@@ -58,10 +58,10 @@ def map_connectors(board_instance):
 
 def map_devices(board):
     " Convert a board type into drivers, io  and clocks"
-    log.info("Map board devices for %s", board)
+    log.info("Map board devices for %s", board["class_name"])
     board_instance = board["cls"]()
     log.debug("Find drivers for the given board")
-    devices, residual = get_resources(board_instance)
+    peripherals, residual = get_resources(board_instance)
     log.debug("Check the clock settings")
     clock = check_clock(board_instance)
     log.debug("Map connectors and IO")
@@ -70,7 +70,6 @@ def map_devices(board):
     o = type(
         "device",
         (object,),
-        dict(clock=clock, devices=devices, residual=residual, io=io),
+        dict(clock=clock, peripherals=peripherals, residual=residual, io=io),
     )
-    log.critical(o.devices)
     return o

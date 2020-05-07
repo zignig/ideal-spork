@@ -15,8 +15,8 @@ __all__ = ["Empty", "Blinky", "CSR", "Boneless", "Sequencer"]
 # 1. Select Board
 # 2. Select Construct
 # 3. Based on construct build peripherals
-# 4. Use ideal_spork imports or copy locally ( as a question )
-# 5. build and deploy
+# TODO 4. Use ideal_spork imports or copy locally ( as a question )
+# TODO 5. build and deploy
 
 
 class Construct:
@@ -41,7 +41,7 @@ class Blinky(Construct):
 
 
 class CSR(Construct):
-    " Just a CSR interface for all available drivers"
+    " Just a CSR interface for all available drivers (UNFINISHED)"
 
     def __init__(self):
         log.critical("No CSR construct yet")
@@ -49,7 +49,7 @@ class CSR(Construct):
 
 
 class Boneless(Construct):
-    " Boneless processor with peripherals"
+    " Boneless processor with peripherals (IN PROGRESS)"
 
     def __init__(self):
         self.files = {
@@ -113,7 +113,7 @@ class BoardBuilder:
                 print("or... spork init -i for console questions\n")
                 return
 
-        log.info("Selected Board %s", self.board)
+        log.info("Selected Board %s", self.board["class_name"])
         log.info("Selected Construct %s", self.construct)
 
         # At this point we have checked boards and constructs
@@ -133,5 +133,3 @@ class BoardBuilder:
             force=self.force,
         )
         builder.build()  # TODO add directory target
-
-        log.warning(devices)

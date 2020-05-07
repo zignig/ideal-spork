@@ -4,18 +4,23 @@
 from nmigen import *
 from {{module}} import {{board_name}}
 
-class {{class_name}}(Elaboratable):
-    def __init__(self,platform):
-        # Add some resources
-        platform.add_resources([
-        ]) 
-{% if cpu %}
-{{ cpu | indent(8,True) }}
+{% if imports %}
+# Extra imports
+{%- for imp in imports %}
+{{ imp -}}
+{% endfor %}
 {% endif %}
-    def elaborate(self,platform):
+
+class {{class_name}}(Elaboratable):
+    def __init__(self, platform):
+        # Add some resources
+        platform.add_resources([])
+
+    def elaborate(self, platform):
         m = Module()
         # Code here
         return m
+
 
 if __name__ == "__main__":
     platform = {{board_name}}()
@@ -30,10 +35,11 @@ if __name__ == "__main__":
 
     if args.simulate:
         from nmigen.cli import pysim
+
         with pysim.Simulator(dut, vcd_file=open("view_{{class_name}}.vcd", "w")) as sim:
             sim.add_clock(1e-3)
             sim.run_until(1000, run_passive=True)
 
     if args.program:
-        plaform.build(dut,do_program=True)
+        platform.build(dut, do_program=True)
 
