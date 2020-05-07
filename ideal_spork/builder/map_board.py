@@ -9,7 +9,33 @@ from ..utils import search
 # TODO the return data is not well formed
 
 
+class BoardError(Exception):
+    pass
+
+
+class BoardInfo:
+    " Class to hold all the board information "
+    # this construct is useful.
+    def __init__(self):
+        object.__setattr__(self, "sections", [])
+
+    def __setattr__(self, name, value):
+        log.debug("{:s} {:s}".format(str(name), str(value)))
+        if hasattr(self, name):
+            raise BoardError("Board section {:s} already exists".format(name))
+        object.__setattr__(self, name, value)
+        self.sections.append(name)
+
+    def as_dict(self):
+        the_dict = {}
+        for i in self.sections:
+            log.debug("{:s} : {:s}".format(str(i), str(self.sections[i])))
+            the_dict[i] = getattr(self, i)
+        return the_dict
+
+
 def _res_for_board(board_instance):
+    " Get a list of all the resources of a board "
     res = list(board_instance.resources.keys())
     res_names = set()
     for i in res:
@@ -37,7 +63,12 @@ def check_clock(board_instance):
     " Check if the default clock is < 22Mhz, if not divide"
     default_freq = board_instance.default_clk_frequency
     if default_freq > 22e6:
-        log.critical("Clock at %s is to fast need too divide", default_freq)
+        in_Mhz = int(default_freq / 1e6)
+        log.warning(
+            "{:s} clock too fast at {:s} Mhz.".format(
+                str(board_instance.__module__), str(in_Mhz)
+            )
+        )
     log.warning("Clock check Unfinshed")
     clock = None
     res_names = _res_for_board(board_instance)
@@ -49,7 +80,7 @@ def check_clock(board_instance):
 
 
 def map_connectors(board_instance):
-    log.debug("Find the connectors and IO")
+    log.info("Find the connectors and IO")
     conn = board_instance.connectors
     for c in conn:
         log.info("{:s} - {:s}".format(str(c), str(conn[c])))
@@ -59,6 +90,7 @@ def map_connectors(board_instance):
 def map_devices(board):
     " Convert a board type into drivers, io  and clocks"
     log.info("Map board devices for %s", board["class_name"])
+    # Make an instance of the board
     board_instance = board["cls"]()
     log.debug("Find drivers for the given board")
     peripherals, residual = get_resources(board_instance)

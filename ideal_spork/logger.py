@@ -4,7 +4,7 @@ log_level = logging.ERROR
 
 fomattingter = logging.Formatter(
     fmt="%(asctime)s - %(levelname)s - %(message)s \t  %(name)s - line %(lineno)s - (%(funcName)s)",
-    datefmt="%Y%m%d %I:%M:%S",
+    datefmt="%Y%m%d %H:%M:%S",
 )
 # fomattingter = logging.Formatter( fmt="%(asctime)s - %(levelname)s %(name)s.%(funcName)s - %(message)s")
 

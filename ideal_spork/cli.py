@@ -11,7 +11,7 @@ from .utils.spork_file import load_spork
 
 description = "spork is a nmigen board build helper"
 epilog = """\
-    You probably want "spork init -i" 
+        You probably want "spork init -i" \n\n
     """
 
 
@@ -21,6 +21,12 @@ class SporkError(Exception):
 
 def as_options(parser):
     action = parser.add_subparsers(dest="action")
+
+    # Developer tools
+
+    from developer import developer_tooling
+
+    developer_tooling(parser)
 
     # Create a new SPORK
     init_action = action.add_parser("init", help="Create files for a  new board")
