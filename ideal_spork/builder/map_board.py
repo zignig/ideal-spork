@@ -37,7 +37,7 @@ def check_clock(board_instance):
     " Check if the default clock is < 22Mhz, if not divide"
     default_freq = board_instance.default_clk_frequency
     if default_freq > 22e6:
-        log.warning("Clock at %s is to fast need too divide", default_freq)
+        log.critical("Clock at %s is to fast need too divide", default_freq)
     log.warning("Clock check Unfinshed")
     clock = None
     res_names = _res_for_board(board_instance)

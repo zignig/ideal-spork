@@ -64,44 +64,53 @@ optional arguments:
 
 ideal_spork is a nmigen_board builder spork init will create all the files for
 a platform build
+
+This is a developer library, if you run the following it will dump every nmigen_board available
+
+> python -m ideal_spork --dumpall 
+
 ```
 ## Available boards
 This is generated from [nmigen_boards](https://github.com/nmigen/nmigen-boards)
 ```
-   0  ECP55GEVNPlatform
-   1  DE0CVPlatform
-   2  ICE40HX8KBEVNPlatform
-   3  UpduinoV2Platform
-   4  MercuryPlatform
-   5  DE10LitePlatform
-   6  TinyFPGAAX1Platform
-   7  ICE40HX1KBlinkEVNPlatform
-   8  AlchitryAuPlatform
-   9  VersaECP5Platform
-  10  DE0Platform
-  11  BlackIcePlatform
-  12  VersaECP55GPlatform
-  13  ICE40UP5KBEVNPlatform
-  14  AtlysPlatform
-  15  BlackIceIIPlatform
-  16  FomuHackerPlatform
-  17  TinyFPGAAX2Platform
-  18  FomuPVTPlatform
-  19  ArtyZ720Platform
-  20  ZTurnLiteZ010Platform
-  21  NumatoMimasPlatform
-  22  UpduinoV1Platform
-  23  Nexys4DDRPlatform
-  24  SK_XC6SLX9Platform
-  25  KCU105Platform
-  26  ArtyA7Platform
-  27  KC705Platform
-  28  TinyFPGABXPlatform
-  29  MisterPlatform
-  30  ICEStickPlatform
-  31  DE10NanoPlatform
-  32  ZTurnLiteZ007SPlatform
-  33  ICEBreakerPlatform
+ Available Boards
+
+   0  ecp5_5g_evn
+   1  de0_cv
+   2  ice40_hx8k_b_evn
+   3  upduino_v2
+   4  mercury
+   5  de10_lite
+   6  tinyfpga_ax1
+   7  ice40_hx1k_blink_evn
+   8  alchitry_au
+   9  versa_ecp5
+  10  de0
+  11  blackice
+  12  versa_ecp5_5g
+  13  ice40_up5k_b_evn
+  14  atlys
+  15  blackice_ii
+  16  fomu_hacker
+  17  tinyfpga_ax2
+  18  fomu_pvt
+  19  arty_z7
+  20  zturn_lite_z010
+  21  numato_mimas
+  22  upduino_v1
+  23  nexys4ddr
+  24  sk_xc6slx9
+  25  kcu105
+  26  arty_a7
+  27  kc705
+  28  tinyfpga_bx
+  29  mister
+  30  icestick
+  31  de10_nano
+  32  zturn_lite_z007s
+  33  icebreaker
+  34  zignig_dev
+  35  icebreaker_unsnapped
 
 ```
 
@@ -109,10 +118,9 @@ All comments and patches welcome.
 
 # TODO
 
-- [ ] Galactic Domination
 - [ ] Working bootloader
 - [ ] Device drivers
-- [ ] Auto board build
+- [X] Auto board build
 - [ ] All spork tools
 
 

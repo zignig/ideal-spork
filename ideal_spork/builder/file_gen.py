@@ -59,6 +59,7 @@ class FileBuilder:
 
     def write_file(self, target_file, render):
         # TODO error handling
+        log.critical("Writing target file {:s}".format(target_file))
         f = open(target_file, "w")
         f.write(render)
         f.close()

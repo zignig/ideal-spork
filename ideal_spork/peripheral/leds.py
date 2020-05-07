@@ -6,7 +6,7 @@ from ..utils.search import Enroll
 __all__ = ["LedPeripheral"]
 
 
-@Enroll(driver="led")
+@Enroll(driver=["led", "user_led"])
 class LedPeripheral(Peripheral, Elaboratable):
     """Led peripheral.
 
