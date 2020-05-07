@@ -25,7 +25,7 @@ if args.dumpall:
         try:
             devices = map_devices(bi)
             fb = FileBuilder(
-                devices=devices, board=bi, construct=BoardOnly, name=i, force=args.force
+                devices=devices, board=bi, construct=Blinky, name=i, force=args.force
             )
             fb.build()
         except BaseException as b:
