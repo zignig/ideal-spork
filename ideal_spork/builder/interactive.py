@@ -17,7 +17,7 @@ def select_from_list(items, name="Thing", as_num=False):
         try:
             val = int(val)
         except:
-            print("Not a number")
+            print("\nNot a number")
             continue
         if val > (count - 1):
             print("Selection out of range")

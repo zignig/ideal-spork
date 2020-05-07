@@ -38,13 +38,20 @@ class TemplateInfo:
 
 class FileBuilder:
     def __init__(
-        self, name=None, board=None, construct=None, devices=None, force=False
+        self,
+        name=None,
+        board=None,
+        construct=None,
+        devices=None,
+        force=False,
+        local=False,
     ):
         self.board = board
         self.construct = construct
         self.devices = devices
         self.force = force
         self.name = name
+        self.local = local
 
         # internal Constructions
         self.info = TemplateInfo()
@@ -56,6 +63,8 @@ class FileBuilder:
             loader=FileSystemLoader(str(path) + os.sep + "templates")
         )
         self.templates = self.env.loader.list_templates()
+        for templ in self.templates:
+            log.debug("template file {:s}".format(templ))
 
     def write_file(self, target_file, render):
         # TODO error handling
@@ -93,8 +102,6 @@ class FileBuilder:
             else:
                 import_list.append(import_name(i[1][0]))
         self.info.imports = import_list
-
-        #
 
     def generate(self):
         constr = self.construct()

@@ -1,3 +1,4 @@
 - [ ] fix board building
 - [ ] clean up mapping return
 - [ ] move constructs into their own folder
+- [ ] transfer more board info to templating

@@ -1,0 +1,17 @@
+ideal_spork/peripheral/switch.py:3:# TODO , bind multiple switches
+ideal_spork/firmware/runtime.py:66:#TODO align 8
+ideal_spork/firmware/stringer.py:14:# TODO , strings are currently word encoded , wastes a lot of space
+ideal_spork/firmware/base.py:250:    # TODO spill and reuse registers
+ideal_spork/firmware/base.py:392:        # TODO fix register passing
+ideal_spork/cores/periph/bus.py:14:    # TODO export in various formats
+ideal_spork/builder/file_gen.py:64:        # TODO error handling
+ideal_spork/builder/map_board.py:9:# TODO the return data is not well formed
+ideal_spork/builder/map_board.py:101:    # TODO , this is a bit janky
+ideal_spork/builder/create.py:18:# TODO 4. Use ideal_spork imports or copy locally ( as a question )
+ideal_spork/builder/create.py:19:# TODO 5. build and deploy
+ideal_spork/builder/create.py:21:# TODO move into folders
+ideal_spork/builder/create.py:137:        # TODO load and check reigistered boards.
+ideal_spork/builder/create.py:148:        builder.build()  # TODO add directory target
+ideal_spork/cli.py:76:    # Simulate TODO convert to compiled sim
+ideal_spork/cli.py:104:        # TODO use directory for this file
+README.md:119:# TODO

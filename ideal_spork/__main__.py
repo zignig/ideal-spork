@@ -1,5 +1,9 @@
 " Module level main"
-from .logger import logger
+
+import sys
+
+from .logger import logger, set_logging_level
+import logging
 
 log = logger(__name__)
 
@@ -15,8 +19,25 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--dumpall", help="generate Empty for all boards", action="store_true"
 )
-parser.add_argument("--force", help="force overwrite", action="store_true")
+parser.add_argument("-f", "--force", help="force overwrite", action="store_true")
+parser.add_argument("-v", help="Warn Logging Level", action="store_true")
+parser.add_argument("-vv", help="Info Logging Level", action="store_true")
+parser.add_argument("-vvv", help="Debug Logging Level", action="store_true")
+
 args = parser.parse_args()
+
+# show help if nothing
+if len(sys.argv) == 1:
+    parser.print_help(sys.stderr)
+    sys.exit(1)
+
+# Turn on verbosity
+if args.v:
+    set_logging_level(logging.WARNING)
+if args.vv:
+    set_logging_level(logging.INFO)
+if args.vvv:
+    set_logging_level(logging.DEBUG)
 
 if args.dumpall:
     full_list = extract_boards()

@@ -18,6 +18,8 @@ __all__ = ["Empty", "Blinky", "CSR", "Boneless", "Sequencer", "BoardOnly"]
 # TODO 4. Use ideal_spork imports or copy locally ( as a question )
 # TODO 5. build and deploy
 
+# TODO move into folders
+
 
 class Construct:
     pass
@@ -103,13 +105,14 @@ class BoardBuilder:
         log.info("Select a board")
         print(self.prolog)
         if self.interactive and (self.board is None):
-            self.board = select_board()
             log.info("Interactive answer %s", self.board)
+            self.board = select_board()
         else:
             self.board = check_board(self.board)
             if self.board is None:
                 print('Use "spork init -b <board name>" to select a board')
                 print("or... spork init -i for console questions\n")
+                print()
                 return
 
         log.info("Select a construct")
@@ -120,18 +123,19 @@ class BoardBuilder:
             if self.construct is None:
                 print('Use "spork init -c <construct>" to select a construct')
                 print("or... spork init -i for console questions\n")
+                print()
                 return
 
         log.info("Selected Board %s", self.board["class_name"])
         log.info("Selected Construct %s", self.construct)
 
-        # At this point we have checked boards and constructs
+        # At this point we have checked boards and constructs.
 
         log.info("Map all the IO")
         devices = map_devices(self.board)
 
         log.critical("Check registered boards")
-        # TODO
+        # TODO load and check reigistered boards.
 
         log.info("Template the files")
         builder = FileBuilder(
@@ -140,5 +144,6 @@ class BoardBuilder:
             construct=self.construct,
             devices=devices,
             force=self.force,
+            local=self.local,
         )
         builder.build()  # TODO add directory target

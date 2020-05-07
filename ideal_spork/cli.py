@@ -24,7 +24,7 @@ def as_options(parser):
 
     # Developer tools
 
-    from developer import developer_tooling
+    from .developer import developer_tooling
 
     developer_tooling(parser)
 
@@ -32,7 +32,7 @@ def as_options(parser):
     init_action = action.add_parser("init", help="Create files for a  new board")
     init_action.add_argument("-b", "--board", help="Specify the board to generate")
     init_action.add_argument(
-        "name", default="MySpork", help="Specify the name of the class to generate"
+        "BoardName", default="MySpork", help="Specify the name of the class to generate"
     )
     init_action.add_argument(
         "-c", "--construct", help="Select a construct", default=None
@@ -101,10 +101,14 @@ def as_main(args=None):
     # Check for the .spork file
     the_spork = None
     try:
+        # TODO use directory for this file
         s = os.stat(".spork")
         log.debug("spork file exists")
         the_spork = load_spork(".spork")
     except FileNotFoundError:
+        log.critical("Spork file missing")
+        log.critical("Please template the .spork file")
+        log.critical("Check for .fork file")
         print("No spork file")
 
     if len(sys.argv) == 1:
@@ -119,7 +123,7 @@ def as_main(args=None):
             force=args.force,
             interactive=args.interactive,
             construct=args.construct,
-            name=args.name,
+            name=args.BoardName,
             local=args.local,
         )
         bb.build()
@@ -129,6 +133,7 @@ def as_main(args=None):
             the_spork.show()
         else:
             log.critical(".spork file does not exist")
+            raise SporkError("Spork info UNFINISHED")
 
     if args.action == "console":
         from .host.console import Console
@@ -139,10 +144,10 @@ def as_main(args=None):
 
     if args.action == "burn":
         # Add the firmware onto the boot system
-        raise SporkError("Burn not working yet")
+        raise SporkError("UNFINISHED - Burn not working yet")
 
     if args.action == "status":
-        raise SporkError("Status not working yet, get board status")
+        raise SporkError("UNFINISHED  - Status not working yet, get board status")
 
     if args.action == "list":
         from .builder.select_board import short_list
@@ -154,7 +159,7 @@ def as_main(args=None):
         print()
 
     if args.action == "build":
-        raise SporkError("Build unfinished: make gateware and upload")
+        raise SporkError("UNFINISHED - Build unfinished: make gateware and upload")
 
     if args.action == "program":
         if args.program == None:
@@ -165,9 +170,9 @@ def as_main(args=None):
                     "No default firmware use -p to specify or add 'firmware: <name>' to the .spork file"
                 )
         else:
-            log.critical("Run this program, unfinished")
+            log.critical("UNFINISHED - Run this program, unfinished")
 
         raise SporkError("Program Unfinished")
 
     if args.action == "gatesim":
-        raise SporkError("BORK! : gatesim in pysim or ctxxx")
+        raise SporkError("UNFINISHED - gatesim in pysim or ctxxx")
