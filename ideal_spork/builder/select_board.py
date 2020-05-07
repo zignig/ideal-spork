@@ -8,6 +8,9 @@ from .interactive import select_from_list
 
 from ..logger import logger
 
+# Import pre-sporked boards
+from ..boards import extra_boards
+
 log = logger(__name__)
 
 _boards_built = False
@@ -42,7 +45,13 @@ def extract_boards():
         platform = board.__all__[0]
         class_name = board.__dict__[platform]
         name_dict[f] = (class_name, platform)
-    # print(name_dict)
+
+    # get the extra boards
+    for platform in extra_boards.extra:
+        log.debug("Extra board {:s}".format(platform))
+        class_name = getattr(extra_boards, platform)
+        name_dict[platform] = (class_name, platform)
+
     _boards = name_dict
     _boards_built = True
     return name_dict

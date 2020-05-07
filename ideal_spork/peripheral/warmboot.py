@@ -8,7 +8,7 @@ from ..logger import logger
 log = logger(__name__)
 
 
-@Enroll(platform="ice40", provides="warmboot")
+@Enroll(platform="ice40", provides="warmboot", device="reset_pin")
 class WarmBoot(Peripheral, Elaboratable):
     def __init__(self):
         log.info("Create Warmboot Peripheral")

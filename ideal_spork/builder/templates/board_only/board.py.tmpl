@@ -1,0 +1,18 @@
+# Spork templated file
+# Created on {{creation_time}}
+# Bare board
+
+from nmigen import *
+from {{module}} import {{board_name}}
+
+
+class {{class_name}}({{board_name}}):
+    __sporked__ = True
+    resources = {{board_name}}.resources + [
+    {% if resources%}
+    # Extra imports
+    {%- for res in resources %}
+    {{ imp -}}
+    {% endfor %}
+    {% endif %}
+    ]

@@ -10,7 +10,7 @@ from ..logger import logger
 
 log = logger(__name__)
 
-__all__ = ["Empty", "Blinky", "CSR", "Boneless", "Sequencer"]
+__all__ = ["Empty", "Blinky", "CSR", "Boneless", "Sequencer", "BoardOnly"]
 
 # 1. Select Board
 # 2. Select Construct
@@ -28,6 +28,13 @@ class Empty(Construct):
 
     def __init__(self):
         self.files = {"empty/board.py.tmpl": None}
+
+
+class BoardOnly(Construct):
+    " Just subclass the board "
+
+    def __init__(self):
+        self.files = {"board_only/board.py.tmpl": None}
 
 
 class Blinky(Construct):
@@ -67,7 +74,7 @@ class Sequencer(Construct):
         self.files = []
 
 
-available = [Empty, Blinky, Boneless, Sequencer, CSR]
+available = [Empty, BoardOnly, Blinky, Boneless, Sequencer, CSR]
 
 
 class BoardBuilder:

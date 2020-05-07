@@ -22,5 +22,5 @@ if args.dumpall:
     for i in full_list:
         bi = board_info(get_board(i))
         print(bi)
-        fb = FileBuilder(board=bi, construct=Blinky, name=i, force=args.force)
+        fb = FileBuilder(board=bi, construct=BoardOnly, name=i, force=args.force)
         fb.generate()
