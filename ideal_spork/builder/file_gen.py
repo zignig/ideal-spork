@@ -68,7 +68,7 @@ class FileBuilder:
         self.generate()
 
     def collate(self):
-        log.critical("Collate information for templating")
+        log.info("Collate information for templating")
 
         # Create imports for the peripherals
         dev = self.devices.peripherals
@@ -128,7 +128,7 @@ class FileBuilder:
                     stat = os.stat(target_file)
                     log.debug(stat)
                     if self.force:
-                        log.critical("Over writing file {:s}".format(target_file))
+                        log.warning("Over writing file {:s}".format(target_file))
                         self.write_file(target_file, render)
                     else:
                         log.critical(
