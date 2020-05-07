@@ -37,6 +37,11 @@ def as_options(parser):
     init_action.add_argument(
         "-i", "--interactive", help="Interactive board creation", action="store_true"
     )
+    init_action.add_argument(
+        "--local",
+        help="Create local files, does not need ideal_spork to run",
+        action="store_true",
+    )
 
     # Unbound
     action.add_parser("info", help="Get information from the base board")
@@ -73,6 +78,7 @@ def as_main(args=None):
         parser.add_argument("-v", help="Warn Logging Level", action="store_true")
         parser.add_argument("-vv", help="Info Logging Level", action="store_true")
         parser.add_argument("-vvv", help="Debug Logging Level", action="store_true")
+        # Unfinished
         parser.add_argument(
             "-d", "--directory", help="Directory for spork file", default="."
         )
@@ -108,6 +114,7 @@ def as_main(args=None):
             interactive=args.interactive,
             construct=args.construct,
             name=args.name,
+            local=args.local,
         )
         bb.build()
 
@@ -116,7 +123,6 @@ def as_main(args=None):
             the_spork.show()
         else:
             log.critical(".spork file does not exist")
-        # raise SporkError("SHOULD build and show info and get construct info and issues")
 
     if args.action == "console":
         from .host.console import Console

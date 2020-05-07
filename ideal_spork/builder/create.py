@@ -87,6 +87,7 @@ class BoardBuilder:
         force=False,
         interactive=False,
         construct=None,
+        local=False,
         name="TheSPORK",
     ):
         log.debug("Activate the board builder")
@@ -95,6 +96,7 @@ class BoardBuilder:
         self.force = force
         self.interactive = interactive
         self.construct = construct
+        self.local = local
         self.name = name
 
     def build(self):
