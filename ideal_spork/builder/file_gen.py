@@ -31,8 +31,9 @@ class TemplateInfo:
     def as_dict(self):
         the_dict = {}
         for i in self.sections:
-            log.debug(i)
-            the_dict[i] = getattr(self, i)
+            val = getattr(self, i)
+            log.debug("Template := {:s} - {:s}".format(i, str(val)))
+            the_dict[i] = val
         return the_dict
 
 
@@ -101,6 +102,7 @@ class FileBuilder:
                 import_list.append(import_name(i[1][-1]))
             else:
                 import_list.append(import_name(i[1][0]))
+
         self.info.imports = import_list
 
     def generate(self):
@@ -114,7 +116,7 @@ class FileBuilder:
         self.info.class_name = self.name
 
         if hasattr(constr, "files"):
-            log.debug(constr.files)
+            log.debug("Template files {:s}".format(str(constr.files)))
             for file_name in constr.files:
                 if file_name not in self.templates:
                     raise TemplateError(
@@ -144,6 +146,5 @@ class FileBuilder:
                                 target_file
                             )
                         )
-                        raise TemplateError("File {:s} exists".format(file_name))
                 except:
                     self.write_file(target_file, render)

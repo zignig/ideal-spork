@@ -61,9 +61,9 @@ def get_resources(board_instance):
 
 def check_clock(board_instance):
     " Check if the default clock is < 22Mhz, if not divide"
+    log.warning("Clock check Unfinshed")
     clock = []
     if hasattr(board_instance, "default_clk_frequency"):
-        log.info("Board does not have exteral clock")
         default_freq = board_instance.default_clk_frequency
         if default_freq > 22e6:
             in_Mhz = int(default_freq / 1e6)
@@ -72,12 +72,13 @@ def check_clock(board_instance):
                     str(board_instance.__module__), str(in_Mhz)
                 )
             )
-            log.warning("Clock check Unfinshed")
             res_names = _res_for_board(board_instance)
             for res in res_names:
                 if res.startswith("clk"):
                     log.debug("Clock %s", str(res))
                     clock.append(res)
+    else:
+        log.info("Board does not have exteral clock")
     return clock
 
 
@@ -100,10 +101,10 @@ def map_devices(board):
     clock = check_clock(board_instance)
     log.debug("Map connectors and IO")
     io = map_connectors(board_instance)
-    # TODO , this is a bit janky
-    o = type(
-        "device",
-        (object,),
-        dict(clock=clock, peripherals=peripherals, residual=residual, io=io),
-    )
-    return o
+    log.debug("Build the info block")
+    bi = BoardInfo()
+    bi.clock = clock
+    bi.peripherals = peripherals
+    bi.residual = residual
+    bi.io = io
+    return bi

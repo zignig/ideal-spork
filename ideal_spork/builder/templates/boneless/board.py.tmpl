@@ -10,16 +10,20 @@ from {{module}} import {{board_name}}
 {{ imp -}}
 {% endfor %}
 {% endif %}
-# Boneless 
-from boneless.arch.opcode import Instr
-from boneless.arch.opcode import *
 
 class {{class_name}}(Elaboratable):
     def __init__(self, platform,firmware=None,mem_size=512):
+
         self.platform = platform
+
         self.cpu = cpu = BonelessSpork(firmware=firmware, mem_size=mem_size)
 
+        {% if peripherals %}
         # Attach peripherals
+        {%- for per in peripherals %}
+        {{ per -}}
+        {% endfor %}
+        {% endif %}
 
 
     def elaborate(self, platform):
