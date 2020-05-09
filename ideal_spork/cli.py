@@ -22,12 +22,6 @@ class SporkError(Exception):
 def as_options(parser):
     action = parser.add_subparsers(dest="action")
 
-    # Developer tools
-
-    from .developer import developer_tooling
-
-    developer_tooling(action)
-
     # Create a new SPORK
     init_action = action.add_parser("init", help="Create files for a  new board")
     init_action.add_argument("-b", "--board", help="Specify the board to generate")
@@ -75,6 +69,13 @@ def as_options(parser):
 
     # Simulate TODO convert to compiled sim
     action.add_parser("gatesim", help="Run a gate simulation of the board")
+
+    # Developer tools
+
+    from .developer import developer_tooling
+
+    developer_tooling(action)
+
     return parser
 
 

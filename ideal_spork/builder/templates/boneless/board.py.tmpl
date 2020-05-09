@@ -10,15 +10,23 @@ from {{module}} import {{board_name}}
 {{ imp -}}
 {% endfor %}
 {% endif %}
+# Boneless 
+from boneless.arch.opcode import Instr
+from boneless.arch.opcode import *
 
 class {{class_name}}(Elaboratable):
-    def __init__(self, platform):
-        # Add some resources
-        platform.add_resources([])
+    def __init__(self, platform,firmware=None,mem_size=512):
+        self.platform = platform
+        self.cpu = cpu = BonelessSpork(firmware=firmware, mem_size=mem_size)
+
+        # Attach peripherals
+
 
     def elaborate(self, platform):
         m = Module()
-        # Code here
+        # Attach the cpu
+        m.submodules.cpu = self.cpu
+        # Attach the external reset
         return m
 
 

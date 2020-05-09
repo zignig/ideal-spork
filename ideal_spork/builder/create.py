@@ -16,67 +16,8 @@ __all__ = ["Empty", "Blinky", "CSR", "Boneless", "Sequencer", "BoardOnly"]
 # 2. Select Construct
 # 3. Based on construct build peripherals
 # TODO 4. Use ideal_spork imports or copy locally ( as a question )
-# TODO 5. build and deploy
 
-# TODO move into folders
-
-
-class Construct:
-    pass
-
-
-class Empty(Construct):
-    " Empty board with nothing "
-
-    def __init__(self):
-        self.files = {"empty/board.py.tmpl": None}
-
-
-class BoardOnly(Construct):
-    " Just subclass the board "
-
-    def __init__(self):
-        self.files = {"board_only/board.py.tmpl": None}
-
-
-class Blinky(Construct):
-    " Blink with switch and button invert "
-
-    def __init__(self):
-        self.files = {
-            "blinky/blinky.py.tmpl": "blinky.py",
-            "blinky/board.py.tmpl": None,
-        }
-
-
-class CSR(Construct):
-    " Just a CSR interface for all available drivers (UNFINISHED)"
-
-    def __init__(self):
-        log.critical("No CSR construct yet")
-        self.files = {}
-
-
-class Boneless(Construct):
-    " Boneless processor with peripherals (IN PROGRESS)"
-
-    def __init__(self):
-        self.files = {
-            "boneless/firmware.py.tmpl": "firmware.py",
-            "boneless/board.py.tmpl": None,
-        }
-        self.peripheral = ["TimerPeripheral"]
-
-
-class Sequencer(Construct):
-    " Base command sequencer (UNFINISHED)"
-
-    def __init__(self):
-        log.critical("No Sequencer construct yet")
-        self.files = []
-
-
-available = [Empty, BoardOnly, Blinky, Boneless, Sequencer, CSR]
+from .constructs import *
 
 
 class BoardBuilder:
