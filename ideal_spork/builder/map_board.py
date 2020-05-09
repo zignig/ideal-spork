@@ -61,21 +61,23 @@ def get_resources(board_instance):
 
 def check_clock(board_instance):
     " Check if the default clock is < 22Mhz, if not divide"
-    default_freq = board_instance.default_clk_frequency
-    if default_freq > 22e6:
-        in_Mhz = int(default_freq / 1e6)
-        log.warning(
-            "{:s} clock too fast at {:s} Mhz.".format(
-                str(board_instance.__module__), str(in_Mhz)
+    clock = []
+    if hasattr(board_instance, "default_clk_frequency"):
+        log.info("Board does not have exteral clock")
+        default_freq = board_instance.default_clk_frequency
+        if default_freq > 22e6:
+            in_Mhz = int(default_freq / 1e6)
+            log.warning(
+                "{:s} clock too fast at {:s} Mhz.".format(
+                    str(board_instance.__module__), str(in_Mhz)
+                )
             )
-        )
-    log.warning("Clock check Unfinshed")
-    clock = None
-    res_names = _res_for_board(board_instance)
-    for res in res_names:
-        if res.startswith("clk"):
-            log.debug("Clock %s", str(res))
-            clock = res
+            log.warning("Clock check Unfinshed")
+            res_names = _res_for_board(board_instance)
+            for res in res_names:
+                if res.startswith("clk"):
+                    log.debug("Clock %s", str(res))
+                    clock.append(res)
     return clock
 
 

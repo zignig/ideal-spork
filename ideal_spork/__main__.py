@@ -1,6 +1,6 @@
 " Module level main"
 
-import sys
+import sys, traceback
 
 from .logger import logger, set_logging_level
 import logging
@@ -52,3 +52,4 @@ if args.dumpall:
         except BaseException as b:
             log.error("{:s}".format(i))
             log.error("\t{:s}".format(str(b)))
+            log.error("{:s}".format(str(traceback.print_exc())))

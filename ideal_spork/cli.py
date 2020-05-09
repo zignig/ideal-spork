@@ -26,7 +26,7 @@ def as_options(parser):
 
     from .developer import developer_tooling
 
-    developer_tooling(parser)
+    developer_tooling(action)
 
     # Create a new SPORK
     init_action = action.add_parser("init", help="Create files for a  new board")
