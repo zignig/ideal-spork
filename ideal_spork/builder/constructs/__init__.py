@@ -9,4 +9,4 @@ from .csr import CSR
 from .sequencer import Sequencer
 from .blinky import Blinky
 
-available = [Empty, BoardOnly, Boneless, CSR, Sequencer, Blinky]
+available = [Empty, BoardOnly, Blinky, Boneless, CSR, Sequencer]

@@ -11,3 +11,5 @@ def developer_tooling(action):
     tools = development_parser.add_subparsers(dest="tool")
 
     dump_action = tools.add_parser("dump", help="Dump all the boards")
+
+    print(dump_action)

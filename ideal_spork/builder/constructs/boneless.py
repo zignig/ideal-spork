@@ -11,4 +11,4 @@ class Boneless(Construct):
             "boneless/firmware.py.tmpl": "firmware.py",
             "boneless/board.py.tmpl": None,
         }
-        self.peripheral = ["TimerPeripheral"]
+        self.peripheral = ["TimerPeripheral", "KermitCRC"]

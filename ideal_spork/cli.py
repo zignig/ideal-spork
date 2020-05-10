@@ -11,7 +11,7 @@ from .utils.spork_file import load_spork
 
 description = "spork is a nmigen board build helper"
 epilog = """\
-        You probably want "spork init -i" \n\n
+        You probably want "spork init <project name> -i" \n\n
     """
 
 
@@ -26,7 +26,9 @@ def as_options(parser):
     init_action = action.add_parser("init", help="Create files for a  new board")
     init_action.add_argument("-b", "--board", help="Specify the board to generate")
     init_action.add_argument(
-        "BoardName", default="MySpork", help="Specify the name of the class to generate"
+        "ProjectName",
+        default="MySpork",
+        help="Specify the name of the class to generate",
     )
     init_action.add_argument(
         "-c", "--construct", help="Select a construct", default=None
@@ -45,9 +47,12 @@ def as_options(parser):
 
     # Unbound
     action.add_parser("info", help="Get information from the base board")
-    action.add_parser("console", help="Attach to a new console")
-    action.add_parser("build", help="Build gateware and program onto the board")
-    action.add_parser("status", help="Get the status of the current spork")
+    action.add_parser("console", help="Attach to a new console (UMFINISHED)")
+    action.add_parser(
+        "build", help="Build gateware and program onto the board (UNFINISHED)"
+    )
+    action.add_parser("status", help="Get the status of the current spork (UNFINISHED)")
+    action.add_parser("update", help="Update all the fixed assets (UNFINISHED)")
 
     # List boards and active peripherals
     action.add_parser("list", help="List available boards")
@@ -124,7 +129,7 @@ def as_main(args=None):
             force=args.force,
             interactive=args.interactive,
             construct=args.construct,
-            name=args.BoardName,
+            name=args.ProjectName,
             local=args.local,
         )
         bb.build()

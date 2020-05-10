@@ -69,7 +69,7 @@ class FileBuilder:
 
     def write_file(self, target_file, render):
         # TODO error handling
-        log.warning("Writing target file {:s}".format(target_file))
+        log.critical("Writing target file {:s}".format(target_file))
         f = open(target_file, "w")
         f.write(render)
         f.close()
@@ -87,9 +87,15 @@ class FileBuilder:
         dev_list = []
 
         def import_name(inst):
-            return "from {:s} import {:s}".format(
-                str(inst.__module__), str(inst.__name__)
-            )
+            if self.local:
+                # TODO need to generate local import paths and copy files into place
+                log.critical("Local UNFINISHED")
+                raise TemplateError("No local yet")
+            else:
+                data = "from {:s} import {:s}".format(
+                    str(inst.__module__), str(inst.__name__)
+                )
+            return data
 
         for i in dev:
             log.info(i)

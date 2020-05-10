@@ -75,7 +75,7 @@ class BoardBuilder:
         log.info("Map all the IO")
         devices = map_devices(self.board)
 
-        log.critical("Check registered boards")
+        log.warning("Check registered boards")
         # TODO load and check reigistered boards.
 
         log.info("Template the files")
