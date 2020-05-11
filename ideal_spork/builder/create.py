@@ -43,18 +43,7 @@ class BoardBuilder:
         self.name = name
 
     def build(self):
-        log.info("Select a board")
         print(self.prolog)
-        if self.interactive and (self.board is None):
-            log.info("Interactive answer %s", self.board)
-            self.board = select_board()
-        else:
-            self.board = check_board(self.board)
-            if self.board is None:
-                print('Use "spork init -b <board name>" to select a board')
-                print("or... spork init -i for console questions\n")
-                print()
-                return
 
         log.info("Select a construct")
         if self.interactive and (self.construct is None):
@@ -63,6 +52,18 @@ class BoardBuilder:
             self.construct = check_construct(available, self.construct)
             if self.construct is None:
                 print('Use "spork init -c <construct>" to select a construct')
+                print("or... spork init -i for console questions\n")
+                print()
+                return
+
+        log.info("Select a board")
+        if self.interactive and (self.board is None):
+            log.info("Interactive answer %s", self.board)
+            self.board = select_board()
+        else:
+            self.board = check_board(self.board)
+            if self.board is None:
+                print('Use "spork init -b <board name>" to select a board')
                 print("or... spork init -i for console questions\n")
                 print()
                 return

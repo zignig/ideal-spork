@@ -69,7 +69,7 @@ class FileBuilder:
 
     def write_file(self, target_file, render):
         # TODO error handling
-        log.critical("Writing target file {:s}".format(target_file))
+        log.warning("Writing target file {:s}".format(target_file))
         f = open(target_file, "w")
         f.write(render)
         f.close()
@@ -97,17 +97,27 @@ class FileBuilder:
                 )
             return data
 
+        # collect driver list and compare to remove duplicates
+        driver_list = []
+        driver_class = None
         for i in dev:
-            log.info(i)
+            log.critical(i)
+            log.critical(driver_list)
             if len(i[1]) > 1:
                 log.critical(
                     "{:s} has multiple drivers, using {:s}".format(
                         i[0], str(i[1][-1].__name__)
                     )
                 )
-                import_list.append(import_name(i[1][-1]))
+                driver_class = i[1][-1]
             else:
-                import_list.append(import_name(i[1][0]))
+                driver_class = i[1][0]
+
+            if driver_class in driver_list:
+                log.critical("Driver {:s} already installed".format(str(driver_class)))
+            else:
+                driver_list.append(driver_class)
+                import_list.append(import_name(driver_class))
 
         self.info.imports = import_list
 

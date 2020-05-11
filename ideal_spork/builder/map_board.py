@@ -98,7 +98,7 @@ def map_devices(board):
     log.debug("Find drivers for the given board")
     peripherals, residual = get_resources(board_instance)
     log.debug("Check the clock settings")
-    clock = check_clock(board_instance)
+    clock = None  # check_clock(board_instance)
     log.debug("Map connectors and IO")
     io = map_connectors(board_instance)
     log.debug("Build the info block")
