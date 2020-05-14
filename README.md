@@ -38,34 +38,35 @@ This will install the library and create a program called spork.
 bash> spork
 
 ```
-No spork file
-usage: spork [-h] [-v] [-d DIRECTORY]
-             {init,info,console,build,status,list,burn,program,gatesim} ...
+usage: spork [-h] [-v] [-vv] [-vvv] [-d DIRECTORY]
+             {init,info,console,build,status,update,list,burn,program,gatesim,tools}
+             ...
 
 spork is a nmigen board build helper
 
 positional arguments:
-  {init,info,console,build,status,list,burn,program,gatesim}
+  {init,info,console,build,status,update,list,burn,program,gatesim,tools}
     init                Create files for a new board
     info                Get information from the base board
-    console             Attach to a new console
-    build               Build gateware and program onto the board
-    status              Get the status of the current spork
+    console             Attach to a new console (UMFINISHED)
+    build               Build gateware and program onto the board (UNFINISHED)
+    status              Get the status of the current spork (UNFINISHED)
+    update              Update all the fixed assets (UNFINISHED)
     list                List available boards
     burn                Add the given firmware to boot image
     program             Upload the given firmware onto the board
     gatesim             Run a gate simulation of the board
+    tools               Development Commands
 
 optional arguments:
   -h, --help            show this help message and exit
-  -v, --verbose         Logging Level
+  -v                    Warn Logging Level
+  -vv                   Info Logging Level
+  -vvv                  Debug Logging Level
   -d DIRECTORY, --directory DIRECTORY
                         Directory for spork file
 
-ideal_spork is a nmigen_board builder spork init will create all the files for
-a platform build
-
-This is a developer library, if you run the following it will dump every nmigen_board available
+You probably want "spork init <project name> -i"
 
 > python -m ideal_spork --dumpall 
 

@@ -1,5 +1,7 @@
 # Lifted from
 # https://github.com/tpwrules/tasha_and_friends/blob/master/tastaf/gateware/uart.py#L246
+# Copyright (c) 2020, Thomas Watson
+# With modifications
 
 from nmigen import *
 from ..cores.periph import Peripheral

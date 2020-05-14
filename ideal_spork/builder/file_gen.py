@@ -101,8 +101,7 @@ class FileBuilder:
         driver_list = []
         driver_class = None
         for i in dev:
-            log.critical(i)
-            log.critical(driver_list)
+            log.debug("Device {:s}".format(str(i)))
             if len(i[1]) > 1:
                 log.critical(
                     "{:s} has multiple drivers, using {:s}".format(
@@ -114,7 +113,9 @@ class FileBuilder:
                 driver_class = i[1][0]
 
             if driver_class in driver_list:
-                log.critical("Driver {:s} already installed".format(str(driver_class)))
+                log.warning(
+                    "Driver {:s} already installed not adding".format(str(driver_class))
+                )
             else:
                 driver_list.append(driver_class)
                 import_list.append(import_name(driver_class))
