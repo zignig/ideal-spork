@@ -156,7 +156,6 @@ def as_main(args=None):
         from .host.console import Console
 
         console = Console(the_spork)
-        log.critical("Only does echo test of datetime, for now")
         console.attach()
         console.command_line()
 
@@ -166,6 +165,9 @@ def as_main(args=None):
 
     if args.action == "status":
         raise SporkError("UNFINISHED  - Status not working yet, get board status")
+
+    if args.action == "update":
+        raise SporkError("UNFINISHED  - Update not working yet, get board status")
 
     if args.action == "list":
         from .builder.select_board import short_list
@@ -177,6 +179,7 @@ def as_main(args=None):
         print()
 
     if args.action == "build":
+        log.error("build is (UNFINISHED)")
         raise SporkError("UNFINISHED - Build unfinished: make gateware and upload")
 
     if args.action == "program":

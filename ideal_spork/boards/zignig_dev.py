@@ -9,9 +9,10 @@ log = logger(__name__)
 class zignig_dev(TinyFPGABXPlatform):
     comment = """
     
-    This is a bread boarded tinyby , with some leds and an FTDI  
+    This is a bread boarded tinybx , with some leds and an FTDI  
     
     """
 
     def __init__(self):
         log.critical("unbuilt")
+        self.usb = "0403:6001"

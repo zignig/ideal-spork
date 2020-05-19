@@ -19,3 +19,4 @@ class TinyFPGABXPlatform:
 
     def __init__(self):
         log.critical("unbuilt")
+        self.usb = "1209:2100"

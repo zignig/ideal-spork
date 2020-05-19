@@ -21,7 +21,7 @@ class ASpork:
         self.data = attr
         log.info("Spork file entries %s", attr)
         for i in attr:
-            log.debug(i)
+            log.debug("{:s} -> {:s}".format(i, str(attr[i])))
             setattr(self, i, attr[i])
 
     def show(self):

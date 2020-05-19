@@ -32,7 +32,7 @@ class TemplateInfo:
         the_dict = {}
         for i in self.sections:
             val = getattr(self, i)
-            log.debug("Template := {:s} - {:s}".format(i, str(val)))
+            log.debug("Template -> {:s} - {:s}".format(i, str(val)))
             the_dict[i] = val
         return the_dict
 

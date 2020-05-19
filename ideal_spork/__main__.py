@@ -48,7 +48,7 @@ if args.dumpall:
             fb = FileBuilder(
                 devices=devices,
                 board=bi,
-                construct=Blinky,
+                construct=Boneless,
                 name="dump_" + i,
                 force=args.force,
             )
