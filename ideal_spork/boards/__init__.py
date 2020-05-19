@@ -1,1 +1,1 @@
-available = ["tinyfpga_bx", "icebreaker"]
+available = ["tinyfpga_bx", "icebreaker", "zignig_dev"]
