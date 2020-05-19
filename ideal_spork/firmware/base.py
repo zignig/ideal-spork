@@ -6,8 +6,6 @@ import weakref
 
 from ..cores.periph.bus import RegMap
 
-from boneless.arch.asm import Assembler
-
 from ..logger import logger
 
 log = logger(__name__)
@@ -21,6 +19,7 @@ __all__ = [
     "Rem",
     "Block",
     "CodeObject",
+    "Inline",
 ]
 
 """
@@ -96,6 +95,7 @@ rehack of https://github.com/tpwrules/ice_panel/blob/master/bonetools.py
 """
 
 from boneless.arch.opcode import *
+from boneless.arch.instr import Instr
 
 
 class RegError(Exception):
@@ -158,6 +158,19 @@ class CodeObject:
         return l
 
 
+class Inline:
+    " Define an inline function "
+
+    def __init__(self, window):
+        self.w = window
+
+    def instr(self):
+        raise FWError("Inline class needs 'instr' defined return a [] of asm")
+
+    def __call__(self):
+        return self.instr(self.w)
+
+
 class Rem:
     " for adding remarks in code "
 
@@ -189,7 +202,7 @@ class LocalLabels:
         self._names = {}
 
     def __call__(self, name):
-        self._names[name] = self._postfix + name
+        self._names[name] = name + self._postfix
         setattr(self, name, name + self._postfix)
         return L(name + self._postfix)
 
@@ -451,6 +464,7 @@ class Firmware:
         self.reg = reg
         # attach the io_map to all the subroutines
         SubR.reg = self.reg
+        Inline.reg = self.reg
         # code objects
         self.obj = []
         self._built = False
@@ -497,10 +511,8 @@ class Firmware:
         pprint.pprint(self.code(), width=1, indent=2)
 
     def assemble(self):
-        a = Assembler()
-        a.parse(self.code())
-        code = a.assemble()
-        return code
+        fw = Instr.assemble(self.code())
+        return fw
 
     def hex(self):
         asm = self.assemble()

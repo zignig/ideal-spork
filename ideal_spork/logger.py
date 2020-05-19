@@ -1,5 +1,7 @@
 import logging, sys
 
+from rich.logging import RichHandler
+
 log_level = logging.ERROR
 
 fomattingter = logging.Formatter(
@@ -11,7 +13,7 @@ fomattingter = logging.Formatter(
 handler = logging.StreamHandler(sys.stdout)
 handler.setFormatter(fomattingter)
 root_logger = logging.getLogger()
-root_logger.addHandler(handler)
+root_logger.addHandler(RichHandler())
 root_logger.setLevel(log_level)
 
 

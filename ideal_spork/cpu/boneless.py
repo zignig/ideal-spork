@@ -38,6 +38,9 @@ class BonelessSpork(Elaboratable):
         self.map = self.pc.map
         self._built = False
 
+        # Firmware as ASM
+        self.fw = None
+
     def add_peripheral(self, periph):
         self.pc.add(periph)
 
@@ -61,6 +64,7 @@ class BonelessSpork(Elaboratable):
                 len(fw), self.mem_size, 100.0 * (float(len(fw)) / float(self.mem_size))
             )
         )
+        self.fw = fw
         self.memory.init = fw
 
     def elaborate(self, platform):

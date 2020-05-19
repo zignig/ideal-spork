@@ -6,6 +6,7 @@ log = logger(__name__)
 
 import serial
 import time
+import sys, tty, termios
 
 # refer to https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
 
@@ -29,6 +30,7 @@ class Console:
             log.error(e)
             return
         log.critical("Unfinished")
+        return
         with port as p:
             while True:
                 time_string = time.ctime()
@@ -40,3 +42,19 @@ class Console:
                     log.critical("No response")
                     return
         # console loop
+
+    def command_line(self):
+        # Define data-model for an input-string with a cursor
+        input = ""
+        index = 0
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        tty.setraw(fd)
+        while True:  # loop for each character
+            char = ord(sys.stdin.read(1))  # read one char and get char code
+            if char == 3:
+                break
+            sys.stdout.write(chr(char))
+            sys.stdout.flush()
+        log.critical("Exit console")
+        termios.tcsetattr(fd, termios.TCSAFLUSH, old_settings)

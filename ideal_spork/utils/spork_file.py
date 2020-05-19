@@ -1,6 +1,6 @@
 # handler for the spork file
 
-import yaml
+import toml
 
 from ..logger import logger
 
@@ -8,8 +8,10 @@ log = logger(__name__)
 
 
 def load_spork(file_name):
-    data = yaml.load(open(file_name).read())
-    the_spork = ASpork(data)
+    data = open(file_name).read()
+    print(data)
+    as_toml = toml.loads(data)
+    the_spork = ASpork(as_toml)
     return the_spork
 
 

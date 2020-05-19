@@ -1,6 +1,6 @@
 # Command line interface.
 import sys, os
-import argparse
+import argparse, traceback
 
 import logging
 from .logger import logger, set_logging_level
@@ -45,6 +45,9 @@ def as_options(parser):
         action="store_true",
     )
 
+    # Create a new thingo
+    action.add_parser("new", help="Create a new dirver,peripheral,construct,core ")
+
     # Unbound
     action.add_parser("info", help="Get information from the base board")
     action.add_parser("console", help="Attach to a new console (UMFINISHED)")
@@ -57,7 +60,7 @@ def as_options(parser):
     # List boards and active peripherals
     action.add_parser("list", help="List available boards")
 
-    # add firmware to build image
+    # Add firmware to build image
     init_burn = action.add_parser("burn", help="Add the given firmware to boot image")
     init_burn.add_argument(
         "program", default=None, help="Specify the firmware to upload"
@@ -112,16 +115,21 @@ def as_main(args=None):
         log.debug("spork file exists")
         the_spork = load_spork(".spork")
     except FileNotFoundError:
+        log.error("{:s}".format(str(traceback.print_exc())))
         log.critical("Spork file missing")
         log.critical("Please template the .spork file")
         log.critical("Check for .fork file")
         print("No spork file")
+
+    log.critical("Check for a .foone")
 
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
 
     if args.action == "init":
+        if len(sys.argv) == 2:
+            log.critical("Define a New board")
         from .builder.create import BoardBuilder
 
         bb = BoardBuilder(
@@ -133,6 +141,9 @@ def as_main(args=None):
             local=args.local,
         )
         bb.build()
+
+    if args.action == "new":
+        log.error("New is (UNFINISHED)")
 
     if args.action == "info":
         if the_spork is not None:
@@ -147,6 +158,7 @@ def as_main(args=None):
         console = Console(the_spork)
         log.critical("Only does echo test of datetime, for now")
         console.attach()
+        console.command_line()
 
     if args.action == "burn":
         # Add the firmware onto the boot system
