@@ -149,7 +149,7 @@ class FileBuilder:
                 # empty file name is changed to the name target
                 if target_file == None:
                     target_file = self.name.lower() + ".py"
-                log.info(target_file)
+                log.info("Template::{:s}".format(target_file))
                 try:
                     log.debug("Check if the files already exists")
                     stat = os.stat(target_file)

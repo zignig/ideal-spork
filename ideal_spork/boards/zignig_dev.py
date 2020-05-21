@@ -1,7 +1,9 @@
 # builder questions for spork
+# my dev board.
+
+from tinyfpga_bx import TinyFPGABXPlatform
 
 from ..logger import logger
-from tinyfpga_bx import TinyFPGABXPlatform
 
 log = logger(__name__)
 
@@ -14,5 +16,6 @@ class zignig_dev(TinyFPGABXPlatform):
     """
 
     def __init__(self):
-        log.critical("unbuilt")
+        super().__init__(self)
         self.usb = "0403:6001"
+        log.critical("unbuilt")

@@ -18,5 +18,10 @@ class TinyFPGABXPlatform:
     """
 
     def __init__(self):
-        log.critical("unbuilt")
         self.usb = "1209:2100"
+        self.flash_map = {
+            "bootloader": (0x000a0, 0x28000),
+            "userimage": (0x28000, 0x50000),
+            "userdata": (0x50000 - 0x100000),
+        }
+        log.critical("(unfinished)")
