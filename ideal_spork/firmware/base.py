@@ -379,6 +379,8 @@ class SubR(metaclass=MetaSub):
                 if i not in self.w.__dict__:
                     self.w.req(i)
 
+        self.build()
+
     @classmethod
     def mark(cls):
         " include code if the subroutine has been called "
@@ -386,6 +388,10 @@ class SubR(metaclass=MetaSub):
         cls._called = True
 
     def setup(self):
+        raise FWError("Need to set up subroutine , params , locals and ret")
+
+    def build(self):
+        # build the objects and stuff
         pass
 
     def __call__(self, *args, **kwargs):
@@ -488,13 +494,13 @@ class Firmware:
             fw = [
                 Rem("--- Firmware Object ---"),
                 Rem(self.w._name),
-                ll("init"),
+                L("init"),
                 MOVI(w.fp, self.sw),
                 LDW(w.fp, 0),
                 self.prelude(),
-                ll("main"),
+                L("main"),
                 self.instr(),
-                J(ll.main),
+                J("main"),
                 Rem("--- Library Code ---"),
                 MetaSub.code(),
                 Rem("--- Data Objects ---"),
