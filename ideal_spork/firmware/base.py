@@ -20,6 +20,7 @@ __all__ = [
     "Block",
     "CodeObject",
     "Inline",
+    "FWError",
 ]
 
 """
@@ -495,8 +496,8 @@ class Firmware:
                 Rem("--- Firmware Object ---"),
                 Rem(self.w._name),
                 L("init"),
-                MOVI(w.fp, self.sw),
-                LDW(w.fp, 0),
+                MOVI(w.fp, self.sw - 8),
+                STW(w.fp),
                 self.prelude(),
                 L("main"),
                 self.instr(),
