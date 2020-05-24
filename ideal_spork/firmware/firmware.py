@@ -7,6 +7,8 @@ log = logger(__name__)
 from boneless.arch.opcode import *
 from boneless.arch.instr import Instr
 
+from .stringer import Stringer
+
 
 class Firmware:
     """ 
@@ -27,6 +29,8 @@ class Firmware:
         self.obj = []
         self._built = False
         self.fw = None
+        # global string set
+        self.stringer = Stringer()
 
     def setup(self):
         raise FWError("No setup function")
