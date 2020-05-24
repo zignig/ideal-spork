@@ -15,7 +15,6 @@ __all__ = [
     "SubR",
     "Window",
     "MetaSub",
-    "Firmware",
     "Rem",
     "Block",
     "CodeObject",
@@ -533,55 +532,3 @@ class Firmware:
         c = self.assemble()
         a = Assembler()
         return a.disassemble(c)
-
-
-# Test Objects
-"""
-class Printer(SubR):
-    def setup(self):
-        self.params = ["addr", "data"]
-
-    def instr(self):
-        w = self.w
-        return [STX(w.addr, w.data, 0)]
-
-
-class Degenerate(SubR):
-    pass
-
-
-class Reboot(SubR):
-    def setup(self):
-        self.w.req("counter")
-        self.w.req("switch")
-
-    def instr(self):
-        ll = LocalLabels()
-        w = self.w
-        return [ANDI(R0, R0, 0), ll("test"), ADDI(w.counter, w.switch, 1), JZ(ll.test)]
-
-
-class Composite(SubR):
-    def setup(self):
-        self.params = ["addr"]
-        self.w.req("counter")
-        self.w.req("delay")
-        self.r = Reboot()
-        self.p = Printer()
-
-    def instr(self):
-        ll = LocalLabels()
-        w = self.w
-        return [self.r(), self.p(self.w.addr, self.w.counter)]
-
-
-class Outer:
-    reboot = Reboot()
-    printer = Printer()
-    comp = Composite()
-
-"""
-# w = Window()
-# w.req("addr")
-# w.req("counter")
-# w.req("data")

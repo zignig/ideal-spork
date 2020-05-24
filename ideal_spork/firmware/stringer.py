@@ -12,7 +12,8 @@ log = logger(__name__)
 import random
 
 # TODO , strings are currently word encoded , wastes a lot of space
-# have a compact version that byte packs them
+# have a compact version that byte packs them, use top bit as switch
+# limits string length to 15 bits
 
 
 class SingleString:
