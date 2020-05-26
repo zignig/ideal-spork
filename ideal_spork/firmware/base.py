@@ -161,14 +161,18 @@ class CodeObject:
 class Inline:
     " Define an inline function "
 
-    def __init__(self, window):
+    def __init__(self, window, ll=None):
         self.w = window
+        if ll is not None:
+            self.ll = ll
+        else:
+            self.ll = LocalLabels()
 
     def instr(self):
         raise FWError("Inline class needs 'instr' defined return a [] of asm")
 
     def __call__(self):
-        return self.instr(self.w)
+        return self.instr()
 
 
 class Rem:

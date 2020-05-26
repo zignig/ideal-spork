@@ -22,15 +22,21 @@ class Firmware:
         self.w = Window()
         self.sw = start_window
         self.reg = reg
+
+        # global string set
+        self.stringer = st = Stringer()
+
         # attach the io_map to all the subroutines
         SubR.reg = self.reg
         Inline.reg = self.reg
+
+        # attach global string to other
+        SubR.stringer = self.stringer
+        Inline.stringer = self.stringer
         # code objects
         self.obj = []
         self._built = False
         self.fw = None
-        # global string set
-        self.stringer = Stringer()
 
     def setup(self):
         raise FWError("No setup function")
