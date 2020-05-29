@@ -1,5 +1,6 @@
 from .base import *
 import pprint
+import math
 
 from ..logger import logger
 
@@ -80,6 +81,11 @@ class Firmware:
 
     def assemble(self):
         fw = Instr.assemble(self.code())
+        l = len(fw)
+        align = math.ceil(l / 8) * 8
+        diff = align - l
+        for i in range(diff):
+            fw.append(0)
         return fw
 
     def hex(self):
