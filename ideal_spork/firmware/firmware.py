@@ -38,6 +38,7 @@ class Firmware:
         self.obj = []
         self._built = False
         self.fw = None
+        self.hex_blob = ""
 
     def setup(self):
         raise FWError("No setup function")
@@ -68,6 +69,8 @@ class Firmware:
                 MetaSub.code(),
                 Rem("--- Data Objects ---"),
                 CodeObject.get_code(),
+                0,
+                0,
                 L("program_start"),
             ]
             self._built = True
@@ -81,19 +84,25 @@ class Firmware:
 
     def assemble(self):
         fw = Instr.assemble(self.code())
-        l = len(fw)
-        align = math.ceil(l / 8) * 8
-        diff = align - l
-        for i in range(diff):
-            fw.append(0)
+        # l = len(fw)
+        # align = math.ceil(l / 8) * 8
+        # diff = align - l
+        # for i in range(diff):
+        #    fw.append(0)
         return fw
 
     def hex(self):
+        def hex_string(i):
+            return "{:04X}".format(i)
+
         asm = self.assemble()
-        full_hex = ""
+        # save the length
+        full_hex = hex_string(len(asm))
+        # will be the checksum
+        full_hex += hex_string(0xFFFF)
+        # append the code
         for i in asm:
-            hex_string = "{:04X}".format(i)
-            full_hex += hex_string
+            full_hex += hex_string(i)
         return full_hex
 
     def disassemble(self):
