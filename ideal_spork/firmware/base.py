@@ -364,6 +364,7 @@ class SubR(metaclass=MetaSub):
         self._ret = False
         self._ret_target = []
         self.setup()
+        self._size = 8  # for later ( stack frames ) TODO
         if not hasattr(self, "name"):
             self.name = type(self).__qualname__
         if hasattr(self, "params"):
@@ -408,7 +409,7 @@ class SubR(metaclass=MetaSub):
             target = self.w[self.params[i]].value
             if self.debug:
                 instr += [Rem("Load " + self.params[i])]
-            instr += [ST(source, self.w.fp, -8 + target)]
+            instr += [ST(source, self.w.fp, -self._size + target)]
 
         instr += [JAL(self.w.ret, self.name)]
 
@@ -425,12 +426,12 @@ class SubR(metaclass=MetaSub):
                     for i, j in enumerate(vals):
                         source = self.w[self.ret[i]]
                         instr += [Rem("Return " + self.ret[i])]
-                        instr += [LD(j, self.w.fp, -8 + source.value)]
+                        instr += [LD(j, self.w.fp, -self._size + source.value)]
                 else:
                     source = vals
                     target = self.w[self.ret[0]].value
                     instr += [Rem("Return " + self.ret[0])]
-                    instr += [LD(source, self.w.fp, -8 + target)]
+                    instr += [LD(source, self.w.fp, -self._size + target)]
 
             else:
                 raise ValueError("No return registers exist")
@@ -453,10 +454,10 @@ class SubR(metaclass=MetaSub):
             data.append(Rem(self.__doc__))
         if self.debug:
             data += [Rem(self.w._name)]
-        data += [ADJW(-8)]  # window shift up
+        data += [ADJW(-self._size)]  # window shift up
         data += [LDW(self.w.fp, 0)]  # save window
         data += self.instr()
-        data += [ADJW(8), JR(R7, 0)]  # shift window down
+        data += [ADJW(self._size), JR(R7, 0)]  # shift window down
         return [data]
 
 
