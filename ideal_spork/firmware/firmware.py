@@ -50,6 +50,10 @@ class Firmware:
     def instr(self):
         return []
 
+    def extra(self):
+        "Add extra code/data to the firmaware, override "
+        return []
+
     def code(self):
         if not self._built:
             w = self.w = Window()
@@ -67,6 +71,8 @@ class Firmware:
                 J("main"),
                 Rem("--- Library Code ---"),
                 MetaSub.code(),
+                Rem("--- Extra Code ---"),
+                self.extra(),
                 Rem("--- Data Objects ---"),
                 CodeObject.get_code(),
                 0,

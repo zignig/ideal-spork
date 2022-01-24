@@ -456,6 +456,7 @@ class SubR(metaclass=MetaSub):
             data += [Rem(self.w._name)]
         data += [ADJW(-self._size)]  # window shift up
         data += [LDW(self.w.fp, 0)]  # save window
+        # TODO process this line by line, insert spills above
         data += self.instr()
         data += [ADJW(self._size), JR(R7, 0)]  # shift window down
         return [data]

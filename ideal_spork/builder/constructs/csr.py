@@ -1,4 +1,3 @@
-
 from . import Construct
 
 from ...logger import logger
